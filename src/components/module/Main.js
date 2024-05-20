@@ -6,8 +6,11 @@ const Main = () => {
         <>
             <Box>
                 <h4>Main</h4>
-                    <form method="post" action={`${process.env.REACT_APP_SERVER_URL}/user/service`}>
-                        <input type="hidden" id="command" name="command" value="test"></input>
+                    <div id="image-container"></div>
+                    <form method="POST" action={`${process.env.REACT_APP_SERVER_URL}/user/service`}
+                    encType={"multipart/form-data"}>
+                        <input type="hidden" id="test" name="test" value="test"/>
+                        <input type="file" id="file" name="file"/>
                         <input type="submit"/>
                     </form>
             </Box>
