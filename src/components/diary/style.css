@@ -1,0 +1,103 @@
+/* Colors */
+:root {
+    --main-color: #aa5b42;
+    --sub-color: #f3c5b6;
+    --login-color: #f7f0ee;
+    --dashboard-color: #fffcfb;
+    --dashboard-icon-color: #d6a291;
+    --step-color: #ebcfc6;
+    --dark-step-color: #cea193;
+    --gray-color: #c4c4c4;
+    --dark-gray-color: #686868;
+}
+
+.diary-box{
+    width: 800px;
+    height: auto;
+    background-color: var(--login-color);
+}
+
+.header{
+    width: 100%;
+    height: auto;
+}
+
+.header-text-box{
+    display: flex;
+    flex-direction: row;
+}
+
+.text{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 10px;
+}
+
+.text-month{
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 150%;
+}
+
+.text-year{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+}
+
+.button{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: 10px;
+    color: var(--gray-color);
+}
+
+.icon:hover{
+    color: var(--dark-gray-color);
+
+}
+
+.row-days{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    padding-bottom: 10px;
+    font-size: 11px;
+}
+
+.body{
+    margin-bottom: 10px;
+}
+
+.rows-date{
+    width: calc(800px / 7);
+    text-align: center;
+    border-radius: 10px;
+    background-color: var(--sub-color);
+    gap: 10px;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+}
+
+.rows-day{
+    width: calc(800px / 7);
+    height: 100px;
+    border: 1px solid var(--gray-color);
+    border-radius: 10px;
+    box-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.5);
+    margin: 2px;
+}
+
+.disabled{
+    color: var(--gray-color);
+}
+
+.selected{
+    border: 1px solid var(--dashboard-icon-color);
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-import '../style/Calender.css'
+import './Calender.css'
 
 export default function Calender() {
     const data=[];
@@ -7,7 +7,7 @@ export default function Calender() {
             data.class=i;
             data.time=i+8;
     }
-  return (
+    return (
     <div>
         <table className='schedule'>
             <thead>
@@ -23,8 +23,7 @@ export default function Calender() {
             <tbody>
                 <tr>
                     <td>
-                        <div className='schedule-class'>1교시</div>
-                        <div className='schedule-time'>9시</div>
+                        <div className='schedule-class'>0시</div>
                     </td>
                     <td></td>
                     <td></td>
@@ -34,8 +33,7 @@ export default function Calender() {
                 </tr>
                 <tr>
                     <td>
-                        <div className='schedule-class'>2교시</div>
-                        <div className='schedule-time'>10시</div>
+                        <div className='schedule-class'>1시</div>
                     </td>
                     <td></td>
                     <td></td>
@@ -45,29 +43,7 @@ export default function Calender() {
                 </tr>
                 <tr>
                     <td>
-                        <div className='schedule-class'>3교시</div>
-                        <div className='schedule-time'>11시</div>
-                    </td>
-                    <td></td>
-                    <td rowSpan={2}></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div className='schedule-class'>4교시</div>
-                        <div className='schedule-time'>12시</div>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div className='schedule-class'>5교시</div>
-                        <div className='schedule-time'>13시</div>
+                        <div className='schedule-class'>2시</div>
                     </td>
                     <td></td>
                     <td></td>
@@ -77,8 +53,7 @@ export default function Calender() {
                 </tr>
                 <tr>
                     <td>
-                        <div className='schedule-class'>6교시</div>
-                        <div className='schedule-time'>14시</div>
+                        <div className='schedule-class'>3시</div>
                     </td>
                     <td></td>
                     <td></td>
@@ -88,8 +63,7 @@ export default function Calender() {
                 </tr>
                 <tr>
                     <td>
-                        <div className='schedule-class'>7교시</div>
-                        <div className='schedule-time'>15시</div>
+                        <div className='schedule-class'>4시</div>
                     </td>
                     <td></td>
                     <td></td>
@@ -99,8 +73,7 @@ export default function Calender() {
                 </tr>
                 <tr>
                     <td>
-                        <div className='schedule-class'>8교시</div>
-                        <div className='schedule-time'>16시</div>
+                        <div className='schedule-class'>5시</div>
                     </td>
                     <td></td>
                     <td></td>
@@ -110,8 +83,7 @@ export default function Calender() {
                 </tr>
                 <tr>
                     <td>
-                        <div className='schedule-class'>9교시</div>
-                        <div className='schedule-time'>17시</div>
+                        <div className='schedule-class'>6시</div>
                     </td>
                     <td></td>
                     <td></td>
@@ -121,8 +93,7 @@ export default function Calender() {
                 </tr>
                 <tr>
                     <td>
-                        <div className='schedule-class'>10교시</div>
-                        <div className='schedule-time'>18시</div>
+                        <div className='schedule-class'>7시</div>
                     </td>
                     <td></td>
                     <td></td>
@@ -132,8 +103,7 @@ export default function Calender() {
                 </tr>
                 <tr>
                     <td>
-                        <div className='schedule-class'>11교시</div>
-                        <div className='schedule-time'>19시</div>
+                        <div className='schedule-class'>8시</div>
                     </td>
                     <td></td>
                     <td></td>
@@ -143,8 +113,157 @@ export default function Calender() {
                 </tr>
                 <tr>
                     <td>
-                        <div className='schedule-class'>12교시</div>
-                        <div className='schedule-time'>20시</div>
+                        <div className='schedule-class'>9시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>10시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>11시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>12시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>13시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>14시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>15시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>16시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>17시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>18시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>19시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>20시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>21시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>22시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>23시</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div className='schedule-class'>24시</div>
                     </td>
                     <td></td>
                     <td></td>
