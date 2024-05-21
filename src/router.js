@@ -1,6 +1,7 @@
 import {createBrowserRouter,} from "react-router-dom";
 import Root from "./components/Root";
 import Main from "./components/module/Main";
+import Calender from "./components/module/Calender";
 
 const router = createBrowserRouter([
     {
@@ -20,7 +21,10 @@ const router = createBrowserRouter([
         paht: "/user",
         element : <Root/>,
         children: [
-            
+            {
+                path:"/calender",
+                element:<Calender/>
+            }
         ]
     }
 ],{
