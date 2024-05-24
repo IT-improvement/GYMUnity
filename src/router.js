@@ -19,20 +19,20 @@ const router = createBrowserRouter([
                 <h4>오류입니다~</h4>
             </>
     },{
-        paht: "/user",
+        path: "/user",
         element : <Root/>,
         children: [
             {
-                path:"/calender",
+                path:"calender",
                 element:<Calender/>
             },{
-                path:"/diary",
+                path:"diary",
                 element:<Diary/>
             }
         ]
     }
 ],{
-    basename: "/gymunity/v1"
+    basename: "/gymunity"
 });
 
 export default router;

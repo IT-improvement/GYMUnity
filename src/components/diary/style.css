@@ -85,6 +85,18 @@
     flex-direction: row;
 }
 
+.sunday{
+    color: red;
+}
+
+.saturday{
+    color: blue;
+}
+
+#text-not-valid{
+    color: var(--gray-color);
+}
+
 .rows-day{
     width: calc(800px / 7);
     height: 100px;
