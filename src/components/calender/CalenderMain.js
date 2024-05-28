@@ -1,10 +1,10 @@
 import React from 'react'
-import Diary from './diary'
+import Calender from './Calender'
 
-export default function DiaryMain() {
+export default function CalenderMain() {
   return (
     <div style={{display:'flex', justifyContent:'center', backgroundColor:'rgba(0, 0, 0, 0.08)'}}>
-      <Diary/>
+        <Calender/>
     </div>
-  )
+)
 }

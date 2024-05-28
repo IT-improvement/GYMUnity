@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns';
+import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths, subDays, sub } from 'date-fns';
 import { Icon } from '@iconify/react';
 import './style.css';
 
@@ -12,7 +12,7 @@ const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
                     <span className='text-year'>{format(currentMonth, 'yyyy')}</span>
                 </div>
                 <div className='button'>
-                    <Icon className='icon' icon="bi:arrow-left-circle-fill" onClick={prevMonth}></Icon>
+                    <Icon className='icon' icon="bi:arrow-left-circle-fill" onClick={prevMonth} ></Icon>
                     <Icon className='icon' icon="bi:arrow-right-circle-fill" onClick={nextMonth}></Icon>
                 </div>
             </div>
@@ -40,7 +40,23 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
     const endMonth = endOfMonth(startMonth);
     const startDay = startOfWeek(startMonth);
     const endDay = endOfWeek(endMonth);
-
+    const [data, setData] = useState([])
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=readMonth&startMonth=${(format(startMonth, 'yyyy-MM-dd hh:mm:ss'))}&endMonth=${(format(endMonth, 'yyyy-MM-dd hh:mm:ss'))}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, [currentMonth]);
+    console.log(data);
     const rows = [];
     let days = [];
     let day = startDay;
@@ -70,7 +86,12 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
                         className={i === 0 ? 'sunday' : i === 6 ? 'saturday' : ''}
                     >
                         {formatDay}
-                    </span>
+                        </span>
+                        <div className='day-content'>
+                        {data.filter(json => format(new Date(json.diary_date), 'yyyy-MM-dd') === format(cloneDay, 'yyyy-MM-dd')).map(filteredData => (
+                                    <div>{filteredData.content}</div>
+                                ))}
+                        </div>
                 </div>
             );
             day = addDays(day, 1);
@@ -86,10 +107,10 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
 }
 
 export default function Diary() {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState();
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
-
+    
     const prevMonth = () => {
         setCurrentMonth(subMonths(currentMonth, 1));
     };
@@ -101,10 +122,12 @@ export default function Diary() {
     const onDateClick = (day) => {
         setSelectedDate(day);
         console.log(data);
-    }
 
+    }
+    
+    //한번 뒤에 일어남
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=read&date=${format(selectedDate, 'yyyy-MM-dd')}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=readDay&date=${format(selectedDate, 'yyyy-MM-dd hh:mm:ss')}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

@@ -1,8 +1,8 @@
 import {createBrowserRouter,} from "react-router-dom";
 import Root from "./components/Root";
 import Main from "./components/module/Main";
-import Calender from "./components/calender/Calender";
-import Diary from "./components/diary/diary";
+import DiaryMain from "./components/diary/diaryMain";
+import CalenderMain from "./components/calender/CalenderMain";
 
 const router = createBrowserRouter([
     {
@@ -24,10 +24,10 @@ const router = createBrowserRouter([
         children: [
             {
                 path:"calender",
-                element:<Calender/>
+                element:<CalenderMain/>
             },{
                 path:"diary",
-                element:<Diary/>
+                element:<DiaryMain/>
             }
         ]
     }

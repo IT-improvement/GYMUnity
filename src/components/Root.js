@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Footer from './module/Footer'
 import Header from './module/header'
+import Footer from './module/footer'
 
 export default function Root() {
     return (
