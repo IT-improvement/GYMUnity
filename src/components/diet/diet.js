@@ -2,12 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Button, Select, Box, Input, Stack } from '@chakra-ui/react';
 import axios from 'axios';
 import { Context } from '../../App';
+import { useNavigate } from 'react-router-dom';
 
 const Diet = () => {
     const [selectedFoods, setSelectedFoods] = useState([]);
     const [newFood, setNewFood] = useState('');
     const [foodOptions, setFoodOptions] = useState([]);
     const [isLoggedin, setIsLoggedIn] = useContext(Context);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // API를 통해 초기 데이터 가져오기
@@ -50,16 +52,8 @@ const Diet = () => {
         setNewFood(event.target.value);
     };
 
-    const handleAddNewFood = async () => {
-        if (newFood.trim()) {
-            try {
-                const response = await axios.post('/', { name: newFood });
-                setFoodOptions([...foodOptions, response.data]);
-                setNewFood('');
-            } catch (error) {
-                console.error('Error adding new food:', error);
-            }
-        }
+    const navigateToCreateFoodForm = () => {
+        navigate('/diet/createFood');
     };
 
     return (
@@ -81,7 +75,7 @@ const Diet = () => {
             </Stack>
             <Box mt={4}>
                 <Input placeholder="New food" value={newFood} onChange={handleNewFoodChange} />
-                <Button mt={2} onClick={handleAddNewFood}>
+                <Button mt={2} onClick={navigateToCreateFoodForm}>
                     Add New Food
                 </Button>
             </Box>
