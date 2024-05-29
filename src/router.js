@@ -4,6 +4,9 @@ import Main from './components/module/Main';
 import Calender from './components/calender/Calender';
 import Diary from './components/diary/diary';
 import Diet from './components/diet/diet';
+import Body from './components/module/Body';
+import CreateFoodForm from './components/diet/createFoodForm';
+import CreateFoodCategoryForm from './components/diet/createFoodCategoryForm';
 
 const router = createBrowserRouter(
     [
@@ -34,9 +37,23 @@ const router = createBrowserRouter(
                     path: '/diary',
                     element: <Diary />,
                 },
+            ],
+        },
+        {
+            path: '/diet',
+            element: <Root />,
+            children: [
                 {
                     path: '/diet',
-                    element: <Diet />,
+                    element: <Body children={<Diet />} />,
+                },
+                {
+                    path: '/diet/createFood',
+                    element: <Body children={<CreateFoodForm />} />,
+                },
+                {
+                    path: '/diet/createFoodCategory',
+                    element: <Body children={<CreateFoodCategoryForm />} />,
                 },
             ],
         },
