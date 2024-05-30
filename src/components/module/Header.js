@@ -1,8 +1,6 @@
 import { Flex, Box, Heading, Input, Button, Text, Avatar } from '@chakra-ui/react'
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useContext } from 'react'
-import { Context } from "../../App";
-import React from "react";
 import Context from "../../Context";
 
 export default function Header() {

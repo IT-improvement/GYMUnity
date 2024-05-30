@@ -14,13 +14,13 @@ import SearchSection from "./components/search/SearchSection";
 import ExerciseList from "./components/search/ExerciseList";
 import ExerciseDetail from "./components/exercise/ExerciseDetail";
 import ExerciseEdit from "./components/exercise/ExerciseEdit";
-import FeedList from "./components/feed/feedList";
 import FeedDetail from "./components/feed/feedDetail";
 import JoinForm from "./components/user/JoinForm";
 import LoginForm from "./components/user/LoginForm";
 import MyPage from "./components/user/MyPage";
 import UpdateUserForm from "./components/user/UpdateUserForm";
 import LeaveForm from "./components/user/LeaveForm";
+import FeedList from "./components/feed/feedList";
 
 const router = createBrowserRouter(
 	[
@@ -40,18 +40,37 @@ const router = createBrowserRouter(
 			),
 		},
 		{
-			paht: '/user',
-			element: <Root />,
-			children: [
-				{
-					path: '/calender',
-					element: <Calender />,
-				},
-				{
-					path: '/diary',
-					element: <Diary />,
-				},
-			],
+			path: "/user",
+        element : <Root/>,
+        children: [
+            {
+                path:"calender",
+                element:<CalenderMain/>
+            },{
+                path:"diary",
+                element:<DiaryMain/>
+            },
+            {
+                path: "/user/join",
+                element: <JoinForm />
+            },
+            {
+                path: "/user/login",
+                element: <LoginForm />
+            },
+            {
+                path: "/user/mypage",
+                element: <MyPage />
+            },
+            {
+                path: "/user/update",
+                element: <UpdateUserForm />
+            },
+            {
+                path: "/user/leave",
+                element: <LeaveForm />
+            }
+        ]
 		},
 		{
 			path: "/search",
@@ -123,29 +142,10 @@ const router = createBrowserRouter(
             },{
                 path:"diary",
                 element:<DiaryMain/>
-            },
-            {
-                path: "/user/join",
-                element: <JoinForm />
-            },
-            {
-                path: "/user/login",
-                element: <LoginForm />
-            },
-            {
-                path: "/user/mypage",
-                element: <MyPage />
-            },
-            {
-                path: "/user/update",
-                element: <UpdateUserForm />
-            },
-            {
-                path: "/user/leave",
-                element: <LeaveForm />
             }
         ]
-    }],
+    }
+],
 	{
 		basename: "/gymunity/v1"
 	}
