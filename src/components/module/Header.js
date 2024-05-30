@@ -2,6 +2,7 @@ import { Flex, Box, Heading, Input, Button, Text } from '@chakra-ui/react'
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useContext } from 'react'
 import { Context } from "../../App";
+import React from "react";
 
 export default function Header() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -29,4 +30,12 @@ export default function Header() {
             </Box>
         </>
     );
+}
+  return (
+    <>
+      <Box>
+        <Heading>{process.env.REACT_APP_SERVER_URL}</Heading>
+      </Box>
+    </>
+  );
 }
