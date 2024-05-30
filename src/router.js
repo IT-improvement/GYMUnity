@@ -1,7 +1,6 @@
 import { createBrowserRouter, } from "react-router-dom";
 import DiaryMain from "./components/diary/diaryMain";
 import CalenderMain from "./components/calender/CalenderMain";
-<<<<<<< HEAD
 import Root from './components/Root';
 import Main from './components/module/Main';
 import Calender from './components/calender/Calender';
@@ -9,10 +8,6 @@ import Diet from './components/diet/diet';
 import Body from './components/module/Body';
 import CreateFoodForm from './components/diet/createFoodForm';
 import CreateFoodCategoryForm from './components/diet/createFoodCategoryForm';
-import Root from "./components/Root";
-import Main from "./components/module/Main";
-import Body from "./components/module/Body";
-import Calender from "./components/calender/Calender";
 import Diary from "./components/diary/diary";
 import FriendSection from "./components/friend/FriendSection";
 import SearchSection from "./components/search/SearchSection";
