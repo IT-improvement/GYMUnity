@@ -1,6 +1,7 @@
 import { createBrowserRouter, } from "react-router-dom";
 import DiaryMain from "./components/diary/diaryMain";
 import CalenderMain from "./components/calender/CalenderMain";
+<<<<<<< HEAD
 import Root from './components/Root';
 import Main from './components/module/Main';
 import Calender from './components/calender/Calender';
@@ -20,6 +21,12 @@ import ExerciseDetail from "./components/exercise/ExerciseDetail";
 import ExerciseEdit from "./components/exercise/ExerciseEdit";
 import FeedList from "./components/feed/feedList";
 import FeedDetail from "./components/feed/feedDetail";
+import JoinForm from "./components/user/JoinForm";
+import LoginForm from "./components/user/LoginForm";
+import MyPage from "./components/user/MyPage";
+import UpdateUserForm from "./components/user/UpdateUserForm";
+import LeaveForm from "./components/user/LeaveForm";
+
 const router = createBrowserRouter(
 	[
 		{
@@ -109,15 +116,62 @@ const router = createBrowserRouter(
 		},
 		{
         path: "/feed",
+=======
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Root/>,
+        children: [
+            {
+                path:"",
+                element:<Main/>
+            }
+        ],
+        errorElement:
+            <>
+                <h4>오류입니다~</h4>
+            </>
+    },{
+        path: "/user",
+>>>>>>> refs/remotes/origin/feature/user
         element : <Root/>,
         children: [
             {
+<<<<<<< HEAD
                 path:"/feed",
                 element:<FeedList/>
             },
             {
                 path:"/feed/:feedIndex",
                 element:<FeedDetail/>
+=======
+                path:"calender",
+                element:<CalenderMain/>
+            },{
+                path:"diary",
+                element:<DiaryMain/>
+            },
+            {
+                path: "/user/join",
+                element: <JoinForm />
+            },
+            {
+                path: "/user/login",
+                element: <LoginForm />
+            },
+            {
+                path: "/user/mypage",
+                element: <MyPage />
+            },
+            {
+                path: "/user/update",
+                element: <UpdateUserForm />
+            },
+            {
+                path: "/user/leave",
+                element: <LeaveForm />
+>>>>>>> refs/remotes/origin/feature/user
             }
         ]
     }
