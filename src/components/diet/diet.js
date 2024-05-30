@@ -1,34 +1,35 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Button, Select, Box, Input, Stack } from '@chakra-ui/react';
-import axios from 'axios';
-import { Context } from '../../App';
+import React, { useState, useEffect } from 'react';
+import { Button, Select, Box, Input, Stack, IconButton } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 
 const Diet = () => {
     const [selectedFoods, setSelectedFoods] = useState([]);
     const [newFood, setNewFood] = useState('');
     const [foodOptions, setFoodOptions] = useState([]);
-    const [isLoggedin, setIsLoggedIn] = useContext(Context);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // API를 통해 초기 데이터 가져오기
         const fetchFoodOptions = async () => {
             try {
-                const response = await axios.get(
-                    'http://localhost:8080/food/service?command=readFoodList&userCode=1001',
-                    {
-                        headers: {
-                            'Content-Type': 'application/json; charset=UTF-8',
-                        },
-                    }
-                );
-                console.log(`responseData : ${response.data}`);
+                const response = await fetch('http://localhost:8080/food/service?command=readFoodList&userCode=1001', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8',
+                    },
+                });
 
-                if (response.data && Array.isArray(response.data.data)) {
-                    setFoodOptions(response.data.data);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await response.json();
+                console.log(`responseData : ${JSON.stringify(data)}`);
+
+                if (data && Array.isArray(data)) {
+                    setFoodOptions(data);
                 } else {
-                    console.error('Expected an array, but got:', response.data);
+                    console.error('Expected an array, but got:', data);
                 }
             } catch (error) {
                 console.error('Error fetching food options:', error);
@@ -56,25 +57,35 @@ const Diet = () => {
         navigate('/diet/createFood');
     };
 
+    const removeFoodFromDiet = (index) => {
+        const updatedFoods = [...selectedFoods];
+        updatedFoods.splice(index, 1);
+        setSelectedFoods(updatedFoods);
+    };
+
     return (
         <Box>
-            <Button onClick={() => setIsLoggedIn(!isLoggedin)}>{isLoggedin ? '로그인 성공' : '로그인 바람'}</Button>
             <Button onClick={addFoodToDiet}>Add Food</Button>
             <Stack spacing={3} mt={4}>
                 {selectedFoods.map((food, index) => (
-                    <Box key={index}>
+                    <Box key={index} display="flex" alignItems="center">
                         <Select placeholder="Select food" value={food} onChange={(e) => handleFoodChange(index, e)}>
                             {foodOptions.map((option) => (
                                 <option key={option.id} value={option.name}>
-                                    {option.name}
+                                    {option.foodName}
                                 </option>
                             ))}
                         </Select>
+                        <IconButton
+                            aria-label="Remove food"
+                            icon={<CloseIcon />}
+                            onClick={() => removeFoodFromDiet(index)}
+                            ml={2}
+                        />
                     </Box>
                 ))}
             </Stack>
             <Box mt={4}>
-                <Input placeholder="New food" value={newFood} onChange={handleNewFoodChange} />
                 <Button mt={2} onClick={navigateToCreateFoodForm}>
                     Add New Food
                 </Button>

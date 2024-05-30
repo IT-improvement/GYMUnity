@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Input, Select, Stack } from '@chakra-ui/react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const CreateFoodForm = () => {
@@ -14,13 +13,25 @@ const CreateFoodForm = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // 더미 데이터 및 유저의 foodCategory를 가져옵니다.
         const fetchFoodCategories = async () => {
             try {
-                const response = await axios.get(
-                    'http://localhost:8080/foodCategory/service?command=readAllFoodCategory&userCode=1001'
+                const response = await fetch(
+                    `${process.env.REACT_APP_SERVER_URL}/foodCategory/service?command=readAllFoodCategory&userCode=1001`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: window.sessionStorage.getItem('userCode'),
+                        },
+                    }
                 );
-                setFoodCategoryOptions(response.data);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await response.json();
+                console.log('Fetched categories:', data);
+                setFoodCategoryOptions(data);
             } catch (error) {
                 console.error('Error fetching food categories:', error);
             }
@@ -31,24 +42,40 @@ const CreateFoodForm = () => {
 
     const handleCreateFood = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/', {
-                foodName,
-                protein,
-                calory,
-                carbs,
-                size,
-                foodCategory,
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/food/service?command=createFood`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: window.sessionStorage.getItem('userCode'),
+                },
+                body: JSON.stringify({
+                    userCode: '1001',
+                    foodCategoryIndex: foodCategory,
+                    foodName: foodName,
+                    protein: protein,
+                    calory: calory,
+                    carbs: carbs,
+                    size: size,
+                }),
             });
-            console.log('Food created:', response.data);
-            // 성공적으로 음식이 생성되면 메인 페이지로 이동
-            navigate('/');
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+
+            const responseData = await response.json();
+            console.log('Food created:', responseData);
+
+            if (responseData.status === 'success') {
+                alert('Food created successfully');
+                navigate('/diet');
+            } else {
+                alert('Failed to create food');
+            }
         } catch (error) {
             console.error('Error creating food:', error);
+            alert('Error creating food: ' + error.message);
         }
-    };
-
-    const handleCreateFoodCategory = () => {
-        navigate('/createFoodCategory');
     };
 
     const navigateToCreateFoodCategoryForm = () => {
@@ -69,8 +96,8 @@ const CreateFoodForm = () => {
                     onChange={(e) => setFoodCategory(e.target.value)}
                 >
                     {foodCategoryOptions.map((category) => (
-                        <option key={category.id} value={category.id}>
-                            {category.name}
+                        <option key={category.foodCategoryIndex} value={category.foodCategoryIndex}>
+                            {category.categoryName}
                         </option>
                     ))}
                 </Select>
