@@ -121,22 +121,22 @@ export default function Diary() {
 
     const onDateClick = (day) => {
         setSelectedDate(day);
-        console.log(data);
-
+        
     }
     
     //한번 뒤에 일어남
     useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=readDay&date=${format(selectedDate, 'yyyy-MM-dd hh:mm:ss')}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setData(data);
-            })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            setData(data);
+            console.log(data);
+        })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
