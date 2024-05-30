@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './JoinForm.css';
 
@@ -11,36 +12,62 @@ const JoinForm = () => {
     const [gender, setGender] = useState("");
     const [telecom, setTelecom] = useState("");
     const [phone, setPhone] = useState("");
+    const navigate = useNavigate();
 
     const submitJoin = async (e) => {
         e.preventDefault();
 
-        const formData = {
-            id,
-            password,
-            email,
-            name,
-            birth,
-            gender,
-            telecom,
-            phone
-        };
-
         try {
-            const response = await fetch('http://localhost:8080/joinFormAction', {
-                // const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/joinFormAction`, {
+            
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    id: id,
+                    password: password,
+                    name: name,
+                    email: email,
+                    birth: birth,
+                    gender: gender,
+                    telecom: telecom,
+                    phone: phone
+                }),
             });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+
             const result = await response.json();
-            
+            console.log('User created: ', result);
+
+            if (result.status === 200) {
+                alert('회원가입 완료');
+                navigate('/');
+            } else {
+                alert('Failed to join');
+            }
+
         } catch (error) {
             console.error('Error: ', error);
         }
+
+        console.log(`${process.env.REACT_APP_SERVER_URL}`);
+        console.log(id);
+        console.log(password);
+        console.log(name);
+        console.log(email);
+        console.log(birth);
+        console.log(gender);
+        console.log(telecom);
+        console.log(phone);
     };
+
+    useEffect(() => {
+
+    }, []);
 
     return (
         <div id="join-container">
