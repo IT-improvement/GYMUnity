@@ -1,14 +1,17 @@
 import {createBrowserRouter,} from "react-router-dom";
 import Root from "./components/Root";
 import Main from "./components/module/Main";
+import Body from "./components/module/Body";
 import Calender from "./components/calender/Calender";
 import Diary from "./components/diary/diary";
-import FriendListContainer from "./components/friend/FriendListContainer";
-import Body from "./components/module/Body";
-import FriendRequestListContainer from "./components/friend/FriendRequestList";
-import SearchContainer from "./components/search/SearchContainer";
-import ExerciseListContainer from "./components/search/ExerciseList";
+
+import FriendSection from "./components/friend/FriendSection";
+
+import SearchSection from "./components/search/SearchSection";
+
+import ExerciseList from "./components/search/ExerciseList";
 import ExerciseDetail from "./components/exercise/ExerciseDetail";
+import ExerciseEdit from "./components/exercise/ExerciseEdit";
 
 const router = createBrowserRouter([
     {
@@ -43,7 +46,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path:"/search",
-                element: <Body children={<SearchContainer/>} />
+                element: <Body children={<SearchSection />} />
             },
         ]
     },
@@ -53,11 +56,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path:"/friends",
-                element: <Body children={<FriendListContainer/>} />
-            },
-            {
-                path:"/friends/requests",
-                element: <Body children={<FriendRequestListContainer/>} />
+                element: <Body children={<FriendSection />} />
             },
         ]
     },
@@ -67,11 +66,15 @@ const router = createBrowserRouter([
         children: [
             {
                 path:"/exercises",
-                element: <Body children={<ExerciseListContainer/>} />
+                element: <Body children={<ExerciseList />} />
             },
             {
                 path:"/exercises/:index",
-                element: <Body children={<ExerciseDetail/>} />
+                element: <Body children={<ExerciseDetail />} />
+            },
+            {
+                path:"/exercises/edit/:index",
+                element: <Body children={<ExerciseEdit />} />
             },
         ]
     }
