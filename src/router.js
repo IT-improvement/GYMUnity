@@ -116,38 +116,15 @@ const router = createBrowserRouter(
 		},
 		{
         path: "/feed",
-=======
-
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Root/>,
-        children: [
-            {
-                path:"",
-                element:<Main/>
-            }
-        ],
-        errorElement:
-            <>
-                <h4>오류입니다~</h4>
-            </>
-    },{
-        path: "/user",
->>>>>>> refs/remotes/origin/feature/user
         element : <Root/>,
         children: [
             {
-<<<<<<< HEAD
                 path:"/feed",
                 element:<FeedList/>
             },
             {
                 path:"/feed/:feedIndex",
                 element:<FeedDetail/>
-=======
-                path:"calender",
-                element:<CalenderMain/>
             },{
                 path:"diary",
                 element:<DiaryMain/>
@@ -171,11 +148,9 @@ const router = createBrowserRouter([
             {
                 path: "/user/leave",
                 element: <LeaveForm />
->>>>>>> refs/remotes/origin/feature/user
             }
         ]
-    }
-	],
+    }],
 	{
 		basename: "/gymunity/v1"
 	}
