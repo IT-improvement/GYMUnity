@@ -1,27 +1,30 @@
 import { Flex, Select } from "@chakra-ui/react";
 
-const searchOptionMenu = (props) => {
+const SearchOptionMenu = (props) => {
+    console.log(props.shouldShowDateSortButton);
     const handleFilterCategoryOnChange = (e) => {
         props.setCategory(e.target.value);
-    }
+    };
 
     const handleDataSortOnChange = (e) => {
-        props.setIsResultInDescOrder(e.target.value);
-    }
+        props.setIsResultInDescOrder(e.target.value == "true");
+    };
 
     return (
-        <Flex p="10px" bgColor="gray.50">
+        <Flex w="fit-content" p="10px" bgColor="gray.50">
             <Select onChange={handleFilterCategoryOnChange}>
-                {props.categories.map(category => {
-                    return <option value={category.type} key={category.type}>{category.name}</option>
+                {Object.entries(props.categoryMap).map(([type, name]) => {
+                    return <option value={type} key={type}>{name}</option>
                 })}
             </Select>
-            <Select onChange={handleDataSortOnChange}>
-                <option defaultChecked={props.isResultInDescOrder}>최신순</option>
-                <option>과거순</option>
-            </Select>
+            { props.shouldShowDateSortButton &&
+                <Select onChange={handleDataSortOnChange}>
+                    <option defaultChecked={props.isResultInDescOrder} value={true}>최신순</option>
+                    <option value={false}>과거순</option>
+                </Select>
+            }
         </Flex>
     );
 };
 
-export default searchOptionMenu;
+export default SearchOptionMenu;
