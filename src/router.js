@@ -3,6 +3,11 @@ import Root from "./components/Root";
 import Main from "./components/module/Main";
 import DiaryMain from "./components/diary/diaryMain";
 import CalenderMain from "./components/calender/CalenderMain";
+import JoinForm from "./components/user/JoinForm";
+import LoginForm from "./components/user/LoginForm";
+import MyPage from "./components/user/MyPage";
+import UpdateUserForm from "./components/user/UpdateUserForm";
+import LeaveForm from "./components/user/LeaveForm";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +33,26 @@ const router = createBrowserRouter([
             },{
                 path:"diary",
                 element:<DiaryMain/>
+            },
+            {
+                path: "/user/join",
+                element: <JoinForm />
+            },
+            {
+                path: "/user/login",
+                element: <LoginForm />
+            },
+            {
+                path: "/user/mypage",
+                element: <MyPage />
+            },
+            {
+                path: "/user/update",
+                element: <UpdateUserForm />
+            },
+            {
+                path: "/user/leave",
+                element: <LeaveForm />
             }
         ]
     }
