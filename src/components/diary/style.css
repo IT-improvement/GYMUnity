@@ -2,19 +2,18 @@
 :root {
     --main-color: #aa5b42;
     --sub-color: #f3c5b6;
-    --login-color: #f7f0ee;
+    --login-color: rgba(0, 0, 0, 0.07);
     --dashboard-color: #fffcfb;
     --dashboard-icon-color: #d6a291;
     --step-color: #ebcfc6;
     --dark-step-color: #cea193;
-    --gray-color: #c4c4c4;
+    --gray-color: #b8b5b5;
     --dark-gray-color: #686868;
 }
 
 .diary-box{
-    width: 800px;
+    width: 1440px;
     height: auto;
-    background-color: var(--login-color);
 }
 
 .header{
@@ -25,6 +24,7 @@
 .header-text-box{
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .text{
@@ -55,6 +55,10 @@
     color: var(--gray-color);
 }
 
+.icon{
+    font-size: 25px;
+}
+
 .icon:hover{
     color: var(--dark-gray-color);
 
@@ -73,7 +77,7 @@
 }
 
 .rows-date{
-    width: calc(800px / 7);
+    width: calc(1440px / 7);
     text-align: center;
     border-radius: 10px;
     background-color: var(--sub-color);
@@ -85,10 +89,22 @@
     flex-direction: row;
 }
 
+.sunday{
+    color: red;
+}
+
+.saturday{
+    color: blue;
+}
+
+#text-not-valid{
+    color: var(--gray-color);
+}
+
 .rows-day{
-    width: calc(800px / 7);
-    height: 100px;
-    border: 1px solid var(--gray-color);
+    width: calc(1440px / 7);
+    height: 200px;
+    border: 1.8px solid var(--gray-color);
     border-radius: 10px;
     box-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.5);
     margin: 2px;
@@ -101,3 +117,11 @@
 .selected{
     border: 1px solid var(--dashboard-icon-color);
 }
+.day-content > div{
+    width: 200px;
+    padding: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+}
+    

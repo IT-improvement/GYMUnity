@@ -1,8 +1,8 @@
 import {createBrowserRouter,} from "react-router-dom";
 import Root from "./components/Root";
 import Main from "./components/module/Main";
-import Calender from "./components/calender/Calender";
-import Diary from "./components/diary/diary";
+import DiaryMain from "./components/diary/diaryMain";
+import CalenderMain from "./components/calender/CalenderMain";
 
 const router = createBrowserRouter([
     {
@@ -19,20 +19,20 @@ const router = createBrowserRouter([
                 <h4>오류입니다~</h4>
             </>
     },{
-        paht: "/user",
+        path: "/user",
         element : <Root/>,
         children: [
             {
-                path:"/calender",
-                element:<Calender/>
+                path:"calender",
+                element:<CalenderMain/>
             },{
-                path:"/diary",
-                element:<Diary/>
+                path:"diary",
+                element:<DiaryMain/>
             }
         ]
     }
 ],{
-    basename: "/gymunity/v1"
+    basename: "/gymunity"
 });
 
 export default router;

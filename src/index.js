@@ -5,12 +5,12 @@ import { ChakraProvider, Grid } from '@chakra-ui/react'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <ChakraProvider>
       <Grid templateRows={"160px auto 160px"} minHeight={"100vh"}>
         <App/>
       </Grid>
     </ChakraProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 

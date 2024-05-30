@@ -1,8 +1,8 @@
 import React from 'react'
-import Header from './module/Header'
 import { Outlet } from 'react-router-dom'
 import Footer from './module/Footer'
 import { Box } from "@chakra-ui/react";
+import Header from './module/header'
 
 export default function Root() {
     return (

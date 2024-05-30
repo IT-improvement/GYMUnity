@@ -1,0 +1,40 @@
+#header{
+    padding: 20px 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+}
+
+.header-container{
+    width: 1200px;
+    /* ↑ 이거 없을때까지는 header기준이지만
+    이거 생기고 부터는 .header-container를 기준으로 잡기때문에
+    다른 css가 없기때문에 왼쪽 배치*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left-box{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+}
+
+.header-logo{
+    color: rgba(0, 0, 0, 1);
+
+    font-family: 'GimhaeGayaR';
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: -0.4px;
+}
+
+.header-right-box{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
