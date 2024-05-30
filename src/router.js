@@ -52,23 +52,23 @@ const router = createBrowserRouter(
             },
             {
                 path: "/user/join",
-                element: <JoinForm />
+                element: <Body children={<JoinForm />} />
             },
             {
                 path: "/user/login",
-                element: <LoginForm />
+				element: <Body children={<LoginForm />} />
             },
             {
                 path: "/user/mypage",
-                element: <MyPage />
+				element: <Body children={<MyPage />} />
             },
             {
                 path: "/user/update",
-                element: <UpdateUserForm />
+				element: <Body children={<UpdateUserForm />} />
             },
             {
                 path: "/user/leave",
-                element: <LeaveForm />
+				element: <Body children={<LeaveForm />} />
             }
         ]
 		},
