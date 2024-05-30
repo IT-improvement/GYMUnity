@@ -3,6 +3,8 @@ import Root from "./components/Root";
 import Main from "./components/module/Main";
 import Calender from "./components/calender/Calender";
 import Diary from "./components/diary/diary";
+import FeedList from "./components/feed/feedList";
+import FeedDetail from "./components/feed/feedDetail";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +30,20 @@ const router = createBrowserRouter([
             },{
                 path:"/diary",
                 element:<Diary/>
+            }
+        ]
+    }
+    ,{
+        paht: "/feed",
+        element : <Root/>,
+        children: [
+            {
+                path:"/feed",
+                element:<FeedList/>
+            },
+            {
+                path:"/feed/:feedIndex",
+                element:<FeedDetail/>
             }
         ]
     }
