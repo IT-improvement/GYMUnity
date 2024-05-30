@@ -7,10 +7,30 @@ const Sidebar = () => {
             name: "게시글",
             link: "/",
         },
+        {
+            name: "피드",
+            link: "/feed",
+        },
+        {
+            name: "다이어리",
+            link: "/diary",
+        },
+        {
+            name: "루틴",
+            link: "/diet",
+        },
         { 
             name: "친구 목록",
-            link: "/friends",
+            link: "/",
         },
+        {
+            name: "친구신청",
+            link: "/",
+        },
+        {
+            name: "마이페이지",
+            link: "/user/mypage",
+        }
     ];
 
     return (
