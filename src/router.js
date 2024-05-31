@@ -10,17 +10,20 @@ import CreateFoodForm from "./components/diet/createFoodForm";
 import CreateFoodCategoryForm from "./components/diet/createFoodCategoryForm";
 import Diary from "./components/diary/diary";
 import FriendSection from "./components/friend/FriendSection";
+import FriendButton from "./components/friend/FriendButton";
 import SearchSection from "./components/search/SearchSection";
-import ExerciseList from "./components/search/ExerciseList";
+
+import ExerciseList from "./components/exercise/ExerciseList";
+import ExerciseCreate from "./components/exercise/ExerciseCreate";
 import ExerciseDetail from "./components/exercise/ExerciseDetail";
-import ExerciseEdit from "./components/exercise/ExerciseEdit";
+import ExerciseUpdate from "./components/exercise/ExerciseUpdate";
+
 import FeedDetail from "./components/feed/feedDetail";
 import JoinForm from "./components/user/JoinForm";
 import LoginForm from "./components/user/LoginForm";
 import MyPage from "./components/user/MyPage";
 import UpdateUserForm from "./components/user/UpdateUserForm";
 import LeaveForm from "./components/user/LeaveForm";
-import FeedList from "./components/feed/feedList";
 import LogoutForm from "./components/user/LogoutForm";
 import UserProfile from "./components/user/UserProfile";
 import FeedCreate from "./components/feed/feedCreate";
@@ -29,6 +32,7 @@ import FeedUpdate from "./components/feed/feedupdate";
 import ViewFoodListForm from "./components/diet/viewFoodListForm";
 import ViewFoodCategoryListForm from "./components/diet/ViewFoodCategoryListForm";
 import UpdateFoodCategoryForm from "./components/diet/UpdateFoodCategoryForm";
+import FeedList from "./components/feed/FeedList";
 
 const router = createBrowserRouter(
 	[
@@ -117,12 +121,16 @@ const router = createBrowserRouter(
 					element: <Body children={<ExerciseList />} />
 				},
 				{
+					path: "/exercises/create",
+					element: <Body children={<ExerciseCreate />} />
+				},
+				{
 					path: "/exercises/:index",
 					element: <Body children={<ExerciseDetail />} />
 				},
 				{
-					path: "/exercises/edit/:index",
-					element: <Body children={<ExerciseEdit />} />
+					path: "/exercises/update/:index",
+					element: <Body children={<ExerciseUpdate />} />
 				},
 			]
 		},
@@ -180,6 +188,16 @@ const router = createBrowserRouter(
                 path:"/feed/:feedIndex/feedDelete",
                 element:<FeedDelete/>
             }
+        ]
+    },
+    {
+        path: "/friendButton",
+        element : <Root/>,
+        children: [
+            {
+                path:"/friendButton",
+                element: <Body children={<FriendButton />} />
+            },
         ]
     }
 ],

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Flex, Grid, VStack, Avatar, AvatarGroup, Card, CardBody, Box, Heading, Text, Spinner } from "@chakra-ui/react";
 
-const UserList = ({ searchQuery }) => {
+const UserList = ({ searchQuery, resultItemLimit }) => {
     const [isFetching, setIsFetching] = useState(true);
     const [users, setUsers] = useState([]);
 
@@ -47,23 +47,35 @@ const UserList = ({ searchQuery }) => {
             );
         });
 
+        const showAvatar = () => {
+            if (!resultItemLimit)
+                return;
+
+            const avatars = [];
+
+            for (let i = 0; i < resultItemLimit; i++) {
+                avatars.push(<Avatar key={i} src="" />);
+            }
+
+            return avatars;
+        }
+
         return (
             <Flex width="100%" direction="column" p="10px" bgColor="gray.300" gap="10px">
                 <Grid gridTemplateColumns="repeat(3, 1fr)" gridAutoRows="300px" overflow="hidden" height="calc(150px * 2 + 10px)" width="100%" gap="10px">
                     {userCards}
                 </Grid>
-                <Flex justify="right">
-                    <Link float="right" to="/users">
-                        <Box p="10px" bgColor="gray.200" borderRadius="10px">
-                            <AvatarGroup size="md" max={2}>
-                                <Avatar src="" />
-                                <Avatar src="" />
-                                <Avatar src="" />
-                                <Avatar src="" />
-                            </AvatarGroup>
-                        </Box>
-                    </Link>
-                </Flex>
+                {resultItemLimit &&
+                    <Flex justify="right">
+                        <Link float="right" to="/users">
+                            <Box p="10px" bgColor="gray.200" borderRadius="10px">
+                                <AvatarGroup size="md" max={3}>
+                                    {showAvatar()}
+                                </AvatarGroup>
+                            </Box>
+                        </Link>
+                    </Flex>
+                }
             </Flex>
         );
     };

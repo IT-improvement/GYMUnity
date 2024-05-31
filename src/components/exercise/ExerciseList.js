@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Flex, VStack, Avatar, Grid, Spinner, Box, Card, CardBody, Stack, StackDivider, Button, Heading, Text } from "@chakra-ui/react";
+import { useState, useEffect, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Flex, VStack, Avatar, Grid, Spinner, Box, Card, CardBody, Button, Heading, Text } from "@chakra-ui/react";
 import Sort from "../../utils/sort";
+import Context from "../../Context";
 
 const ExerciseList = ({ searchQuery, isDescOrder }) => {
     const [isFetching, setIsFetching] = useState(true);
     const [exercises, setExercises] = useState([]);
+    const { isLoggedIn, userCode } = useContext(Context);
+    const navigate = useNavigate();
 
     const fetchExercises = () => { 
         let apiPath = "exercises?command=read_all";
@@ -41,11 +44,11 @@ const ExerciseList = ({ searchQuery, isDescOrder }) => {
                                     _hover={{backgroundColor: "gray.400"}}
                                     >
                                     <Link to={`/user/${userCode}`}>
-                                            <Avatar src='' size="2xl"/>
-                                            <VStack gap="10px">
-                                                <Text>{userId}</Text>
-                                                <Text>{userName}</Text>
-                                            </VStack>
+                                        <Avatar src='' size="2xl"/>
+                                        <VStack gap="10px">
+                                            <Text>{userId}</Text>
+                                            <Text>{userName}</Text>
+                                        </VStack>
                                     </Link>
                                 </Box>
                                 <Link to={`/exercises/${index}`}>
@@ -85,6 +88,11 @@ const ExerciseList = ({ searchQuery, isDescOrder }) => {
     return (
         <Flex w="100%" direction="column" p="10px">
             <Heading>운동법</Heading>
+            {isLoggedIn &&
+                <Flex>
+                    <Button colorScheme="blue" onClick={() => navigate("/exercises/create")}>작성</Button>
+                </Flex>
+            }
             {isFetching && <Spinner /> }
             {exercises.length > 0 ?
                 <Grid templateColumns="repeat(2, 1fr)" p="10px" borderRadius="10px"
