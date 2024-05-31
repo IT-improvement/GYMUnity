@@ -23,7 +23,7 @@ const FeedDetail = () => {
     useEffect(() => {
         fetchFeed();
     }, [feedIndex]);
-const showExerciseDeleteStatus = (isSuccess) => {
+const showFeedDeleteStatus = (isSuccess) => {
     toast({
         title: `${isSuccess ? "피드 삭제 성공" : "피드 삭제 불가"}`,
         status: `${isSuccess ? "success" : "info"}`,

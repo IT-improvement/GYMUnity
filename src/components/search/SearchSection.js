@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import SearchOptionMenu from "./SearchOptionMenu";
 import ExerciseList from "../exercise/ExerciseList";
 import UserList from "./UserList";
-import FeedList from "../feed/FeedList";
+import FeedList from "../feed/feedList";
 
 const categoryMap = {
     all: "전체",

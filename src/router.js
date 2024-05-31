@@ -1,29 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 import DiaryMain from "./components/diary/diaryMain";
-import CalenderMain from "./components/calender/CalenderMain";
 import Root from "./components/Root";
 import Main from "./components/module/Main";
-import Calender from "./components/calender/Calender";
 import Diet from "./components/diet/diet";
 import Body from "./components/module/Body";
 import CreateFoodForm from "./components/diet/createFoodForm";
 import CreateFoodCategoryForm from "./components/diet/createFoodCategoryForm";
-import Diary from "./components/diary/diary";
-import Root from './components/Root';
-import Main from './components/module/Main';
-import Diet from './components/diet/diet';
-import Body from './components/module/Body';
-import CreateFoodForm from './components/diet/createFoodForm';
-import CreateFoodCategoryForm from './components/diet/createFoodCategoryForm';
 import FriendSection from "./components/friend/FriendSection";
 import FriendButton from "./components/friend/FriendButton";
 import SearchSection from "./components/search/SearchSection";
-
 import ExerciseList from "./components/exercise/ExerciseList";
 import ExerciseCreate from "./components/exercise/ExerciseCreate";
 import ExerciseDetail from "./components/exercise/ExerciseDetail";
 import ExerciseUpdate from "./components/exercise/ExerciseUpdate";
-
 import FeedDetail from "./components/feed/feedDetail";
 import JoinForm from "./components/user/JoinForm";
 import LoginForm from "./components/user/LoginForm";
@@ -38,10 +27,10 @@ import FeedUpdate from "./components/feed/feedupdate";
 import ViewFoodListForm from "./components/diet/viewFoodListForm";
 import ViewFoodCategoryListForm from "./components/diet/ViewFoodCategoryListForm";
 import UpdateFoodCategoryForm from "./components/diet/UpdateFoodCategoryForm";
-import FeedList from "./components/feed/FeedList";
 import DiaryDetail from "./components/diary/diaryDetail";
 import Diary from "./components/diary/diary";
 import Routine from "./components/routine/Routine";
+import FeedList from "./components/feed/feedList";
 
 const router = createBrowserRouter(
 	[

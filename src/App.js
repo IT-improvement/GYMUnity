@@ -21,17 +21,17 @@ function App() {
 
 	useEffect(() => {
 		// showToast();
-
 		if (userCode) {
 			window.sessionStorage.setItem("userCode", userCode);
-		if (isLoggedIn) {
-			const tempUserCode = 1001;
-			window.sessionStorage.setItem("userCode", tempUserCode);
-			setUserCode(tempUserCode);
-		}
+			if (isLoggedIn) {
+				const tempUserCode = 1001;
+				window.sessionStorage.setItem("userCode", tempUserCode);
+				setUserCode(tempUserCode);
+			}
 		else {
 			window.sessionStorage.removeItem("userCode");
 			setUserCode();
+		}
 		}
 	}, [userCode]);
 
