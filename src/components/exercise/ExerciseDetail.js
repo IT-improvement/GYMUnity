@@ -44,7 +44,6 @@ const ExerciseDetail = () => {
         })
         .then(response => response.json())
         .then((data) => {
-            console.log(data)
             if (data.status === 200)
                 isDeleted = true;
         })
@@ -54,13 +53,18 @@ const ExerciseDetail = () => {
             showExerciseDeleteStatus(isDeleted);
             
             if (isDeleted)
-                navigate("/search", { state: { searchQuery: "" }});
+                navigate("/exercises");
         })
     };
 
     useEffect(() => {
         fetchExercise();
     }, [index, isLoggedIn]);
+
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <Flex width="100%" p="10px">
@@ -79,12 +83,12 @@ const ExerciseDetail = () => {
                             <Text>카테고리: {exercise.categoryName}</Text>
                         </Box>
                         <Box>
-                            <Text>게시일: {exercise.createDate}</Text>
-                            <Text>수정일: {exercise.modDate}</Text>
+                            <Text>작성일: {exercise.createDate}</Text>
+                            {exercise.modDate && <Text>수정일: {exercise.modDate}</Text> }
                         </Box>
                         {isLoggedIn && (exercise.userCode === Number(window.sessionStorage.getItem("userCode"))) &&
                             <Box>
-                                <Button colorScheme="blue" onClick={() => navigate(`/exercises/edit/${exercise.index}`)}>수정</Button>
+                                <Button colorScheme="blue" onClick={() => navigate(`/exercises/update/${exercise.index}`)}>수정</Button>
                                 <Button colorScheme="red" onClick={handlePostDeleteOnClick}>삭제</Button>
                             </Box>
                         }
