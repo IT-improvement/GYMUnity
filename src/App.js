@@ -22,19 +22,17 @@ function App() {
 	useEffect(() => {
 		// showToast();
 
-		if (isLoggedIn) {
-			window.sessionStorage.setItem("userCode", "1003");
-			window.sessionStorage.setItem("userCode", "1004");
-			setUserCode(1003);
+		if (userCode) {
+			window.sessionStorage.setItem("userCode", userCode);
 		}
 		else {
 			window.sessionStorage.removeItem("userCode");
 			setUserCode();
 		}
-	}, [isLoggedIn]);
+	}, [userCode]);
 
 	return (
-		<Context.Provider value={{ isLoggedIn, setIsLoggedIn, userCode }}>
+		<Context.Provider value={{ isLoggedIn, setIsLoggedIn, userCode, setUserCode }}>
 			<RouterProvider router={router} />
 		</Context.Provider>
 	);
