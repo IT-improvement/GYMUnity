@@ -16,7 +16,6 @@ export default function Header() {
         <>
             <Box>
                 <Heading>
-                    {process.env.REACT_APP_SERVER_URL}
                     <Flex gap="10px" align="center">
                     <Box maxW="300px" minW="200px">
                         <Link to="/">
