@@ -30,7 +30,7 @@ export default function DiaryDetail({isOpen, onClose, date}) {
             <div className="diary-detail">
                 <div className='diary-detail-button'>
                     <button className="close-button" onClick={onClose}>X</button>
-                    </div>
+                </div>
                 <div className='diary-detail-content-box'>
                     <div className='diary-detail-content-title'>내용</div>
                     {data.map((item)=>

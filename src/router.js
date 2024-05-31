@@ -1,9 +1,7 @@
 import { createBrowserRouter, } from "react-router-dom";
 import DiaryMain from "./components/diary/diaryMain";
-import CalenderMain from "./components/calender/CalenderMain";
 import Root from './components/Root';
 import Main from './components/module/Main';
-import Calender from './components/calender/Calender';
 import Diet from './components/diet/diet';
 import Body from './components/module/Body';
 import CreateFoodForm from './components/diet/createFoodForm';
@@ -22,6 +20,7 @@ import LeaveForm from "./components/user/LeaveForm";
 import FeedList from "./components/feed/feedList";
 import DiaryDetail from "./components/diary/diaryDetail";
 import Diary from "./components/diary/diary";
+import Routine from "./components/routine/Routine";
 
 const router = createBrowserRouter(
 	[
@@ -55,10 +54,12 @@ const router = createBrowserRouter(
 			]
 		},
 		{
-			path:"/calender",
-			element: <Body children ={<CalenderMain/>}/>,
+			path:"/routine",
+			element:<Root/>,
 			children:[
 				{
+					path:"",
+					element: <Body children ={<Routine/>}/>,
 				}
 			]
 		},

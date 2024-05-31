@@ -111,6 +111,7 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
 export default function Diary() {
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [isModalOpen, setIsModalOpen] = useState(false);
     
     //        function: 네이케이트 함수       //
     const navigate = useNavigate();
@@ -122,7 +123,6 @@ export default function Diary() {
     const nextMonth = () => {
         setCurrentMonth(addMonths(currentMonth, 1));
     };
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => {
     setIsModalOpen(true);
