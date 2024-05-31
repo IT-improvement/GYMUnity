@@ -1,13 +1,13 @@
-import { createBrowserRouter, } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import DiaryMain from "./components/diary/diaryMain";
 import CalenderMain from "./components/calender/CalenderMain";
-import Root from './components/Root';
-import Main from './components/module/Main';
-import Calender from './components/calender/Calender';
-import Diet from './components/diet/diet';
-import Body from './components/module/Body';
-import CreateFoodForm from './components/diet/createFoodForm';
-import CreateFoodCategoryForm from './components/diet/createFoodCategoryForm';
+import Root from "./components/Root";
+import Main from "./components/module/Main";
+import Calender from "./components/calender/Calender";
+import Diet from "./components/diet/diet";
+import Body from "./components/module/Body";
+import CreateFoodForm from "./components/diet/createFoodForm";
+import CreateFoodCategoryForm from "./components/diet/createFoodCategoryForm";
 import Diary from "./components/diary/diary";
 import FriendSection from "./components/friend/FriendSection";
 import SearchSection from "./components/search/SearchSection";
@@ -26,6 +26,9 @@ import UserProfile from "./components/user/UserProfile";
 import FeedCreate from "./components/feed/feedCreate";
 import FeedDelete from "./components/feed/feedDelete";
 import FeedUpdate from "./components/feed/feedupdate";
+import ViewFoodListForm from "./components/diet/viewFoodListForm";
+import ViewFoodCategoryListForm from "./components/diet/ViewFoodCategoryListForm";
+import UpdateFoodCategoryForm from "./components/diet/UpdateFoodCategoryForm";
 
 const router = createBrowserRouter(
 	[
@@ -124,23 +127,35 @@ const router = createBrowserRouter(
 			]
 		},
 		{
-			path: '/diet',
-			element: <Root />,
-			children: [
-				{
-					path: '/diet',
-					element: <Body children={<Diet />} />,
-				},
-				{
-					path: '/diet/createFood',
-					element: <Body children={<CreateFoodForm />} />,
-				},
-				{
-					path: '/diet/createFoodCategory',
-					element: <Body children={<CreateFoodCategoryForm />} />,
-				},
-			],
-		},
+      path: "/diet",
+      element: <Root />,
+      children: [
+        {
+          path: "/diet",
+          element: <Body children={<Diet />} />,
+        },
+        {
+          path: "/diet/createFood",
+          element: <Body children={<CreateFoodForm />} />,
+        },
+        {
+          path: "/diet/createFoodCategory",
+          element: <Body children={<CreateFoodCategoryForm />} />,
+        },
+        {
+          path: "/diet/foodList",
+          element: <Body children={<ViewFoodListForm />} />,
+        },
+        {
+          path: "/diet/foodCategoryList",
+          element: <Body children={<ViewFoodCategoryListForm />} />,
+        },
+        {
+          path: "/diet/updateFoodCategory",
+          element: <Body children={<UpdateFoodCategoryForm />} />,
+        },
+      ],
+    },
 		{
         path: "/feed",
         element : <Root/>,
@@ -171,5 +186,6 @@ const router = createBrowserRouter(
 	{
 		basename: "/gymunity/v1"
 	}
+
 );
 export default router;
