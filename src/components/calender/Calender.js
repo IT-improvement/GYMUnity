@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import './calender.css'
+import './Calender.css'
 
 export default function Calender() {
     const days = ["월", "화", "수", "목", "금"];

@@ -21,6 +21,9 @@ import MyPage from "./components/user/MyPage";
 import UpdateUserForm from "./components/user/UpdateUserForm";
 import LeaveForm from "./components/user/LeaveForm";
 import FeedList from "./components/feed/feedList";
+import FeedCreate from "./components/feed/feedCreate";
+import FeedDelete from "./components/feed/feedDelete";
+import FeedUpdate from "./components/feed/feedupdate";
 
 const router = createBrowserRouter(
 	[
@@ -142,6 +145,15 @@ const router = createBrowserRouter(
             },{
                 path:"diary",
                 element:<DiaryMain/>
+            },{
+                path:"/feed/feedCreate",
+                element:<FeedCreate/>
+            },{
+                path:"/feed/:feedIndex/feedUpdate",
+                element:<FeedUpdate/>
+            },{
+                path:"/feed/:feedIndex/feedDelete",
+                element:<FeedDelete/>
             }
         ]
     }
