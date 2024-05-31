@@ -8,7 +8,6 @@ import Diet from './components/diet/diet';
 import Body from './components/module/Body';
 import CreateFoodForm from './components/diet/createFoodForm';
 import CreateFoodCategoryForm from './components/diet/createFoodCategoryForm';
-import Diary from "./components/diary/diary";
 import FriendSection from "./components/friend/FriendSection";
 import SearchSection from "./components/search/SearchSection";
 import ExerciseList from "./components/search/ExerciseList";
@@ -21,6 +20,8 @@ import MyPage from "./components/user/MyPage";
 import UpdateUserForm from "./components/user/UpdateUserForm";
 import LeaveForm from "./components/user/LeaveForm";
 import FeedList from "./components/feed/feedList";
+import DiaryDetail from "./components/diary/diaryDetail";
+import Diary from "./components/diary/diary";
 
 const router = createBrowserRouter(
 	[
@@ -40,16 +41,31 @@ const router = createBrowserRouter(
 			),
 		},
 		{
+			path:"/diary",
+			element: <Root/>,
+			children:[
+				{
+					path:"detail/:date",
+					element: <Body children ={<DiaryDetail/>}/>
+				},{
+					path:"",
+					element: <Body children ={<Diary/>}/>
+				},{
+				},
+			]
+		},
+		{
+			path:"/calender",
+			element: <Body children ={<CalenderMain/>}/>,
+			children:[
+				{
+				}
+			]
+		},
+		{
 			path: "/user",
-        element : <Root/>,
-        children: [
-            {
-                path:"calender",
-                element:<CalenderMain/>
-            },{
-                path:"diary",
-                element:<DiaryMain/>
-            },
+			element : <Root/>,
+			children: [
             {
                 path: "/user/join",
                 element: <JoinForm />

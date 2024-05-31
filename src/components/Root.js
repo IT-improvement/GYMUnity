@@ -6,10 +6,10 @@ import Footer from './module/footer';
 
 export default function Root() {
     return (
-        <Box minW="80vw" maxW="80vw" m="0 auto" p="30px">
+        <>
             <Header/>
             <Outlet/>
             <Footer/>
-        </Box>
+        </>
     );
 }

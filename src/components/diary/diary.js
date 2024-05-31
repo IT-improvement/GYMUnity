@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths, subDays, sub } from 'date-fns';
 import { Icon } from '@iconify/react';
 import './style.css';
+import { useNavigate } from 'react-router-dom';
+import DiaryDetail from './diaryDetail';
 
 const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
     return (
@@ -70,7 +72,7 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
             const isSelected = isSameDay(day, selectedDate);
             const isNotValid = format(currentMonth, 'M') !== format(day, 'M');
             const isValid = !isDisabled && !isSelected && !isNotValid;
-
+            
             days.push(
                 <div
                     className={`rows-day ${
@@ -107,10 +109,12 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
 }
 
 export default function Diary() {
-    const [data, setData] = useState();
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
     
+    //        function: 네이케이트 함수       //
+    const navigate = useNavigate();
+
     const prevMonth = () => {
         setCurrentMonth(subMonths(currentMonth, 1));
     };
@@ -118,35 +122,28 @@ export default function Diary() {
     const nextMonth = () => {
         setCurrentMonth(addMonths(currentMonth, 1));
     };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+    setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+    setIsModalOpen(false);
+    };
 
     const onDateClick = (day) => {
         setSelectedDate(day);
-        
+        openModal();
+        // navigate(`/diary/detail/${encodeURIComponent(format(day, 'yyyy-MM-dd 12:mm:ss'))}`);
     }
     
-    //한번 뒤에 일어남
-    useEffect(() => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=readDay&date=${format(selectedDate, 'yyyy-MM-dd hh:mm:ss')}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            setData(data);
-            console.log(data);
-        })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }, [selectedDate]);
-
     return (
         <div className='diary-box'>
             <RenderHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
             <RenderDate />
             <RenderDay currentMonth={currentMonth} selectedDate={selectedDate} onDateClick={onDateClick} />
+            <DiaryDetail isOpen={isModalOpen} onClose={closeModal} date={format(selectedDate, 'yyyy-MM-dd 12:mm:ss')}/>
         </div>
     );
 }
