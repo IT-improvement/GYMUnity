@@ -21,6 +21,8 @@ import MyPage from "./components/user/MyPage";
 import UpdateUserForm from "./components/user/UpdateUserForm";
 import LeaveForm from "./components/user/LeaveForm";
 import FeedList from "./components/feed/feedList";
+import LogoutForm from "./components/user/LogoutForm";
+import UserProfile from "./components/user/UserProfile";
 
 const router = createBrowserRouter(
 	[
@@ -66,9 +68,17 @@ const router = createBrowserRouter(
                 path: "/user/update",
 				element: <Body children={<UpdateUserForm />} />
             },
+			{
+                path: "/user/logout",
+				element: <Body children={<LogoutForm />} />
+            },
             {
                 path: "/user/leave",
 				element: <Body children={<LeaveForm />} />
+            },
+			{
+                path: "/user/:code",
+				element: <Body children={<UserProfile />} />
             }
         ]
 		},
