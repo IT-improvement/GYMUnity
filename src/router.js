@@ -9,6 +9,12 @@ import Body from "./components/module/Body";
 import CreateFoodForm from "./components/diet/createFoodForm";
 import CreateFoodCategoryForm from "./components/diet/createFoodCategoryForm";
 import Diary from "./components/diary/diary";
+import Root from './components/Root';
+import Main from './components/module/Main';
+import Diet from './components/diet/diet';
+import Body from './components/module/Body';
+import CreateFoodForm from './components/diet/createFoodForm';
+import CreateFoodCategoryForm from './components/diet/createFoodCategoryForm';
 import FriendSection from "./components/friend/FriendSection";
 import FriendButton from "./components/friend/FriendButton";
 import SearchSection from "./components/search/SearchSection";
@@ -33,6 +39,9 @@ import ViewFoodListForm from "./components/diet/viewFoodListForm";
 import ViewFoodCategoryListForm from "./components/diet/ViewFoodCategoryListForm";
 import UpdateFoodCategoryForm from "./components/diet/UpdateFoodCategoryForm";
 import FeedList from "./components/feed/FeedList";
+import DiaryDetail from "./components/diary/diaryDetail";
+import Diary from "./components/diary/diary";
+import Routine from "./components/routine/Routine";
 
 const router = createBrowserRouter(
 	[
@@ -52,16 +61,33 @@ const router = createBrowserRouter(
 			),
 		},
 		{
+			path:"/diary",
+			element: <Root/>,
+			children:[
+				{
+					path:"detail/:date",
+					element: <Body children ={<DiaryDetail/>}/>
+				},{
+					path:"",
+					element: <Body children ={<Diary/>}/>
+				},{
+				},
+			]
+		},
+		{
+			path:"/routine",
+			element:<Root/>,
+			children:[
+				{
+					path:"",
+					element: <Body children ={<Routine/>}/>,
+				}
+			]
+		},
+		{
 			path: "/user",
-        element : <Root/>,
-        children: [
-            {
-                path:"calender",
-                element:<CalenderMain/>
-            },{
-                path:"diary",
-                element:<DiaryMain/>
-            },
+			element : <Root/>,
+			children: [
             {
                 path: "/user/join",
                 element: <Body children={<JoinForm />} />

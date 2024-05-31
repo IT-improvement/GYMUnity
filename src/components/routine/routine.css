@@ -1,0 +1,93 @@
+.routine-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.routine-top{
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.routine-button{
+    display: flex;
+    gap: 10px;
+}
+
+.routine-title{
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 140%;
+}
+
+.routine-write-button{
+    width: 100px;
+    height: 40px;
+    justify-self: flex-end;
+
+    border-radius: 5px;
+    background-color: rgba(0,0,255,0.3);
+    
+    font-size: 17px;
+    text-align: center;
+    line-height: 40px;
+
+    cursor: pointer;
+}
+
+.routine-delete-button{
+    width: 100px;
+    height: 40px;
+    justify-self: flex-end;
+
+    border-radius: 5px;
+    background-color: rgba(255,0,0,0.3);
+    
+    font-size: 17px;
+    text-align: center;
+    line-height: 40px;
+
+    cursor: pointer;
+}
+
+.routine{
+    margin-left: 30px;
+}
+
+.routine-schedule{
+    border: 2px solid rgba(0, 0, 0, 0.7);
+    table-layout:fixed;
+    width: 1000px;
+    height: 700px;
+    text-align: center;
+}
+
+td{
+    border: 0.7px solid rgba(0, 0, 0, 0.3);
+    height: 100px;
+    width: 200px;
+}
+
+tr{
+    width: 100px;
+}
+
+tr:nth-child(1){
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.08);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+
+tr:nth-child(2) > td:nth-child(1),
+tr:nth-child(3) > td:nth-child(1),
+tr:nth-child(4) > td:nth-child(1){
+    background-color: rgba(0, 0, 0, 0.08);
+
+    font-size: 20px;
+    font-weight: 500;
+}
