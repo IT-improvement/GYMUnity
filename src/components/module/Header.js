@@ -5,7 +5,7 @@ import Context from "../../Context";
 
 export default function Header() {
     const [searchQuery, setSearchQuery] = useState("");
-    const { isLoggedIn, setIsLoggedIn } = useContext(Context);
+    const { isLoggedIn, setIsLoggedIn, userCode } = useContext(Context);
     const navigate = useNavigate();
 
     const handleSearchButtonOnClick = () => {
