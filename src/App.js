@@ -23,9 +23,9 @@ function App() {
 		// showToast();
 
 		if (isLoggedIn) {
-			window.sessionStorage.setItem("userCode", "1003");
-			window.sessionStorage.setItem("userCode", "1004");
-			setUserCode(1003);
+			const tempUserCode = 1001;
+			window.sessionStorage.setItem("userCode", tempUserCode);
+			setUserCode(tempUserCode);
 		}
 		else {
 			window.sessionStorage.removeItem("userCode");
