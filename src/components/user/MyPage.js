@@ -8,7 +8,9 @@ const MyPage = () => {
             <hr style={{border: '1px solid darkgray', marginTop: '15px', marginBottom: '15px'}} />
                 <Link to="../update" style={{fontSize: '25px'}}>• 회원정보 수정</Link>
                 <hr style={{border: '1px solid darkgray', width: '200px', marginTop: '15px', marginBottom: '15px'}} />
-                <Link to="/" style={{fontSize: '25px'}}>• 회원 탈퇴</Link>
+                <Link to="../logout" style={{fontSize: '25px'}}>• 로그아웃</Link>
+                <hr style={{border: '1px solid darkgray', width: '200px', marginTop: '15px', marginBottom: '15px'}} />
+                <Link to="../leave" style={{fontSize: '25px'}}>• 회원 탈퇴</Link>
                 <hr style={{border: '1px solid darkgray', marginTop: '15px', marginBottom: '15px'}} />
             </div>
         </div>
