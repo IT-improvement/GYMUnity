@@ -17,8 +17,66 @@ const JoinForm = () => {
     const submitJoin = async (e) => {
         e.preventDefault();
 
+        if (email !== null && email !== '' && (!email.includes('@') || !email.includes('.'))) {
+            alert('유효한 이메일 주소를 입력하세요.');
+            return;
+        }
+
+        const birthRegex = /^(\d{8})$/;
+        if(!birthRegex.test(birth)) {
+            console.log(birth);
+            alert('생년월일은 숫자 8자리를 입력하세요.');
+            return;
+        }
+
+        if (gender === null || gender === '') {
+            alert('성별을 선택하세요.');
+            return;
+        }
+
+        const phoneRegex = /^(?:\d{3}-\d{4}-\d{4})$/;
+
+        if(!phoneRegex.test(phone)) {
+            console.log(phone);
+            alert('유효한 휴대폰 번호를 입력하세요.');
+            return;
+        }
+
+        // if (phone !== null && phone !== '' && !phoneRegex.test(phone)) {
+        //     const phoneReg = /^(\d{11})$/;
+
+        //     if(phoneReg.test(phone)) {
+        //         const cleaned = ('' + phone).replace(/\D/g, '');
+
+        //         const match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+        //         if (match) {
+        //             // phone = match[1] + '-' + match[2] + '-' + match[3];
+        //             const formattedPhone = match[1] + '-' + match[2] + '-' + match[3];
+
+        //             if(!phoneRegex.test(formattedPhone)) {
+        //                 // phone = formattedPhone;
+        //                 setPhone(formattedPhone);
+        //                 console.log(formattedPhone);
+        //                 alert('유효한 휴대폰 번호를 입력하세요.1');
+        //                 return;
+        //             }
+
+        //         } else {
+        //             alert('유효한 휴대폰 번호를 입력하세요.2');
+        //             return;
+        //         }
+        //     } else {
+        //         alert('유효한 휴대폰 번호를 입력하세요.3');
+        //         return;
+        //     }
+        // } else {
+        //     alert('유효한 휴대폰 번호를 입력하세요.4');
+        //     return;
+        // }
+
+        
+
         try {
-            
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=create`, {
                 method: 'POST',
                 headers: {
@@ -27,8 +85,8 @@ const JoinForm = () => {
                 body: JSON.stringify({
                     id: id,
                     password: password,
-                    name: name,
                     email: email,
+                    name: name,
                     birth: birth,
                     gender: gender,
                     telecom: telecom,
@@ -57,8 +115,8 @@ const JoinForm = () => {
         console.log(`${process.env.REACT_APP_SERVER_URL}`);
         console.log(id);
         console.log(password);
-        console.log(name);
         console.log(email);
+        console.log(name);
         console.log(birth);
         console.log(gender);
         console.log(telecom);
