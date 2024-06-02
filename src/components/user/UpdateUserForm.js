@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, FormControl, FormLabel, Flex, Input, Stack, Heading, Radio, RadioGroup, Select, Center, Avatar } from '@chakra-ui/react';
 
 const UpdateUserForm = () => {
-    const { code } = useParams();
-    const [user, setUser] = useState(true);
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -15,24 +13,9 @@ const UpdateUserForm = () => {
     const [phone, setPhone] = useState("");
     const [profileImage, setProfileImage] = useState("");
     const navigate = useNavigate();
-    
+
     const sendUpdate = async (e) => {
         e.preventDefault();
-
-        if (id === null || id === '')
-            setId(user.id);
-        if (password === null || password === '')
-            setPassword(user.password);
-        if (name === null || name === '')
-            setName(user.name);
-        if (email === null || email === '')
-            setEmail(user.email);
-        if (telecom === null || telecom === '')
-            setTelecom(user.telecom);
-        if (phone === null || phone === '')
-            setPhone(user.phone);
-        if (profileImage === null || profileImage === '')
-            setProfileImage(user.profileImage);
 
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=update`, {
@@ -80,6 +63,17 @@ const UpdateUserForm = () => {
         console.log(telecom);
         console.log(phone);
         console.log(profileImage);
+
+
+        // setId(userData.id);
+        // setPassword(userData.password);
+        // setEmail(userData.name);
+        // setName(userData.name);
+        // setBirth(userData.birth);
+        // setGender(userData.gender);
+        // setTelecom(userData.telecom);
+        // setPhone(userData.phone);
+        // setProfileImage(userData.profileImage);
     };
 
     const handleImageClick = () => {
@@ -100,28 +94,9 @@ const UpdateUserForm = () => {
     };
 
     useEffect(() => {
-        console.log(code);
-        fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=read_one&code=${code}`)
-            .then(response => {
-                console.log(response);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setUser(data)
-                console.log(data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, [code]);
+        // sendUpdate();
+    }, []);
 
-    if (!user) {
-        return <div>로딩 중...</div>;
-    }
-    
     return (
         <Center backgroundColor="none">
             <Box p={4} textAlign="center">
@@ -136,7 +111,27 @@ const UpdateUserForm = () => {
                         <FormControl id="id" marginTop="20px" marginBottom="10px">
                             <Flex align="center" margin="auto">
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">아이디</FormLabel>
-                                <span>{user.id}</span>
+                                <span>{id}</span>
+                                {/* <Input
+                                type="text"
+                                value={id}
+                                onChange={(e) => setId(e.target.value)}
+                                flex="2"
+                                width="400px"
+                                maxW="400px"
+                                height="35px"
+                                backgroundColor="white"
+                                borderColor="gray.400"
+                                borderWidth="1px"
+                                focusBorderColor="gray.400"
+                                focusBorderWidth="1px"
+                                borderRadius="0"
+                                _hover={{ borderColor: "darkgray" }}
+                                _focus={{
+                                    boxShadow: 'none',
+                                    borderColor: "darkgray"
+                                }}
+                            /> */}
                             </Flex>
                         </FormControl>
 
@@ -173,7 +168,6 @@ const UpdateUserForm = () => {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder={user.email}
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
@@ -200,34 +194,6 @@ const UpdateUserForm = () => {
                                     type="name"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    placeholder={user.name}
-                                    flex="2"
-                                    width="400px"
-                                    maxW="400px"
-                                    height="35px"
-                                    backgroundColor="white"
-                                    borderColor="gray.400"
-                                    borderWidth="1px"
-                                    focusBorderColor="gray.400"
-                                    focusBorderWidth="1px"
-                                    borderRadius="0"
-                                    _hover={{ borderColor: "darkgray" }}
-                                    _focus={{
-                                        boxShadow: 'none',
-                                        borderColor: "darkgray"
-                                    }}
-                                />
-                            </Flex>
-                        </FormControl>
-
-                        <FormControl id="birth" marginBottom="10px">
-                            <Flex align="center">
-                                <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">생년월일</FormLabel>
-                                <Input
-                                    type="birth"
-                                    value={birth}
-                                    onChange={(e) => setBirth(e.target.value)}
-                                    placeholder={user.birth}
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
@@ -248,10 +214,38 @@ const UpdateUserForm = () => {
                             </Flex>
                         </FormControl>
 
+                        <FormControl id="birth" marginBottom="10px">
+                            <Flex align="center">
+                                <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">생년월일</FormLabel>
+                                <Input
+                                    type="birth"
+                                    value={birth}
+                                    onChange={(e) => setBirth(e.target.value)}
+                                    flex="2"
+                                    width="400px"
+                                    maxW="400px"
+                                    height="35px"
+                                    placeholder="생년월일 8자리"
+                                    backgroundColor="white"
+                                    borderColor="gray.400"
+                                    borderWidth="1px"
+                                    focusBorderColor="gray.400"
+                                    focusBorderWidth="1px"
+                                    borderRadius="0"
+                                    _hover={{ borderColor: "darkgray" }}
+                                    _focus={{
+                                        boxShadow: 'none',
+                                        borderColor: "darkgray"
+                                    }}
+                                    readOnly
+                                />
+                            </Flex>
+                        </FormControl>
+
                         <FormControl id="gender" marginBottom="10px">
                             <Flex align="center">
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">성별</FormLabel>
-                                <RadioGroup onChange={setGender} value={user.gender} placeholder={gender}
+                                <RadioGroup onChange={setGender} value={gender}
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
@@ -264,7 +258,7 @@ const UpdateUserForm = () => {
                                             onClick={() => setGender('M')}
                                             justifyContent="center"
                                             width="200px"
-                                            bg={user.gender === "M" ? "#D3D3D3" : "inherit"}
+                                            bg={gender === "M" ? "#D3D3D3" : "inherit"}
                                             borderRight="1px solid lightgray"
                                             _hover={{ cursor: 'pointer' }}
                                         >
@@ -279,7 +273,7 @@ const UpdateUserForm = () => {
                                             onClick={() => setGender('F')}
                                             justifyContent="center"
                                             width="200px"
-                                            bg={user.gender === "F" ? "#D3D3D3" : "inherit"}
+                                            bg={gender === "F" ? "#D3D3D3" : "inherit"}
                                             _hover={{ cursor: 'pointer' }}
                                         >
                                             <Radio value="F"
@@ -298,9 +292,9 @@ const UpdateUserForm = () => {
                             <Flex align="center">
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">통신사</FormLabel>
                                 <Select
+                                    placeholder="통신사 선택"
                                     value={telecom}
                                     onChange={(e) => setTelecom(e.target.value)}
-                                    placeholder="통신사를 선택하세요"
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
@@ -331,11 +325,11 @@ const UpdateUserForm = () => {
                                     type="phone"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
-                                    placeholder={user.phone}
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
                                     height="35px"
+                                    placeholder="000-0000-0000"
                                     backgroundColor="white"
                                     borderColor="gray.400"
                                     borderWidth="1px"
@@ -352,7 +346,7 @@ const UpdateUserForm = () => {
                         </FormControl>
 
                         <Flex justify="center" marginBottom="10px">
-                            <Button id="submit" type="submit" value="회원가입" width="150px" height="50px" colorScheme="custom" backgroundColor="#96B6C5">
+                            <Button width="150px" height="50px" colorScheme="custom" backgroundColor="#96B6C5">
                                 완료
                             </Button>
                         </Flex>

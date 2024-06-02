@@ -90,7 +90,7 @@ const router = createBrowserRouter(
 				element: <Body children={<MyPage />} />
             },
             {
-                path: "/user/update/:code",
+                path: "/user/update",
 				element: <Body children={<UpdateUserForm />} />
             },
 			{
@@ -98,7 +98,7 @@ const router = createBrowserRouter(
 				element: <Body children={<LogoutForm />} />
             },
             {
-                path: "/user/leave/:code",
+                path: "/user/leave",
 				element: <Body children={<LeaveForm />} />
             },
 			{
