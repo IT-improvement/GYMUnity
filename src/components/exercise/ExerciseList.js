@@ -1,80 +1,73 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Flex, VStack, Avatar, Grid, Spinner, Box, Card, CardBody, Button, Heading, Text } from "@chakra-ui/react";
-import Sort from "../../utils/sort";
+import { Avatar, Badge, Box, Button, Card, CardBody, Flex, Grid, Heading, Text, VStack } from "@chakra-ui/react";
 import Context from "../../Context";
+import LoadingSpinner from "../chakra/LoadingSpinner";
+import Sort from "../../utils/sort";
 
-const ExerciseList = ({ searchQuery, isDescOrder }) => {
-    const [isFetching, setIsFetching] = useState(true);
+const ExerciseList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
     const [exercises, setExercises] = useState([]);
-    const { isLoggedIn, userCode } = useContext(Context);
+    const [itemLimit] = useState(3);
+    const [isFetching, setIsFetching] = useState(true);
+    const { isLoggedIn } = useContext(Context);
     const navigate = useNavigate();
 
-    const fetchExercises = () => { 
-        let apiPath = "exercises?command=read_all";
+    const fetchExercises = () => {
+        let params = searchQuery ?
+            `command=read_all_by_query&query=${searchQuery}` :
+            `command=read_all`;
 
-        if (searchQuery)
-            apiPath = `exercises?command=read_all_by_query&query=${searchQuery}`;
+        if (isTotalSearch)
+            params += `&limit=${itemLimit}`;
 
-        fetch(`${process.env.REACT_APP_SERVER_URL}/${apiPath}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/exercises?${params}`)
         .then(response => response.json())
-        .then(data =>  {
-            setExercises(data);
-        })
-        .catch(err => {
-        })
+        .then(data => setExercises(data))
         .finally(() => {
             setIsFetching(false);
         });
     };
 
-    const showExercises = () => {
-        return (
-            exercises.map(({ index, userCode, userId, userName, name, content, createDate, modDate }) => {
-                return (
-                    <Card
-                        direction={{ base: 'column', sm: 'row' }}
-                        overflow='hidden'
-                        key={index}
-                        bgColor="gray.300" _hover={{backgroundColor: "gray.500"}}
-                        >
-                        <CardBody>
-                            <Flex gap="10px">
-                                <Box p="10px" borderRadius="10px" bgColor="gray.200" cursor="pointer"
-                                    _hover={{backgroundColor: "gray.400"}}
-                                    >
-                                    <Link to={`/user/${userCode}`}>
-                                        <Avatar src='' size="2xl"/>
-                                        <VStack gap="10px">
-                                            <Text>{userId}</Text>
-                                            <Text>{userName}</Text>
-                                        </VStack>
-                                    </Link>
-                                </Box>
-                                <Link to={`/exercises/${index}`}>
-                                    <VStack justify="center">
-                                        <Text>운동 이름: {name}</Text>
-                                        <Text>운동법: {content}</Text>
-                                    </VStack>
-                                    <VStack justify="center">
-                                        <Text>작성일: {createDate}</Text>
-                                        {modDate && <Text>수정일: {modDate}</Text> }
-                                    </VStack>
-                                </Link>
-                            </Flex>
-                        </CardBody>
-                    </Card>
-                );
-            })
-        );
+    const sortExerciseList = () => {
+        if (isDescOrder)
+            setExercises(Sort.ObjectArrayInDescOrder(exercises, "createDate"));
+        else
+            setExercises(Sort.ObjectArrayInAsecOrder(exercises, "createDate"));
     };
 
-    const sortExerciseList = () => {
-        if (isDescOrder) {
-            setExercises(Sort.ObjectArrayInDescOrder(exercises, "createDate"));
-        } else {
-            setExercises(Sort.ObjectArrayInAsecOrder(exercises, "createDate"));
-        }
+    const showExercises = () => {
+        return (
+            exercises.map(({ index, userCode, userId, userName, name, content, createDate, modDate }) =>
+                <Card key={index} _hover={{backgroundColor: "gray.500"}} >
+                    <CardBody>
+                        <Grid templateColumns="repeat(2, 1fr)" p="10px" gap="10px" borderRadius="10px">
+                            <Box p="10px" borderRadius="10px" bgColor="gray.200" cursor="pointer"
+                                _hover={{backgroundColor: "gray.400"}} >
+                                <Link to={`/user/${userCode}`}>
+                                    <Flex direction="column" gap="10px" align="center">
+                                        <Avatar src="" size="2xl"/>
+                                        <VStack gap="10px">
+                                            <Text>{userName}</Text>
+                                            <Badge fontSize="15px" colorScheme="pink">
+                                                {userId}
+                                            </Badge>
+                                        </VStack>
+                                    </Flex>
+                                </Link>
+                            </Box>
+                            <Link to={`/exercises/${index}`}>
+                                <Flex direction="column" gap="10px">
+                                    <Text>운동 이름: {name}</Text>
+                                    <Text>운동법: {content}</Text>
+                                    <Text>작성일: {createDate}</Text>
+                                    {modDate && <Text>수정일: {modDate}</Text> }
+                                </Flex>
+                            </Link>
+                        </Grid>
+                    </CardBody>
+                </Card>
+            )
+        );
     };
 
     useEffect(() => {
@@ -86,22 +79,31 @@ const ExerciseList = ({ searchQuery, isDescOrder }) => {
     }, [isDescOrder]);
 
     return (
-        <Flex w="100%" direction="column" p="10px">
+        <Flex direction="column" p="10px" bgColor="gray.300" gap="10px" borderRadius="10px">
             <Heading>운동법</Heading>
-            {isLoggedIn &&
-                <Flex>
-                    <Button colorScheme="blue" onClick={() => navigate("/exercises/create")}>작성</Button>
+            { isLoggedIn && !isTotalSearch &&
+                <Flex justify="right">
+                    <Button colorScheme="blue" onClick={() => navigate("/exercises/create")}>운동법 작성</Button>
                 </Flex>
             }
-            {isFetching && <Spinner /> }
-            {exercises.length > 0 ?
-                <Grid templateColumns="repeat(2, 1fr)" p="10px" borderRadius="10px"
-                    gap="10px" justifyContent="center" bgColor="gray.50"
-                >
-                    {showExercises()}
-                </Grid> 
+            { isFetching && <LoadingSpinner /> }
+            { exercises.length > 0 ?
+                <Flex direction="column" gap="10px">
+                    <Grid templateColumns={`repeat(${itemLimit}, 1fr)`} p="10px" borderRadius="10px"
+                        gap="10px" justifyContent="center" >
+                            { showExercises() }
+                    </Grid> 
+                    { isTotalSearch && (exercises.length >= itemLimit) &&
+                    <Flex justify="right">
+                        <Box p="10px" textAlign="center" bgColor="gray.200" borderRadius="10px" cursor="pointer"
+                            onClick={() => navigate("/search", { state: { searchQuery: searchQuery, category: "exercise" }})} >
+                                <Text color="gray.600">운동법 더보기</Text>
+                        </Box>
+                    </Flex>
+                    }
+                </Flex>
                 :
-                <Heading as="h3" mt="50px" fontSize="20px" textAlign="center">운동법 목록이 비어있습니다</Heading>
+                <Heading fontSize="20px" textAlign="center">운동법이 없습니다</Heading>
             }
         </Flex>
     );

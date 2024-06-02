@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useToast, Flex, Grid, Box, Select, Textarea, Heading, Button, Text, Input } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, Flex, Grid, Heading, Select, Text, Textarea, Input } from "@chakra-ui/react";
 import Context from "../../Context";
+import Toast from "../chakra/Toast";
 
 const ExerciseUpdate = () => {
     const [exercise, setExercise] = useState({
@@ -14,32 +15,24 @@ const ExerciseUpdate = () => {
         createDate: "",
         modDate: "",
     });
-
     const [exerciseCategories, setExerciseCategories] = useState([]);
-    const { isLoggedIn, userCode } = useContext(Context);
+    const { isLoggedIn, sessionUser } = useContext(Context);
     const { index } = useParams()
-    const toast = useToast();
     const navigate = useNavigate();
-
-    const showExerciseUpdateStatus = (isSuccess) => {
-        toast({
-            title: `운동법 작성 ${isSuccess ? "성공" : "불가"}`,
-            status: `${isSuccess ? "success" : "info"}`,
-            duration: 1500,
-            isClosable: true,
-            position: "top",
-        });
-    };
 
     const fetchExercise = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/exercises?command=read_one&exercise_index=${index}`, {
             method: "GET", 
             headers: {
-                "Authorization": userCode, 
+                "Authorization": sessionUser.code, 
             }, 
         })
         .then(response => response.json())
         .then(data => setExercise(data))
+        .catch(() => {
+            Toast.showFailed("운동법 불러오기 실패");
+            navigate("/exercises");
+        });
     };
 
     const fetchExerciseCategories = () => {
@@ -48,26 +41,33 @@ const ExerciseUpdate = () => {
         })
         .then(response => response.json())
         .then(data => setExerciseCategories(data))
+        .catch(() => {
+            Toast.showFailed("운동 카테고리 불러오기 실패");
+            navigate("/exercises");
+        });
     };
 
     const fetchExerciseUpdate = () => {
         let isUpdated = false;
-        const params = `exercise_index=${exercise.index}&category_index=${exercise.categoryIndex}&name=${exercise.name}&content=${exercise.content}`
+        const params =  `exercise_index=${exercise.index}&` +
+                        `category_index=${exercise.categoryIndex}&` +
+                        `name=${exercise.name}&` +
+                        `content=${exercise.content}`;
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/exercises?command=update&${params}`, {
-            method: "GET", 
+            method: "POST", 
             headers: {
-                "Authorization": userCode, 
+                "Authorization": sessionUser.code, 
             }, 
         })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 200) {
+            console.log(data)
+            if (data.status === 200)
                 isUpdated = true;
-            }
         })
         .finally(() => {
-            showExerciseUpdateStatus(isUpdated);
+            Toast.show(isUpdated, "운동법 수정 성공", "운동법 수정 실패");
             navigate(`/exercises/${exercise.index}`);
         });
     };
@@ -89,49 +89,65 @@ const ExerciseUpdate = () => {
     }, [index, isLoggedIn]);
 
     return (
-        <Flex width="100%" p="10px">
+        <Flex w="100%" p="10px">
             {exercise ? 
-                <Flex width="100%" direction="column" bgColor="gray.50" p="10px">
-                    <form method="POST" onSubmit={handleExerciseUpdateOnSubmit}>
-                        <Heading>운동법</Heading>
-                        <Grid templateColumns="repeat(2, 1fr)">
-                            <Box>
-                                <Text>아이디: {exercise.userId}</Text>
-                            </Box>
-                            <Box>
-                                <Text>이름: {exercise.userName}</Text>
-                            </Box>
-
-                            <Box>
-                                <Select name="categoryIndex" onChange={handleExerciseFieldOnChange}>
-                                    {exerciseCategories.map(category => {
-                                        return (
-                                            <option key={category.index} defaultChecked={category.index === exercise.categoryIndex}
-                                            value={category.index}>
-                                                {category.name}
-                                            </option>
-                                        )
-                                    })}
-                                </Select>
-                            </Box>
-                            <Box>
-                                <Text>게시일: {exercise.createDate}</Text>
-                                <Text>수정일: {exercise.modDate}</Text>
-                            </Box>
+            <Flex direction="column" w="100%" p="10px" bgColor="gray.50">
+                <form method="POST" onSubmit={handleExerciseUpdateOnSubmit}>
+                    <Heading>운동법</Heading>
+                    <Flex direction="column" gap="10px">
+                        <Grid templateColumns="repeat(2, 1fr)" p="0px" gap="10px">
+                            <Card>
+                                <CardBody>
+                                    <Flex align="center" gap="10px">
+                                        <Text minW="fit-content">카테고리</Text>
+                                        <Select name="categoryIndex"
+                                            value={exercise.categoryIndex}
+                                            onChange={handleExerciseFieldOnChange}>
+                                            { exerciseCategories.map(category =>
+                                                <option key={category.index} value={category.index}>
+                                                    {category.name}
+                                                </option>
+                                            )}
+                                        </Select>
+                                    </Flex>
+                                </CardBody>
+                            </Card>
+                            <Card>
+                                <CardBody alignContent="center">
+                                    <Flex gap="10px">
+                                        <Text>게시일 {exercise.createDate}</Text>
+                                        <Text>이전 수정일 {exercise.modDate}</Text>
+                                    </Flex>
+                                </CardBody>
+                            </Card>
                         </Grid>
-
+                        <Card>
+                            <CardBody>
+                                <Flex align="center" gap="10px">
+                                    <Text>이름</Text>
+                                    <Input type="text" name="name" value={exercise.name} onChange={handleExerciseFieldOnChange} />
+                                </Flex>
+                            </CardBody>
+                        </Card>
+                        <Card>
+                            <CardBody>
+                                <Flex direction="column" gap="10px">
+                                    <Text>내용</Text>
+                                    <Textarea name="content" value={exercise.content} onChange={handleExerciseFieldOnChange} />
+                                </Flex>
+                            </CardBody>
+                        </Card>
                         <Box>
-                            <Text>이름</Text>
-                            <Input type="text" name="name" value={exercise.name} onChange={handleExerciseFieldOnChange} />
                         </Box>
-                        <Box>
-                            <Text>내용</Text>
-                            <Textarea name="content" value={exercise.content} onChange={handleExerciseFieldOnChange} />
-                        </Box>
-                        <Button type="submit" colorScheme="blue">수정</Button>
-                    </form>
-                </Flex>
-                : <Text>운동법이 존재하지 않습니다</Text>
+                        <Flex justify="space-between">
+                            <Button colorScheme="blue" onClick={() => navigate(-1)}>뒤로가기</Button>
+                            <Button type="submit" colorScheme="green">수정</Button>
+                        </Flex>
+                    </Flex>
+                </form>
+            </Flex>
+            :
+            <Text>운동법이 존재하지 않습니다</Text>
             }
         </Flex>
     );

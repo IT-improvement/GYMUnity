@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast, Flex, Box, Select, Textarea, FormControl, FormLabel, Button, Input } from "@chakra-ui/react";
+import { Button, Flex, FormControl, FormLabel, Input, Select, Textarea } from "@chakra-ui/react";
 import Context from "../../Context";
+import Toast from "../chakra/Toast";
 
 const ExerciseCreate = () => {
     const [exercise, setExercise] = useState({
@@ -9,21 +10,9 @@ const ExerciseCreate = () => {
         name: "",
         content: "",
     });
-
     const [exerciseCategories, setExerciseCategories] = useState([]);
-    const { isLoggedIn, userCode } = useContext(Context);
-    const toast = useToast();
+    const { isLoggedIn, sessionUser } = useContext(Context);
     const navigate = useNavigate();
-
-    const showExerciseCreateStatus = (isSuccess) => {
-        toast({
-            title: `운동법 작성 ${isSuccess ? "성공" : "불가"}`,
-            status: `${isSuccess ? "success" : "info"}`,
-            duration: 1500,
-            isClosable: true,
-            position: "top",
-        });
-    };
 
     const fetchExerciseCategories = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/exerciseCategories?command=read_all`, {
@@ -31,19 +20,19 @@ const ExerciseCreate = () => {
         })
         .then(response => response.json())
         .then(data => setExerciseCategories(data))
-        .catch(err => {
-            return;
-        });
+        .catch(() => Toast.showFailed("운동 카테고리 불러오기 실패"));
     };
 
     const fetchExerciseCreate = () => {
         let isCreated = false;
-        const params = `category_index=${exercise.categoryIndex}&name=${exercise.name}&content=${exercise.content}`
+        const params =  `category_index=${exercise.categoryIndex}&` +
+                        `name=${exercise.name}&` +
+                        `content=${exercise.content}`;
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/exercises?command=create&${params}`, {
             method: "POST", 
             headers: {
-                "Authorization": userCode, 
+                "Authorization": sessionUser.code, 
             }, 
         })
         .then(response => response.json())
@@ -51,10 +40,8 @@ const ExerciseCreate = () => {
             if (data.status === 200)
                 isCreated = true;
         })
-        .catch(err => {
-        })
         .finally(() => {
-            showExerciseCreateStatus(isCreated);
+            Toast.show(isCreated, "운동법 작성 성공", "운동법 작성 실패");
 
             if (isCreated)
                 navigate("/exercises");
@@ -77,16 +64,15 @@ const ExerciseCreate = () => {
             navigate("/exercises");
 
         fetchExerciseCategories();
-    }, [isLoggedIn]);
-
+    }, [isLoggedIn, navigate]);
 
     return (
-        <Flex>
-            <form method="POST" onSubmit={handleExerciseCreateOnSubmit}>
+        <Flex w="100%" justify="center">
+            <form style={{ "minWidth": "70%"}} method="POST" onSubmit={handleExerciseCreateOnSubmit}>
                 <FormControl>
                     <FormLabel>운동 카테고리</FormLabel>
-                    <Select name="categoryIndex" onChange={handleExerciseFieldOnChange}>
-                        <option defaultChecked disabled>카테고리 선택</option>
+                    <Select required name="categoryIndex" defaultValue={-1} onChange={handleExerciseFieldOnChange}>
+                        <option value={-1} disabled>카테고리 선택</option>
                         {exerciseCategories.map(category => {
                             return <option key={category.index} value={category.index}>
                                 {category.name}
@@ -96,15 +82,23 @@ const ExerciseCreate = () => {
                 </FormControl>
                 <FormControl>
                     <FormLabel>제목</FormLabel>
-                    <Input isRequired type="text" name="name" onChange={handleExerciseFieldOnChange} value={exercise.name} />
+                    <Input isRequired type="text" name="name" 
+                        value={exercise.name}
+                        onChange={handleExerciseFieldOnChange}
+                    />
                 </FormControl>
                 <FormControl>
                     <FormLabel>내용</FormLabel>
-                    <Textarea isRequired name="content" colorScheme="blue"
-                        value={exercise.content} onChange={handleExerciseFieldOnChange}
+                    <Textarea isRequired name="content"
+                        bgColor="white"
+                        value={exercise.content}
+                        onChange={handleExerciseFieldOnChange}
                     />
                 </FormControl>
-                <Button type="submit" colorScheme="blue">작성</Button>
+                <Flex justify="space-between">
+                    <Button colorScheme="blue" onClick={() => navigate(-1)}>뒤로가기</Button>
+                    <Button type="submit" colorScheme="green">작성</Button>
+                </Flex>
             </form>
         </Flex>
     );
