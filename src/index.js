@@ -10,6 +10,7 @@ root.render(
       <Grid templateRows={"160px auto 160px"} minHeight={"100vh"}>
         <App/>
       </Grid>
+
     </ChakraProvider>
   // </React.StrictMode>
 );
