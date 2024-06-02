@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import Context from "../../Context";
 
 const LogoutForm = () => {
-    const { isLoggedIn, userCode, setIsLoggedIn, setUserCode } = useContext(Context);
+    const { isLoggedIn, handleLogoutSuccess } = useContext(Context);
 
     const handleLogout = () => {
         console.log('로그아웃 ?1');
@@ -16,11 +16,10 @@ const LogoutForm = () => {
         .then(data => {
             console.log(data);
             if(data.status === 200) {
-                alert('로그아웃 성공');
-                setUserCode();
-                setIsLoggedIn(false);
+                handleLogoutSuccess();
+                //setUserCode();
+                //setIsLoggedIn(false);
             }
-
         })
         .catch(() => {
             console.log('에러');
