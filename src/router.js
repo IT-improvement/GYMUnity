@@ -7,7 +7,6 @@ import Body from "./components/module/Body";
 import CreateFoodForm from "./components/diet/createFoodForm";
 import CreateFoodCategoryForm from "./components/diet/createFoodCategoryForm";
 import FriendSection from "./components/friend/FriendSection";
-import FriendButton from "./components/friend/FriendButton";
 import SearchSection from "./components/search/SearchSection";
 import ExerciseList from "./components/exercise/ExerciseList";
 import ExerciseCreate from "./components/exercise/ExerciseCreate";
@@ -185,7 +184,7 @@ const router = createBrowserRouter(
         children: [
             {
                 path:"/feed",
-                element:<FeedList/>
+				element: <Body children={<FeedList />} />
             },
             {
                 path:"/feed/:feedIndex",
@@ -205,16 +204,6 @@ const router = createBrowserRouter(
             }
         ]
     },
-    {
-        path: "/friendButton",
-        element : <Root/>,
-        children: [
-            {
-                path:"/friendButton",
-                element: <Body children={<FriendButton />} />
-            },
-        ]
-    }
 ],
 	{
 		basename: "/gymunity/v1"
