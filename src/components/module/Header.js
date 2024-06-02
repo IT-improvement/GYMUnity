@@ -1,11 +1,11 @@
-import { Flex, Box, Heading, Input, Button, Text, Avatar } from '@chakra-ui/react'
+import { useState, useContext } from "react"
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState, useContext } from 'react'
+import { Avatar, Box, Button, Flex, Heading, Input } from "@chakra-ui/react"
 import Context from "../../Context";
 
 export default function Header() {
     const [searchQuery, setSearchQuery] = useState("");
-    const { isLoggedIn, setIsLoggedIn, userCode } = useContext(Context);
+    const { isLoggedIn } = useContext(Context);
     const navigate = useNavigate();
 
     const handleSearchButtonOnClick = () => {
@@ -13,26 +13,27 @@ export default function Header() {
     };
 
     return (
-        <>
-            <Box>
-                <Heading>
-                    <Flex gap="10px" align="center">
-                    <Box maxW="300px" minW="200px">
-                        <Link to="/">
-                            <Text as="h1" fontSize="4xl" p="10px" color="var(--blue)">GymUnity</Text>
-                        </Link>
-                    </Box>
-                    <Input onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery} />
-                    <Button onClick={handleSearchButtonOnClick}>&#x1F50D;</Button>
-                    <Button onClick={() => setIsLoggedIn(!isLoggedIn)}>
-                        {isLoggedIn ?
-                            <Avatar src='' size="sm" />
-                            : "로그인하기"
-                        }
-                    </Button>
-                    </Flex>
-                </Heading>
+        <Flex gap="10px" align="center">
+            <Box minW="200px" maxW="300px">
+                <Link to="/">
+                    <Heading as="h1" fontSize="4xl" p="10px" color="var(--blue)">
+                        GymUnity
+                    </Heading>
+                </Link>
             </Box>
-        </>
+        <Input
+            borderWidth="2px"
+            onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery} />
+        <Button onClick={handleSearchButtonOnClick}>&#x1F50D;</Button>
+            <Button>
+                {isLoggedIn ?
+                    <Link to="/user/mypage">
+                        <Avatar src="" size="sm" />
+                    </Link>
+                    :
+                    <Link to="/user/login">로그인</Link>
+                }
+            </Button>
+        </Flex>
     );
 }
