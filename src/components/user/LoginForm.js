@@ -119,7 +119,7 @@ const LoginForm = () => {
                             <Button width="150px" height="50px" marginRight="15px" colorScheme="custom" backgroundColor="#FBF3D5" color="black" onClick={sendLogin}>
                                 로그인
                             </Button>
-                            <Button as="a" width="150px" height="50px" colorScheme="custom" backgroundColor="#96B6C5" color="black" href="./join">
+                            <Button as="a" width="150px" height="50px" colorScheme="custom" backgroundColor="#96B6C5" color="black" href="../user/join">
                                 회원가입
                             </Button>
                         </Flex>
