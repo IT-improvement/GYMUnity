@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Flex, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
+import { Flex, Heading } from "@chakra-ui/react";
 import SearchOptionMenu from "./SearchOptionMenu";
 import ExerciseList from "../exercise/ExerciseList";
 import UserList from "./UserList";
@@ -19,50 +19,55 @@ const SearchSection = () => {
     const { state } = useLocation();
 
     const showSearchResult = () => {
-        let children;
         const searchQuery = (state && state.searchQuery) ? state.searchQuery : "";
-        const resultItemLimit = 5;
+        let children;
         
         switch (category) {
             case "all":
                 children = <>
-                            <UserList searchQuery={searchQuery} resultItemLimit={resultItemLimit} />
-                            <FeedList searchQuery={searchQuery} resultItemLimit={resultItemLimit} isDescOrder={isResultInDescOrder}/>
-                            <ExerciseList searchQuery={searchQuery} resultItemLimit={resultItemLimit} isDescOrder={isResultInDescOrder}/>
-                        </>;
+                            <UserList searchQuery={searchQuery} isTotalSearch={true} />
+                            <FeedList searchQuery={searchQuery} isTotalSearch={true} isDescOrder={isResultInDescOrder} />
+                            <ExerciseList searchQuery={searchQuery} isTotalSearch={true} isDescOrder={isResultInDescOrder} />
+                        </>
                 break;
             case "user":
-                children = <UserList searchQuery={searchQuery}/>
+                children = <UserList searchQuery={searchQuery} />
                 break;
             case "feed":
-                children = <FeedList searchQuery={searchQuery} isDescOrder={isResultInDescOrder}/>
+                children = <FeedList searchQuery={searchQuery} isDescOrder={isResultInDescOrder} />
                 break;
             case "exercise":
-                children = <ExerciseList searchQuery={searchQuery} isDescOrder={isResultInDescOrder}/>
+                children = <ExerciseList searchQuery={searchQuery} isDescOrder={isResultInDescOrder} />
+                break;
+            default:
                 break;
         }
 
-        return (
-            <Flex direction="column" gap="10px">
-                {children}
-            </Flex>
-        );
+        return children;
     };
 
     useEffect(() => {
+        if (state && state.category)
+            setCategory(state.category);
+    }, [state]);
+
+    useEffect(() => {
         showSearchResult();
-    }, [state, isResultInDescOrder]);
+    }, [category]);
 
     return (
-        <Flex width="100%" direction="column" p="10px" gap="10px">
+        <Flex direction="column" w="100%" p="10px" gap="10px">
             <Heading>{categoryMap[category]} 검색</Heading>
             <SearchOptionMenu categoryMap={categoryMap}
                 shouldShowDateSortButton={category !== "user"}
                 isResultInDescOrder={isResultInDescOrder}
+                category={category}
                 setCategory={setCategory}
                 setIsResultInDescOrder={setIsResultInDescOrder}
             />
-            {showSearchResult()}
+            <Flex direction="column" gap="10px">
+                { showSearchResult() }
+            </Flex>
         </Flex>
     );
 };
