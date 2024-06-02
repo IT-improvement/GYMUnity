@@ -1,136 +1,69 @@
-import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-import { Flex, VStack, Grid, Card, CardBody, Button, Image, Avatar, Box, Heading, Text } from "@chakra-ui/react";
-import Sort from "../../utils/sort";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Avatar, Badge, Box, Card, CardBody, Flex, Grid, Heading, Image, Text } from "@chakra-ui/react";
 import Context from "../../Context";
+import LoadingSpinner from "../chakra/LoadingSpinner";
+import Sort from "../../utils/sort";
+import Toast from "../chakra/Toast";
+import Feed from "./Feed";
 
-const FeedList = ({ searchQuery, isDescOrder }) => {
+const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
     const [feeds, setFeeds] = useState([]);
-    const { userCode } = useContext(Context);
+    const [itemLimit] = useState(8);
+    const [isFetching, setIsFetching] = useState(true);
+    const { isLoggedIn, sessionUser } = useContext(Context);
+    const navigate = useNavigate();
     
-    const fetchFeeds = () => { 
-        let apiPath = "feed?command=feedRead";
+    const fetchFeeds = () => {
+        let params = searchQuery ?
+            `command=feedReadByQuery&query=${searchQuery}` :
+            `command=feedRead`;
 
-        if (searchQuery)
-            apiPath = `feed?command=feedReadByQuery&query=${searchQuery}`;
+        if (isTotalSearch)
+            params += `&limit=${itemLimit}`;
 
-        fetch(`${process.env.REACT_APP_SERVER_URL}/${apiPath}`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/feed?${params}`, {
             method: "GET", 
             headers: {
-                "Authorization": userCode, 
-            }, 
+                "Authorization": sessionUser.code, 
+            },
         })
         .then(response => response.json())
         .then(data => setFeeds(data))
         .finally(() => {
+            setIsFetching(false);
         });
     };
 
     const fetchLikeButtonOnClick = (feedIndex, checkFavorite) => { 
-        let apiPath = `feed/${feedIndex}?command=${checkFavorite ? "feedFavoriteDelete" : "feedFavoritePlus"}`;
+        const params = `command=${checkFavorite ? "feedFavoriteDelete" : "feedFavoritePlus"}`;
 
-        fetch(`${process.env.REACT_APP_SERVER_URL}/${apiPath}`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/feed/${feedIndex}?${params}`, {
             method: "GET", 
             headers: {
-                "Authorization": userCode, 
+                "Authorization": sessionUser.code, 
             },
         })
+        .catch(() => Toast.showFailed("좋아요 처리 실패"))
         .finally(() => {
             fetchFeeds();
         });
     };
 
     const handleLikeButtonOnClick = (feedIndex, checkFavorite) => {
+        if (!isLoggedIn) {
+            Toast.showInfo("로그인이 필요합니다");
+            return;
+        }
+
         fetchLikeButtonOnClick(feedIndex, checkFavorite);
     };
 
     const sortFeeds = () => {
-        if (isDescOrder) {
+        if (isDescOrder)
             setFeeds(Sort.ObjectArrayInDescOrder(feeds, "createDate"));
-        } else {
+        else
             setFeeds(Sort.ObjectArrayInAsecOrder(feeds, "createDate"));
-        }
-    };
-
-    const showComments = (comments) => {
-        if (!comments || comments.length === 0)
-            return;
-
-        const commentLimit = 2;
-        let commentComponents = [];
-        let index = 0;
-
-        while (index < commentLimit - 1) {
-            const comment = comments[index];
-
-            commentComponents.push(<Text key={comment.feedCommentsIndex}>{comment.comment}</Text>)
-
-            index++;
-        }
-        
-        return commentComponents;
-    }
-
-    const showFeeds = () => {
-        return (
-            feeds.map(({feedIndex, title, content, userCode, userId, userName, favoriteCount, checkFavorite, createDate, comments}) => {
-                return (
-                    <Flex key={feedIndex} p="10px" gap="10px" direction="column" borderRadius="10px" bgColor="gray.300" _hover={{backgroundColor: "gray.400"}}>
-                        <Link to={`/user/${userCode}`}>
-                            <Card>
-                                <CardBody>
-                                    <Flex gap="10px">
-                                        <Avatar src='' size="md"/>
-                                        <Flex direction="column">
-                                            <Text>{userId}</Text>
-                                            <Text>{userName}</Text>
-                                        </Flex>
-                                    </Flex>
-                                </CardBody>
-                            </Card>
-                        </Link>
-
-                        <Flex direction="column" gap="10px">
-                            <Link to={`/feed/detail/${feedIndex}`}> 
-                                <Card>
-                                    <CardBody>
-                                        <Box>
-                                            <Text fontWeight="bold">제목</Text>
-                                            <Text>{title}</Text>
-                                        </Box>
-                                        <Box>
-                                            <Text fontWeight="bold">내용</Text>
-                                            <Text>{content}</Text>
-                                        </Box>
-                                        <Box>
-                                            <Text fontWeight="bold">작성일</Text>
-                                            <Text>{createDate}</Text>
-                                        </Box>
-                                    </CardBody>
-                                </Card>
-                            </Link>
-                            <Box>
-                                <Text>좋아요: {favoriteCount}</Text>
-                            </Box>
-                            <Box>
-                                <Image src={`${process.env.PUBLIC_URL}/images/${checkFavorite ? "liked.png" : "like.png"}`}
-                                onClick={() => handleLikeButtonOnClick(feedIndex, checkFavorite)}
-                                />
-                            </Box>
-                            <Card>
-                                <CardBody>
-                                    { comments.length > 0 ?
-                                        showComments(comments)
-                                        :
-                                        <Text>댓글이 없습니다</Text>
-                                    }
-                                </CardBody>
-                            </Card>
-                        </Flex>
-                    </Flex>
-                );
-            })
-        );
     };
 
     useEffect(() => {
@@ -142,16 +75,30 @@ const FeedList = ({ searchQuery, isDescOrder }) => {
     }, [isDescOrder]);
 
     return (
-        <VStack width="100%" p="10px">
+        <Flex direction="column" w="100%" p="10px" bgColor="gray.300" gap="10px" borderRadius="10px">
             <Heading>피드목록</Heading>
-            {feeds.length > 0 ? 
-                <Grid templateColumns="repeat(3, 1fr)" gap="30px" justifyContent="center" >
-                    {showFeeds()}
-                </Grid> 
+            { isFetching && <LoadingSpinner /> }
+            { feeds.length > 0 ? 
+                <Flex direction="column" gap="10px">
+                    <Grid templateColumns="repeat(4, 1fr)" gap="30px" justifyContent="center" >
+                        { feeds.map(feed =>
+                            <Feed key={feed.feedIndex} feed={feed} handleLikeButtonOnClick={handleLikeButtonOnClick} />
+                            )
+                        }
+                    </Grid> 
+                    { isTotalSearch && (feeds.length >= itemLimit) &&
+                    <Flex justify="right">
+                        <Box p="10px" textAlign="center" bgColor="gray.200" borderRadius="10px" cursor="pointer"
+                            onClick={() => navigate("/search", { state: { searchQuery: searchQuery, category: "feed" }})} >
+                                <Text color="gray.600">게시글 더보기</Text>
+                        </Box>
+                    </Flex>
+                    }
+                </Flex>
                 :
-                <Heading as="h3" mt="50px" fontSize="20px" textAlign="center">피드목록이 비어있습니다</Heading>
+                <Heading fontSize="20px">피드가 없습니다</Heading>
             }
-        </VStack>
+        </Flex>
     );
 };
 
