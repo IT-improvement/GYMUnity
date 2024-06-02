@@ -104,7 +104,7 @@ const router = createBrowserRouter(
 			{
                 path: "/user/:code",
 				element: <Body children={<UserProfile />} />
-            }
+            },
         ]
 		},
 		{
