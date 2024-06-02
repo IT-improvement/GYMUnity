@@ -1,94 +1,103 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Flex, Grid, VStack, Avatar, AvatarGroup, Card, CardBody, Box, Heading, Text, Spinner } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Avatar, AvatarGroup, Badge, Card, CardBody, Box, Flex, Grid, Heading, Text, VStack } from "@chakra-ui/react";
+import LoadingSpinner from "../chakra/LoadingSpinner";
 
-const UserList = ({ searchQuery, resultItemLimit }) => {
-    const [isFetching, setIsFetching] = useState(true);
+const UserList = ({ searchQuery, isTotalSearch }) => {
     const [users, setUsers] = useState([]);
+    const [isFetching, setIsFetching] = useState(true);
+    const [userLimit] = useState(4);
+    const navigate = useNavigate();
 
     const fetchUsers = () => { 
-        let apiPath = "user?command=read_all";
+        let params = searchQuery ?
+            `command=read_all_by_query&query=${searchQuery}` :
+            `command=read_all`;
 
-        if (searchQuery)
-            apiPath = `user?command=read_all_by_query&query=${searchQuery}`;
+        if (isTotalSearch)
+            params += `&limit=${userLimit}`;
 
-        fetch(`${process.env.REACT_APP_SERVER_URL}/${apiPath}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/user?${params}`)
         .then(response => response.json())
-        .then(data =>  {
-            setUsers(data);
-        })
-        .catch(err => {
-        })
+        .then(data => setUsers(data))
         .finally(() => {
             setIsFetching(false);
         });
     };
 
+    useEffect(() => {
+        fetchUsers();
+    }, [searchQuery, isTotalSearch]);
+
+    const showAvatar = () => {
+        const avatars = [];
+
+        for (let i = 0; i < users.length; i++)
+            avatars.push(<Avatar key={`user_image_${i}`} src="" />);
+
+        return avatars;
+    };
+
+    const showUserMoreSection = () => {
+        return (
+            <Flex justify="right">
+                <Box p="10px" textAlign="center" bgColor="gray.200" borderRadius="10px"
+                    cursor="pointer"
+                    onClick={() => navigate("/search", { state: { searchQuery: searchQuery, category: "user" }})} >
+                        {users.length >= userLimit &&
+                        <>
+                            <AvatarGroup size="md" max={userLimit}>
+                                {showAvatar()}
+                            </AvatarGroup>
+                            <Text color="gray.600">유저 더보기</Text>
+                        </>
+                        }
+                </Box>
+            </Flex>
+        );
+    };
+
     const showUsers = () => {
-        const userCards = users.map(({code, id, name}, index) => {
-            return (
-                <Card key={index}>
+        return (
+            users.map(({code, id, name}) =>
+                <Card key={code}>
                     <CardBody>
-                        <Box p="10px" borderRadius="10px" bgColor="gray.200" cursor="pointer"
-                            _hover={{backgroundColor: "gray.500"}}
-                            >
+                        <Box p="10px" bgColor="gray.200" borderRadius="10px"
+                            cursor="pointer"
+                            _hover={{backgroundColor: "gray.500"}} >
                             <Link to={`/user/${code}`}>
-                                <Flex direction="column" align="center">
-                                    <Avatar src='' size="2xl" />
+                                <Flex direction="column" align="center" gap="10px">
+                                    <Avatar src="" size="2xl" />
                                     <VStack gap="10px">
-                                        <Text>{id}</Text>
                                         <Text>{name}</Text>
+                                        <Badge fontSize="15px" colorScheme="pink">
+                                            {id}
+                                        </Badge>
                                     </VStack>
                                 </Flex>
                             </Link>
                         </Box>
                     </CardBody>
                 </Card>
-            );
-        });
-
-        const showAvatar = () => {
-            if (!resultItemLimit)
-                return;
-
-            const avatars = [];
-
-            for (let i = 0; i < resultItemLimit; i++) {
-                avatars.push(<Avatar key={i} src="" />);
-            }
-
-            return avatars;
-        }
-
-        return (
-            <Flex width="100%" direction="column" p="10px" bgColor="gray.300" gap="10px">
-                <Grid gridTemplateColumns="repeat(3, 1fr)" gridAutoRows="300px" overflow="hidden" height="calc(150px * 2 + 10px)" width="100%" gap="10px">
-                    {userCards}
-                </Grid>
-                {resultItemLimit &&
-                    <Flex justify="right">
-                        <Link float="right" to="/users">
-                            <Box p="10px" bgColor="gray.200" borderRadius="10px">
-                                <AvatarGroup size="md" max={3}>
-                                    {showAvatar()}
-                                </AvatarGroup>
-                            </Box>
-                        </Link>
-                    </Flex>
-                }
-            </Flex>
+            )
         );
     };
 
-    useEffect(() => {
-        fetchUsers();
-    }, [searchQuery]);
-
     return (
-        <Flex direction="column" gap="10px">
+        <Flex direction="column" p="10px" gap="10px" bgColor="gray.300" borderRadius="10px">
             <Heading>유저목록</Heading>
-            { isFetching && <Spinner/> }
-            {users.length > 0 ? showUsers() : <Heading fontSize="20px">유저가 없습니다</Heading> }
+            { isFetching && <LoadingSpinner /> }
+            { users.length > 0 ? 
+                <Flex direction="column" w="100%" p="10px" gap="10px">
+                    <Grid gridTemplateColumns={`repeat(${userLimit}, 1fr)`}
+                        w="100%" gap="10px" overflow="hidden">
+                        { showUsers() }
+                    </Grid>
+                    { isTotalSearch && (users.length >= userLimit) && showUserMoreSection() }
+                </Flex>
+                :
+                <Heading fontSize="20px">유저가 없습니다</Heading>
+            }
         </Flex>
     );
 };
