@@ -1,42 +1,60 @@
+import { useEffect, useState } from "react";
 import { RouterProvider } from "react-router-dom";
-import router from './router'
-import { useState, createContext, useEffect } from "react";
-import { useToast } from '@chakra-ui/react'
+import router from "./router"
 import Context from "./Context";
+import Toast from "./components/chakra/Toast";
+
+const prevLoginStatusMap = {
+	none: "none",
+	login: "login",
+	logout: "logout",
+};
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(window.sessionStorage.getItem("userCode") ? true : false);
-	const [userCode, setUserCode] = useState();
-	const toast = useToast();
+	const [sessionUser, setSessionUser] = useState({
+		code: window.sessionStorage.getItem("userCode") ? window.sessionStorage.getItem("userCode") : "",
+		id: window.sessionStorage.getItem("userId") ? window.sessionStorage.getItem("userId") : "",
+	});
+	const [prevLoginStatus, setPrevLoginStatus] = useState(prevLoginStatusMap.none);
 
-	// const showToast = () => {
-	// 	toast({
-	// 		title: `${isLoggedIn ? "로그인" : "로그아웃"} 성공`,
-	// 		status: `${isLoggedIn ? "success" : "info"}`,
-	// 		duration: 1500,
-	// 		isClosable: true,
-	// 		position: "top",
-	// 	});
-	// };
+	const handleSessionUserChange = (userCode = "", userId = "") => {
+		setSessionUser({
+			code: userCode,
+			id: userId,
+		});
+	};
+
+	const handleLoginSuccess = (userCode, userId) => {
+		handleSessionUserChange(userCode, userId);
+
+		setIsLoggedIn(true);
+		setPrevLoginStatus(prevLoginStatusMap.login);
+	};
+
+	const handleLogoutSuccess = () => {
+		handleSessionUserChange();
+
+		setIsLoggedIn(false);
+		setPrevLoginStatus(prevLoginStatusMap.logout);
+	};
 
 	useEffect(() => {
-		// showToast();
-		if (userCode) {
-			window.sessionStorage.setItem("userCode", userCode);
-			if (isLoggedIn) {
-				const tempUserCode = 1001;
-				window.sessionStorage.setItem("userCode", tempUserCode);
-				setUserCode(tempUserCode);
-			}
-		else {
-			window.sessionStorage.removeItem("userCode");
-			setUserCode();
+		window.sessionStorage.setItem("userCode", sessionUser.code);
+		window.sessionStorage.setItem("userId", sessionUser.id);
+	}, [sessionUser]);
+
+	useEffect(() => {
+		if (prevLoginStatus !== prevLoginStatusMap.none) {
+			if (isLoggedIn)
+				Toast.showSuccess("로그인 성공");
+			else
+				Toast.showInfo("로그아웃 성공");
 		}
-		}
-	}, [userCode]);
+	}, [isLoggedIn]);
 
 	return (
-		<Context.Provider value={{ isLoggedIn, setIsLoggedIn, userCode, setUserCode }}>
+		<Context.Provider value={{ isLoggedIn, sessionUser, handleLoginSuccess, handleLogoutSuccess }}>
 			<RouterProvider router={router} />
 		</Context.Provider>
 	);
