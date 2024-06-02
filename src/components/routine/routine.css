@@ -6,7 +6,7 @@
     gap: 15px;
 }
 .routine-top{
-    width: 95%;
+    width: 97%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -36,6 +36,12 @@
     line-height: 40px;
 
     cursor: pointer;
+}
+
+.routine-write-button:hover,
+.routine-delete-button:hover
+{
+    opacity: 0.7;
 }
 
 .routine-delete-button{
@@ -68,7 +74,7 @@
 td{
     border: 0.7px solid rgba(0, 0, 0, 0.3);
     height: 100px;
-    width: 200px;
+    width: 175px;
 }
 
 tr{

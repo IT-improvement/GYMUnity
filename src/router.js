@@ -31,6 +31,7 @@ import DiaryDetail from "./components/diary/diaryDetail";
 import Diary from "./components/diary/diary";
 import Routine from "./components/routine/Routine";
 import FeedList from "./components/feed/feedList";
+import DiaryWrite from "./components/diary/diaryWrite";
 
 const router = createBrowserRouter(
 	[
@@ -60,6 +61,8 @@ const router = createBrowserRouter(
 					path:"",
 					element: <Body children ={<Diary/>}/>
 				},{
+					path:"write",
+					element: <Body children ={<DiaryWrite/>}/>
 				},
 			]
 		},
@@ -217,7 +220,7 @@ const router = createBrowserRouter(
     }
 ],
 	{
-		basename: "/gymunity/v1"
+		basename: "/gymunity"
 	}
 
 );

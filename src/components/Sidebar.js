@@ -17,7 +17,7 @@ const Sidebar = () => {
         },
         {
             name: "루틴",
-            link: "/diet",
+            link: "/routine",
         },
         { 
             name: "친구 목록",
