@@ -1,0 +1,50 @@
+.diary-write{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    height: 300px;
+    margin: 70px auto;
+    gap: 10px;
+}
+.diary-write-title{
+    color: rgba(0,0,255,0.5);
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 140%;
+    margin-bottom: 20px;
+}
+.diary-write-content{
+    display: flex;
+}
+.diary-write-content > textarea{
+    width: 300px;
+    height: 100px;
+}
+.diary-write-date{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.diary-write-date-selected{
+    color: rgba(0,0,0,0.7);
+}
+.diary-write-button{
+    width: 100px;
+    height: 40px;
+    justify-self: flex-end;
+
+    border-radius: 5px;
+    background-color: rgba(0,0,255,0.3);
+    
+    font-size: 17px;
+    text-align: center;
+    line-height: 40px;
+
+    cursor: pointer;
+}
+.diary-write-button-box{
+    display: flex;
+    justify-content: center;
+}
