@@ -63,17 +63,6 @@ const UpdateUserForm = () => {
         console.log(telecom);
         console.log(phone);
         console.log(profileImage);
-
-
-        // setId(userData.id);
-        // setPassword(userData.password);
-        // setEmail(userData.name);
-        // setName(userData.name);
-        // setBirth(userData.birth);
-        // setGender(userData.gender);
-        // setTelecom(userData.telecom);
-        // setPhone(userData.phone);
-        // setProfileImage(userData.profileImage);
     };
 
     const handleImageClick = () => {
