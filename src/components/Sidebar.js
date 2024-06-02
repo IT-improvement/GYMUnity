@@ -1,9 +1,13 @@
-import {  VStack, Box, Text } from '@chakra-ui/react'
+import { useContext, useEffect } from "react";
+import {  VStack, Box, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import Context from "../Context";
 
 const Sidebar = () => {
+    const { isLoggedIn } = useContext(Context);
+
     const menuItems = [
-        { 
+        {
             name: "게시글",
             link: "/",
         },
@@ -11,6 +15,14 @@ const Sidebar = () => {
             name: "피드",
             link: "/feed",
         },
+        {
+            name: "운동법",
+            link: "/exercises",
+        },
+    ];
+
+    const menuItemsWhenLoggedIn = [
+        ...menuItems,
         {
             name: "다이어리",
             link: "/diary",
@@ -21,11 +33,7 @@ const Sidebar = () => {
         },
         { 
             name: "친구 목록",
-            link: "/",
-        },
-        {
-            name: "친구신청",
-            link: "/",
+            link: "/friends",
         },
         {
             name: "마이페이지",
@@ -33,17 +41,26 @@ const Sidebar = () => {
         }
     ];
 
+    const showMenuItems = () => {
+        const items = isLoggedIn ? menuItemsWhenLoggedIn : menuItems;
+
+        return (
+            items.map(item =>
+                <Box key={item.link} w="100%" p="10px" textAlign="center"
+                    _hover={{ bgColor: "gray.500" }} >
+                    <Link to={item.link}><Text>{item.name}</Text></Link>
+                </Box>
+            )
+        );
+    }
+
+    useEffect(() => {
+        showMenuItems();
+    }, [isLoggedIn]);
+
     return (
         <VStack minW="200px" p="10px" bgColor="gray.300" >
-            {menuItems.map(item => {
-                return (
-                    <Box key={item.link} w="100%" textAlign="center" p="10px"
-                        bgColor="gray.400" _hover={{ bgColor: "gray.500" }}
-                    >
-                        <Link to={item.link}><Text>{item.name}</Text></Link>
-                    </Box>
-                );
-            })}
+            {showMenuItems()}
         </VStack>
     );
 };
