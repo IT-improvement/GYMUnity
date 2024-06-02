@@ -6,7 +6,7 @@ import Context from "../../Context";
 const LoginForm = () => {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    const { isLoggedIn, setIsLoggedIn, userCode, setUserCode } = useContext(Context);
+    const { handleLoginSuccess } = useContext(Context);
     const navigate = useNavigate();
 
     const sendLogin = async (e) => {
@@ -31,12 +31,12 @@ const LoginForm = () => {
             console.log('User created: ', result);
 
             if (result.status === 200) {
-                sessionStorage.setItem('code', result.code);
-                sessionStorage.setItem('id', id);
-                alert('로그인 성공');
-                setIsLoggedIn(true);
+                handleLoginSuccess(result.code, id);
+                //sessionStorage.setItem('code', result.code);
+                //sessionStorage.setItem('id', id);
+                //setIsLoggedIn(true);
                 console.log(result.code);
-                setUserCode(result.code);
+                //setUserCode(result.code);
                 navigate('/');
             } else {
                 alert('Failed to login');
