@@ -63,18 +63,6 @@ const Diet = () => {
     setNewFood(event.target.value);
   };
 
-  const navigateToCreateFoodForm = () => {
-    navigate("/diet/createFood");
-  };
-
-  const navigateToViewFoodListForm = () => {
-    navigate("/diet/foodList");
-  };
-
-  const navigateToViewFoodCategoryListForm = () => {
-    navigate("/diet/foodCategoryList");
-  };
-
   const removeFoodFromDiet = (index) => {
     const updatedFoods = [...selectedFoods];
     updatedFoods.splice(index, 1);
@@ -108,13 +96,13 @@ const Diet = () => {
         ))}
       </Stack>
       <Box mt={4}>
-        <Button mt={2} onClick={navigateToCreateFoodForm}>
+        <Button mt={2} onClick={() => navigate("/diet/createFood")}>
           Add New Food
         </Button>
-        <Button mt={2} onClick={navigateToViewFoodListForm}>
+        <Button mt={2} onClick={() => navigate("/diet/foodList")}>
           FoodList
         </Button>
-        <Button mt={2} onClick={navigateToViewFoodCategoryListForm}>
+        <Button mt={2} onClick={() => navigate("/diet/foodCategoryList")}>
           FoodCategoryList
         </Button>
       </Box>

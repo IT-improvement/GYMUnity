@@ -127,9 +127,14 @@ const ViewFoodListForm = () => {
           </ListItem>
         ))}
       </List>
-      <Button mt={4} onClick={() => navigate("/diet")}>
-        Back to Diet
-      </Button>
+      <Box mt={4}>
+        <Button mt={2} onClick={() => navigate("/diet")}>
+          Back to Diet
+        </Button>
+        <Button mt={2} onClick={() => navigate("/diet/foodCategoryList")}>
+          Food Category List
+        </Button>
+      </Box>
     </Box>
   );
 };
