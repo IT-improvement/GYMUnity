@@ -6,10 +6,10 @@ import Footer from './module/footer';
 
 export default function Root() {
     return (
-        <>
+        <Box>
             <Header/>
             <Outlet/>
             <Footer/>
-        </>
+        </Box>
     );
 }
