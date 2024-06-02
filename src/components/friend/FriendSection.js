@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Tabs, Tab, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
+import { Tab, Tabs, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
 import FriendList from "./FriendList";
 import FriendRequestList from "./FriendRequestList";
 import Context from "../../Context";
@@ -16,12 +16,11 @@ const FriendSection = () => {
     }, [isLoggedIn]);
 
     return (
-        <Tabs width="100%" variant="enclosed" onChange={(index, a) => setTabIndex(index)}>
+        <Tabs w="100%" variant="enclosed" onChange={index => setTabIndex(index)}>
             <TabList> 
                 <Tab _selected={{ color: "white", bg: "blue.200"}}>친구</Tab>
                 <Tab _selected={{ color: "white", bg: "blue.200"}}>받은 친구 요청</Tab>
             </TabList>
-
             <TabPanels>
                 <TabPanel>
                     <FriendList shouldFetch={tabIndex === 0}/>
