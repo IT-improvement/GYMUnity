@@ -5,17 +5,30 @@ import './style.css';
 import { useNavigate } from 'react-router-dom';
 import DiaryDetail from './diaryDetail';
 
+
+
 const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
+    const navigate = useNavigate();
+
+    //      event handler: 다이어리 쓰기 이동//
+    const onClickDiaryWrite = () =>{
+        navigate('/diary/write');
+    }
+
     return (
         <div className='header'>
             <div className='header-text-box'>
                 <div className='text'>
                     <span className='text-month'>{format(currentMonth, 'M')}</span>
                     <span className='text-year'>{format(currentMonth, 'yyyy')}</span>
+                    <div className='button'>
+                        <Icon className='icon' icon="bi:arrow-left-circle-fill" onClick={prevMonth} ></Icon>
+                        <Icon className='icon' icon="bi:arrow-right-circle-fill" onClick={nextMonth}></Icon>
+                    </div>
                 </div>
-                <div className='button'>
-                    <Icon className='icon' icon="bi:arrow-left-circle-fill" onClick={prevMonth} ></Icon>
-                    <Icon className='icon' icon="bi:arrow-right-circle-fill" onClick={nextMonth}></Icon>
+                <div className='diary-button'>
+                    <div className='diary-write-button' onClick={onClickDiaryWrite}>생성하기</div>
+                    <div className='diary-delete-button'>삭제하기</div>
                 </div>
             </div>
         </div>
@@ -43,6 +56,7 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
     const startDay = startOfWeek(startMonth);
     const endDay = endOfWeek(endMonth);
     const [data, setData] = useState([])
+    
     useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=readMonth&startMonth=${(format(startMonth, 'yyyy-MM-dd hh:mm:ss'))}&endMonth=${(format(endMonth, 'yyyy-MM-dd hh:mm:ss'))}`)
             .then(response => {

@@ -33,9 +33,11 @@ export default function DiaryDetail({isOpen, onClose, date}) {
                 </div>
                 <div className='diary-detail-content-box'>
                     <div className='diary-detail-content-title'>내용</div>
+                    <ul>
                     {data.map((item)=>
-                    <div className='diary-detail-content'>{item.content}</div>
+                    <div className='diary-detail-content'><li>{item.content}</li></div>
                     )}
+                </ul>
                 </div>
             </div>
         </div>
