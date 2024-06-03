@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Avatar, Badge, Box, Card, CardBody, Flex, Grid, Heading, Image, Text } from "@chakra-ui/react";
+import { Avatar, Badge, Box, Button, Card, CardBody, Flex, Grid, Heading, Image, Text } from "@chakra-ui/react";
 import Context from "../../Context";
 import LoadingSpinner from "../chakra/LoadingSpinner";
 import Sort from "../../utils/sort";
@@ -80,6 +80,7 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
             { isFetching && <LoadingSpinner /> }
             { feeds.length > 0 ? 
                 <Flex direction="column" gap="10px">
+                    <Button colorScheme="blue" onClick={() => navigate("/feed/feedCreate")}>피드작성</Button>
                     <Grid templateColumns="repeat(4, 1fr)" gap="30px" justifyContent="center" >
                         { feeds.map(feed =>
                             <Feed key={feed.feedIndex} feed={feed} handleLikeButtonOnClick={handleLikeButtonOnClick} />
@@ -97,6 +98,7 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                 </Flex>
                 :
                 <Heading fontSize="20px">피드가 없습니다</Heading>
+                
             }
         </Flex>
     );
