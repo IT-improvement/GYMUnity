@@ -38,7 +38,11 @@ const Sidebar = () => {
         {
             name: "마이페이지",
             link: "/user/mypage",
-        }
+        },
+        {
+            name: "식단",
+            link: "/diet",
+        },
     ];
 
     const showMenuItems = () => {
