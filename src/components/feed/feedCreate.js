@@ -8,6 +8,8 @@ const FeedCreate = () => {
         title: "",
         content: "",
     });
+    const { isLoggedIn, sessionUser } = useContext(Context);
+    const navigate = useNavigate();
     console.log(feed.title)
         console.log(feed.content)
     const fetchFeedCreate = () => {
@@ -15,7 +17,7 @@ const FeedCreate = () => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/feed?command=feedCreate&title=${feed.title}&content=${feed.content}`, {
             method: "GET", 
             headers: {
-                "Authorization": 1004, 
+                "Authorization": sessionUser.code, 
             }
         
         })
@@ -46,7 +48,8 @@ const FeedCreate = () => {
                 <label>내용</label>
                 <input type="text" name="content" onChange={handleFeedFieldOnChange} />
 
-                <input type="submit" value="만들기 뾰로롱" />
+                <input type="submit" value="피드 저장"/>
+                <Button colorScheme="blue" onClick={() => navigate("/feed")}>목록으로 가기</Button>
             </form>
         </>
     );
