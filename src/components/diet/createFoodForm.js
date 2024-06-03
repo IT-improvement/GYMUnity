@@ -1,113 +1,141 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Box, Button, Input, Select, Stack } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Context from '../../Context';
+import './createFoodForm.css';
 
-const CreateFoodForm = () => {
-    const [foodName, setFoodName] = useState('');
-    const [protein, setProtein] = useState('');
-    const [calory, setCalory] = useState('');
-    const [carbs, setCarbs] = useState('');
-    const [size, setSize] = useState('');
-    const [foodCategory, setFoodCategory] = useState('');
-    const [foodCategoryOptions, setFoodCategoryOptions] = useState([]);
-    const navigate = useNavigate();
-    const { isLoggedIn, sessionUser } = useContext(Context);
-
-    useEffect(() => {
-        const fetchFoodCategories = async () => {
-            try {
-                const response = await fetch(
-                    `${process.env.REACT_APP_SERVER_URL}/foodCategory/service?command=readAllFoodCategory&userCode=${sessionUser.code}`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            Authorization: sessionUser.code,
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-
-                const data = await response.json();
-                console.log('Fetched categories:', data);
-                setFoodCategoryOptions(data);
-            } catch (error) {
-                console.error('Error fetching food categories:', error);
-            }
-        };
-
-        fetchFoodCategories();
-    }, []);
-
-    const handleCreateFood = async () => {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/food/service?command=createFood`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: window.sessionStorage.getItem('userCode'),
-                },
-                body: JSON.stringify({
-                    userCode: sessionUser.code,
-                    foodCategoryIndex: foodCategory,
-                    foodName: foodName,
-                    protein: protein,
-                    calory: calory,
-                    carbs: carbs,
-                    size: size,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-
-            const responseData = await response.json();
-            console.log('Food created:', responseData);
-
-            if (responseData.status === 200) {
-                alert('음식 생성 성공');
-                navigate('/diet');
-            } else {
-                alert('음식 생성 실패');
-            }
-        } catch (error) {
-            console.error('Error creating food:', error);
-            alert('Error creating food: ' + error.message);
-        }
-    };
-
-    const navigateToCreateFoodCategoryForm = () => {
-        navigate('/diet/createFoodCategory');
-    };
-
+const RenderExercise = ({ onChangeCategory }) => {
     return (
-        <Box>
-            <Stack spacing={3}>
-                <Input placeholder="Food Name" value={foodName} onChange={(e) => setFoodName(e.target.value)} />
-                <Input placeholder="Protein" value={protein} onChange={(e) => setProtein(e.target.value)} />
-                <Input placeholder="Calory" value={calory} onChange={(e) => setCalory(e.target.value)} />
-                <Input placeholder="Carbs" value={carbs} onChange={(e) => setCarbs(e.target.value)} />
-                <Input placeholder="Size" value={size} onChange={(e) => setSize(e.target.value)} />
-                <Select
-                    placeholder="Select food category"
-                    value={foodCategory}
-                    onChange={(e) => setFoodCategory(e.target.value)}
-                >
-                    {foodCategoryOptions.map((category) => (
-                        <option key={category.foodCategoryIndex} value={category.foodCategoryIndex}>
-                            {category.categoryName}
-                        </option>
-                    ))}
-                </Select>
-                <Button onClick={handleCreateFood}>Create Food</Button>
-                <Button onClick={navigateToCreateFoodCategoryForm}>Create Food Category</Button>
-            </Stack>
-        </Box>
+        <div className="routine-create-category-box">
+            <select name="category" onChange={onChangeCategory}>
+                <option value="" disabled selected>
+                    선택
+                </option>
+                <option value="1">아침</option>
+                <option value="2">점심</option>
+                <option value="3">저녁</option>
+            </select>
+        </div>
     );
 };
 
-export default CreateFoodForm;
+export default function RoutineCreate({ isOpen, onClose }) {
+    const [data, setData] = useState([]);
+    const [categoryIndex, setCategoryIndex] = useState('');
+    const [formValues, setFormValues] = useState({
+        day: '',
+        category: '',
+        exercise: '',
+        command: 'write',
+    });
+
+    const navigate = useNavigate();
+
+    const RenderSelect = ({ categoryIndex }) => {
+        return (
+            <div className="routine-create-category-box">
+                <select name="exercise" onChange={handleChange} value={formValues.exercise}>
+                    <option value="" disabled>
+                        음식카테고리 선택
+                    </option>
+                    {data
+                        .filter((json) => json.exercise_category_index === parseInt(categoryIndex))
+                        .map((item) => (
+                            <option key={item.exercise_index} value={item.exercise_index}>
+                                {item.name}
+                            </option>
+                        ))}
+                </select>
+            </div>
+        );
+    };
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/diet/?command=readAllFood`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setData(data);
+                console.log(data);
+            })
+            .catch((error) => console.error('Error fetching data:', error));
+    }, []);
+
+    if (!isOpen) {
+        return null;
+    }
+
+    const onChangeCategory = (event) => {
+        const { value } = event.target;
+        setCategoryIndex(value);
+        setFormValues((prevValues) => ({ ...prevValues, category: value, exercise: '' }));
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new URLSearchParams(formValues).toString();
+        if (!formValues.day) {
+            alert('요일을 선택하세요');
+            return;
+        }
+        if (!formValues.exercise) {
+            alert('음식을 선택하세요');
+            return;
+        }
+        fetch(`${process.env.REACT_APP_SERVER_URL}/diet`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData,
+        })
+            .then((data) => {
+                console.log(data);
+                onClose(); // 창 닫기
+                navigate('/routine', { replace: true }); // 새로고침
+                window.location.reload();
+            })
+            .catch((error) => console.error('Error submitting form:', error));
+    };
+
+    return (
+        <div className="routine-create">
+            <div className="routine-create-box">
+                <div className="routine-close-button">
+                    <button className="close-button" onClick={onClose}>
+                        X
+                    </button>
+                </div>
+                <div className="routine-create-content">
+                    <form onSubmit={handleSubmit}>
+                        <input type="hidden" name="command" value="write"></input>
+                        <div className="routine-create-category-box">
+                            <select name="day" onChange={handleChange} value={formValues.day}>
+                                <option value="" disabled selected>
+                                    요일 선택
+                                </option>
+                                <option value="Mo">월요일</option>
+                                <option value="Tu">화요일</option>
+                                <option value="We">수요일</option>
+                                <option value="Th">목요일</option>
+                                <option value="Fr">금요일</option>
+                                <option value="Sa">토요일</option>
+                                <option value="Su">일요일</option>
+                            </select>
+                        </div>
+                        <RenderExercise onChangeCategory={onChangeCategory} />
+                        <RenderSelect categoryIndex={categoryIndex} />
+                        <div className="routine-create-button-box">
+                            <input type="submit" value="생성하기" className="routine-create-button"></input>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+}
