@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
+import Context from "../../Context";
 import FriendList from "./FriendList";
 import FriendRequestList from "./FriendRequestList";
-import Context from "../../Context";
 
 const FriendSection = () => {
     const [tabIndex, setTabIndex] = useState(0);

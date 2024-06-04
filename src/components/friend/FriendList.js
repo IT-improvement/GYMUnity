@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Avatar, Box, Card, CardBody, Grid, Heading, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Card, CardBody, Center, Grid, Heading, Text, VStack } from "@chakra-ui/react";
 import Context from "../../Context";
 import LoadingSpinner from "../chakra/LoadingSpinner";
 import Toast from "../chakra/Toast";
@@ -11,6 +11,8 @@ const FriendList = ({ shouldFetch }) => {
     const { sessionUser } = useContext(Context);
     
     const fetchFriends = () => { 
+        setIsFetching(true);
+
         fetch(`${process.env.REACT_APP_SERVER_URL}/friends?command=read_all`, {
             method: "GET", 
             headers: {
@@ -19,7 +21,7 @@ const FriendList = ({ shouldFetch }) => {
         })
         .then(response => response.json())
         .then(data => setFriends(data))
-        .catch(() => Toast.showFailed("친구목록 불러오기 실패"))
+        .catch(() => Toast.showFailed("친구 목록 로드 실패"))
         .finally(() => {
             setIsFetching(false);
         });
@@ -54,8 +56,12 @@ const FriendList = ({ shouldFetch }) => {
     return (
         <VStack w="100%" p="10px" gap="30px">
             <Heading>친구목록</Heading>
-            <LoadingSpinner isLoading={isFetching} />
-            { friends.length > 0 ? 
+            { isFetching ?
+                <Center>
+                    <LoadingSpinner />
+                </Center>
+                :
+                friends.length > 0 ? 
                 <Grid templateColumns="repeat(4, 1fr)" gap="10px">
                     { showFriends() }
                 </Grid> 

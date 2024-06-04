@@ -30,7 +30,7 @@ const ExerciseUpdate = () => {
         .then(response => response.json())
         .then(data => setExercise(data))
         .catch(() => {
-            Toast.showFailed("운동법 불러오기 실패");
+            Toast.showFailed("운동법 수정 불가 (운동법 로드 실패)");
             navigate("/exercises");
         });
     };
@@ -42,7 +42,7 @@ const ExerciseUpdate = () => {
         .then(response => response.json())
         .then(data => setExerciseCategories(data))
         .catch(() => {
-            Toast.showFailed("운동 카테고리 불러오기 실패");
+            Toast.showFailed("운동법 수정 불가 (운동 카테고리 로드 실패)");
             navigate("/exercises");
         });
     };
