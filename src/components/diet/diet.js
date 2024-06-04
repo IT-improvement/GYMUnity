@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Button,
   Select,
@@ -9,18 +9,20 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import Context from "../../Context";
 
 const Diet = () => {
   const [selectedFoods, setSelectedFoods] = useState([]);
   const [newFood, setNewFood] = useState("");
   const [foodOptions, setFoodOptions] = useState([]);
   const navigate = useNavigate();
+  const { isLoggedIn, sessionUser } = useContext(Context);
 
   useEffect(() => {
     const fetchFoodOptions = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/food/service?command=readFoodList&userCode=1001",
+          `${process.env.REACT_APP_SERVER_URL}/food/service?command=readFoodList&userCode=${sessionUser.code}`,
           {
             method: "GET",
             headers: {
