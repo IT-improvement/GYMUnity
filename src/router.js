@@ -6,30 +6,35 @@ import Diet from "./components/diet/diet";
 import Body from "./components/module/Body";
 import CreateFoodForm from "./components/diet/createFoodForm";
 import CreateFoodCategoryForm from "./components/diet/createFoodCategoryForm";
+
 import FriendSection from "./components/friend/FriendSection";
 import SearchSection from "./components/search/SearchSection";
+
 import ExerciseList from "./components/exercise/ExerciseList";
 import ExerciseCreate from "./components/exercise/ExerciseCreate";
 import ExerciseDetail from "./components/exercise/ExerciseDetail";
 import ExerciseUpdate from "./components/exercise/ExerciseUpdate";
-import FeedDetail from "./components/feed/feedDetail";
+
 import JoinForm from "./components/user/JoinForm";
 import LoginForm from "./components/user/LoginForm";
 import MyPage from "./components/user/MyPage";
 import UpdateUserForm from "./components/user/UpdateUserForm";
 import LeaveForm from "./components/user/LeaveForm";
-import LogoutForm from "./components/user/LogoutForm";
 import UserProfile from "./components/user/UserProfile";
+
+import FeedDetail from "./components/feed/feedDetail";
 import FeedCreate from "./components/feed/feedCreate";
 import FeedDelete from "./components/feed/feedDelete";
 import FeedUpdate from "./components/feed/feedupdate";
+import FeedList from "./components/feed/feedList";
+
 import ViewFoodListForm from "./components/diet/viewFoodListForm";
 import ViewFoodCategoryListForm from "./components/diet/ViewFoodCategoryListForm";
 import UpdateFoodCategoryForm from "./components/diet/UpdateFoodCategoryForm";
+
 import DiaryDetail from "./components/diary/diaryDetail";
 import Diary from "./components/diary/diary";
 import Routine from "./components/routine/Routine";
-import FeedList from "./components/feed/feedList";
 import DiaryWrite from "./components/diary/diaryWrite";
 
 const router = createBrowserRouter(
@@ -40,7 +45,7 @@ const router = createBrowserRouter(
 			children: [
 				{
 					path: '',
-					element: <Main />,
+					element: <Body children ={<Main/>}/>
 				},
 			],
 			errorElement: (
@@ -95,10 +100,6 @@ const router = createBrowserRouter(
                 path: "/user/update",
 				element: <Body children={<UpdateUserForm />} />
             },
-			{
-                path: "/user/logout",
-				element: <Body children={<LogoutForm />} />
-            },
             {
                 path: "/user/leave",
 				element: <Body children={<LeaveForm />} />
@@ -106,7 +107,7 @@ const router = createBrowserRouter(
 			{
                 path: "/user/:code",
 				element: <Body children={<UserProfile />} />
-            }
+            },
         ]
 		},
 		{
