@@ -1,21 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, FormControl, FormLabel, Flex, Input, Stack, Heading, Radio, RadioGroup, Select, Center, Avatar } from '@chakra-ui/react';
+import Context from "../../Context";
 
 const UpdateUserForm = () => {
-    const [id, setId] = useState("");
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
-    const [birth, setBirth] = useState("");
-    const [gender, setGender] = useState("");
-    const [telecom, setTelecom] = useState("");
-    const [phone, setPhone] = useState("");
-    const [profileImage, setProfileImage] = useState("");
+    const { code } = useParams();
+    const [user, setUser] = useState({
+        id: "",
+        password: "",
+        email: "",
+        name: "",
+        birth: "",
+        gender: "",
+        telecom: "",
+        phone: "",
+        profileImage: ""
+    })
+    // const [user, setUser] = useState(true);
+    // const [id, setId] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [name, setName] = useState("");
+    // const [birth, setBirth] = useState("");
+    // const [gender, setGender] = useState("");
+    // const [telecom, setTelecom] = useState("");
+    // const [phone, setPhone] = useState("");
+    // const [profileImage, setProfileImage] = useState("");
+    const { isLoggedIn, sessionUser } = useContext(Context);
     const navigate = useNavigate();
-
+    
     const sendUpdate = async (e) => {
         e.preventDefault();
+
+        // console.log(user.id);
+        // console.log(user.password);
+        // console.log(user.email);
+        // console.log(user.name);
+        // console.log(user.birth);
+        // console.log(user.gender);
+        // console.log(user.telecom);
+        // console.log(user.phone);
+
+        // if (id === null || id === '')
+        //     setId(user.id);
+        // if (password === null || password === '')
+        //     setPassword(user.password);
+        // if (name === null || name === '')
+        //     setName(user.name);
+        // if (email === null || email === '')
+        //     setEmail(user.email);
+        // if (telecom === null || telecom === '')
+        //     setTelecom(user.telecom);
+        // if (phone === null || phone === '')
+        //     setPhone(user.phone);
+        // if (profileImage === null || profileImage === '')
+        //     setProfileImage(user.profileImage);
+        // setBirth(user.birth);
+        // setGender(user.gender);
 
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=update`, {
@@ -24,15 +65,15 @@ const UpdateUserForm = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id: id,
-                    password: password,
-                    email: email,
-                    name: name,
-                    birth: birth,
-                    gender: gender,
-                    telecom: telecom,
-                    phone: phone,
-                    profileImage: profileImage
+                    id: user.id,
+                    password: user.password,
+                    email: user.email,
+                    name: user.name,
+                    birth: user.birth,
+                    gender: user.gender,
+                    telecom: user.telecom,
+                    phone: user.phone,
+                    profileImage: user.profileImage
                 }),
             });
 
@@ -53,39 +94,98 @@ const UpdateUserForm = () => {
             console.error('Error: ', error);
         }
 
-        console.log(`${process.env.REACT_APP_SERVER_URL}`);
-        console.log(id);
-        console.log(password);
-        console.log(email);
-        console.log(name);
-        console.log(birth);
-        console.log(gender);
-        console.log(telecom);
-        console.log(phone);
-        console.log(profileImage);
+        // console.log(`${process.env.REACT_APP_SERVER_URL}`);
+        // console.log(id);
+        // console.log(password);
+        // console.log(email);
+        // console.log(name);
+        // console.log(birth);
+        // console.log(gender);
+        // console.log(telecom);
+        // console.log(phone);
+        // console.log(profileImage);
+        console.log(user.id);
+        console.log(user.password);
+        console.log(user.email);
+        console.log(user.name);
+        console.log(user.birth);
+        console.log(user.gender);
+        console.log(user.telecom);
+        console.log(user.phone);
     };
 
     const handleImageClick = () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = (e) => {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = (f) => {
-                console.log(f.target);
-                const dataUrl = reader.result;
-                setProfileImage(dataUrl);
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
+        // const input = document.createElement('input');
+        // input.type = 'file';
+        // input.accept = 'image/*';
+        // input.onchange = (e) => {
+        //     const file = e.target.files[0];
+        //     const reader = new FileReader();
+        //     reader.onload = (f) => {
+        //         console.log(f.target);
+        //         const dataUrl = reader.result;
+        //         setProfileImage(dataUrl);
+        //     };
+        //     reader.readAsDataURL(file);
+        // };
+        // input.click();
+    };
+
+    const handleUserDataOnChange = (e) => {
+        setUser(oldUser => {
+            return {...oldUser, [e.target.name]: e.target.value}
+        });
     };
 
     useEffect(() => {
-        // sendUpdate();
-    }, []);
+        console.log(code);
+        fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=read_one&code=${sessionUser.code}`, {
+            method: "POST",
+            headers: {
+            'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setUser(data)
+                console.log(data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [code]);
+    //     fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=read_one&code=${sessionUser.code}`, {
+    //         method: "POST",
+    //         headers: {
+    //         'Content-Type': 'application/json'
+    //         },
+    //     })
+    //         .then(response => {
+    //             console.log(response);
+    //             if (!response.ok) {
+    //                 throw new Error('Failed to fetch user');
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             setUser(data)
+    //             console.log(data);
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         });
+    // }, [code]);
 
+    if (!user) {
+        return <div>로딩 중...</div>;
+    }
+    
     return (
         <Center backgroundColor="none">
             <Box p={4} textAlign="center">
@@ -95,32 +195,12 @@ const UpdateUserForm = () => {
                 <form onSubmit={sendUpdate}>
                     <Stack spacing={4} width="600px" padding="30px" marginBottom="50px" backgroundColor="#BED7DC">
                         <Flex justify="center">
-                            <Avatar id="image-container" type="file" size="xl" width="150px" height="150px" showName={false} bg="gray.300" src={profileImage} onClick={handleImageClick} />
+                            <Avatar id="image-container" type="file" size="xl" width="150px" height="150px" showName={false} bg="gray.300" src={user.profileImage} onClick={handleImageClick} />
                         </Flex>
                         <FormControl id="id" marginTop="20px" marginBottom="10px">
                             <Flex align="center" margin="auto">
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">아이디</FormLabel>
-                                <span>{id}</span>
-                                {/* <Input
-                                type="text"
-                                value={id}
-                                onChange={(e) => setId(e.target.value)}
-                                flex="2"
-                                width="400px"
-                                maxW="400px"
-                                height="35px"
-                                backgroundColor="white"
-                                borderColor="gray.400"
-                                borderWidth="1px"
-                                focusBorderColor="gray.400"
-                                focusBorderWidth="1px"
-                                borderRadius="0"
-                                _hover={{ borderColor: "darkgray" }}
-                                _focus={{
-                                    boxShadow: 'none',
-                                    borderColor: "darkgray"
-                                }}
-                            /> */}
+                                <span>{user.id}</span>
                             </Flex>
                         </FormControl>
 
@@ -129,8 +209,9 @@ const UpdateUserForm = () => {
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">비밀번호</FormLabel>
                                 <Input
                                     type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={user.password}
+                                    onChange={(e) => handleUserDataOnChange(e)}
+                                    name="password"
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
@@ -155,8 +236,10 @@ const UpdateUserForm = () => {
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">이메일</FormLabel>
                                 <Input
                                     type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={user.email}
+                                    onChange={(e) => handleUserDataOnChange(e)}
+                                    name="email"
+                                    placeholder={user.email}
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
@@ -181,8 +264,11 @@ const UpdateUserForm = () => {
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">이름</FormLabel>
                                 <Input
                                     type="name"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    value={user.name}
+                                    // onChange={(e) => setName(e.target.value)}
+                                    onChange={(e) => handleUserDataOnChange(e)}
+                                    name="name"
+                                    placeholder={user.name}
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
@@ -198,7 +284,6 @@ const UpdateUserForm = () => {
                                         boxShadow: 'none',
                                         borderColor: "darkgray"
                                     }}
-                                    readOnly
                                 />
                             </Flex>
                         </FormControl>
@@ -208,13 +293,15 @@ const UpdateUserForm = () => {
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">생년월일</FormLabel>
                                 <Input
                                     type="birth"
-                                    value={birth}
-                                    onChange={(e) => setBirth(e.target.value)}
+                                    value={user.birth}
+                                    // onChange={(e) => setBirth(e.target.value)}
+                                    onChange={(e) => handleUserDataOnChange(e)}
+                                    name="birth"
+                                    placeholder={user.birth}
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
                                     height="35px"
-                                    placeholder="생년월일 8자리"
                                     backgroundColor="white"
                                     borderColor="gray.400"
                                     borderWidth="1px"
@@ -234,7 +321,7 @@ const UpdateUserForm = () => {
                         <FormControl id="gender" marginBottom="10px">
                             <Flex align="center">
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">성별</FormLabel>
-                                <RadioGroup onChange={setGender} value={gender}
+                                <RadioGroup value={user.gender} placeholder={user.gender}
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
@@ -244,10 +331,10 @@ const UpdateUserForm = () => {
                                     borderWidth="1px">
                                     <Flex height="100%">
                                         <Box value="M"
-                                            onClick={() => setGender('M')}
+                                            // onClick={() => setGender('M')}
                                             justifyContent="center"
                                             width="200px"
-                                            bg={gender === "M" ? "#D3D3D3" : "inherit"}
+                                            bg={user.gender === "M" ? "#D3D3D3" : "inherit"}
                                             borderRight="1px solid lightgray"
                                             _hover={{ cursor: 'pointer' }}
                                         >
@@ -255,21 +342,21 @@ const UpdateUserForm = () => {
                                                 style={{ display: 'none' }}
                                                 isDisabled={true}
                                             >
-                                                <span style={{ fontWeight: gender === "M" ? "bold" : "normal", textAlign: "center" }}>남</span>
+                                                <span style={{ fontWeight: user.gender === "M" ? "bold" : "normal", textAlign: "center" }}>남</span>
                                             </Radio>
                                         </Box>
                                         <Box value="F"
-                                            onClick={() => setGender('F')}
+                                            // onClick={() => setGender('F')}
                                             justifyContent="center"
                                             width="200px"
-                                            bg={gender === "F" ? "#D3D3D3" : "inherit"}
+                                            bg={user.gender === "F" ? "#D3D3D3" : "inherit"}
                                             _hover={{ cursor: 'pointer' }}
                                         >
                                             <Radio value="F"
                                                 style={{ display: 'none' }}
                                                 isDisabled={true}
                                             >
-                                                <span style={{ fontWeight: gender === "F" ? "bold" : "normal", textAlign: "center" }}>여</span>
+                                                <span style={{ fontWeight: user.gender === "F" ? "bold" : "normal", textAlign: "center" }}>여</span>
                                             </Radio>
                                         </Box>
                                     </Flex>
@@ -281,9 +368,10 @@ const UpdateUserForm = () => {
                             <Flex align="center">
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">통신사</FormLabel>
                                 <Select
-                                    placeholder="통신사 선택"
-                                    value={telecom}
-                                    onChange={(e) => setTelecom(e.target.value)}
+                                    value={user.telecom}
+                                    onChange={(e) => handleUserDataOnChange(e)}
+                                    name="telecom"
+                                    placeholder="통신사를 선택하세요"
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
@@ -312,13 +400,14 @@ const UpdateUserForm = () => {
                                 <FormLabel width="100px" paddingLeft="5px" fontWeight="bold">휴대폰 번호</FormLabel>
                                 <Input
                                     type="phone"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
+                                    value={user.phone}
+                                    onChange={(e) => handleUserDataOnChange(e)}
+                                    name="phone"
+                                    placeholder={user.phone}
                                     flex="2"
                                     width="400px"
                                     maxW="400px"
                                     height="35px"
-                                    placeholder="000-0000-0000"
                                     backgroundColor="white"
                                     borderColor="gray.400"
                                     borderWidth="1px"
@@ -335,7 +424,7 @@ const UpdateUserForm = () => {
                         </FormControl>
 
                         <Flex justify="center" marginBottom="10px">
-                            <Button width="150px" height="50px" colorScheme="custom" backgroundColor="#96B6C5">
+                            <Button id="submit" type="submit" value="수정" width="150px" height="50px" colorScheme="custom" backgroundColor="#96B6C5">
                                 완료
                             </Button>
                         </Flex>
