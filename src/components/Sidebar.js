@@ -8,10 +8,6 @@ const Sidebar = () => {
 
     const menuItems = [
         {
-            name: "게시글",
-            link: "/",
-        },
-        {
             name: "피드",
             link: "/feed",
         },
