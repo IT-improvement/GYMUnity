@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import "./LeaveForm.css";
+import Context from '../../Context';
 
 const LeaveForm = () => {
     const [id, setId] = useState("");
@@ -9,6 +10,7 @@ const LeaveForm = () => {
     const { code } = useParams();
     const [user, setUser] = useState(true);
     const navigate = useNavigate();
+    const { isLoggedIn, sessionUser } = useContext(Context);
 
     const handleCheckboxChange = (event) => {
         setIsChecked(event.target.checked);
@@ -42,6 +44,7 @@ const LeaveForm = () => {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
 
+            console.log(response);
             const result = await response.json();
             // let result = null;
             // try {
@@ -72,7 +75,12 @@ const LeaveForm = () => {
 
     useEffect(() => {
         console.log(code);
-        fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=read_one&code=${code}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=read_one&code=${sessionUser.code}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
             .then(response => {
                 console.log(response);
                 if (!response.ok) {
@@ -83,6 +91,7 @@ const LeaveForm = () => {
             .then(data => {
                 setUser(data);
                 console.log(data);
+                console.log(code);
             })
             .catch((error) => {
                 console.log(error);
