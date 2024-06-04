@@ -17,7 +17,6 @@ import LoginForm from "./components/user/LoginForm";
 import MyPage from "./components/user/MyPage";
 import UpdateUserForm from "./components/user/UpdateUserForm";
 import LeaveForm from "./components/user/LeaveForm";
-import LogoutForm from "./components/user/LogoutForm";
 import UserProfile from "./components/user/UserProfile";
 import FeedCreate from "./components/feed/feedCreate";
 import FeedUpdate from "./components/feed/feedUpdate";
@@ -98,10 +97,6 @@ const router = createBrowserRouter(
                 {
                     path: '/user/update',
                     element: <Body children={<UpdateUserForm />} />,
-                },
-                {
-                    path: '/user/logout',
-                    element: <Body children={<LogoutForm />} />,
                 },
                 {
                     path: '/user/leave',
