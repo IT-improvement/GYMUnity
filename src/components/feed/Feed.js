@@ -19,7 +19,7 @@ const Feed = (props) => {
         }
         
         return commentComponents;
-    };
+    };          
 
     return (
         <Card key={feedIndex}>
@@ -42,7 +42,7 @@ const Feed = (props) => {
                     </Link>
 
                     <Flex direction="column" gap="10px">
-                        <Link to={`/feed/detail/${feedIndex}`}> 
+                        <Link to={`/feed/${feedIndex}`}> 
                             <Card _hover={{backgroundColor: "gray.400"}}>
                                 <CardBody>
                                     <Flex direction="column" gap="20px">

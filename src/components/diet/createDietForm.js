@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './routineCreate.css';
+import './createDietForm.css';
+import Context from '../../Context';
 
 const RenderExercise = ({ onChangeCategory }) => {
     return (
         <div className="routine-create-category-box">
             <select name="category" onChange={onChangeCategory}>
                 <option value="" disabled selected>
-                    카테고리 선택
+                    선택
                 </option>
-                <option value="1">상체</option>
-                <option value="2">하체</option>
-                <option value="3">유산소</option>
+                <option value="1">아침</option>
+                <option value="2">점심</option>
+                <option value="3">저녁</option>
             </select>
         </div>
     );
@@ -20,38 +21,39 @@ const RenderExercise = ({ onChangeCategory }) => {
 export default function RoutineCreate({ isOpen, onClose }) {
     const [data, setData] = useState([]);
     const [categoryIndex, setCategoryIndex] = useState('');
+    const { isLoggedIn, sessionUser } = useContext(Context);
     const [formValues, setFormValues] = useState({
         day: '',
         category: '',
-        exercise: '',
+        food: '',
+        foodIndex: '',
+        totalCalories: 0,
+        totalProtein: 0,
+        userCode: sessionUser.code,
         command: 'write',
     });
 
     const navigate = useNavigate();
 
-    const RenderSelect = ({ categoryIndex }) => {
-        console.log('categoryIndex:' + categoryIndex);
-        console.log('data:' + data);
+    const RenderSelect = ({ foodIndex }) => {
         return (
             <div className="routine-create-category-box">
-                <select name="exercise" onChange={handleChange} value={formValues.exercise}>
+                <select name="food" onChange={handleChange} value={formValues.food}>
                     <option value="" disabled>
-                        운동종류 선택
+                        음식 선택
                     </option>
-                    {data
-                        .filter((json) => json.exercise_category_index === parseInt(categoryIndex))
-                        .map((item) => (
-                            <option key={item.exercise_index} value={item.exercise_index}>
-                                {item.name}
-                            </option>
-                        ))}
+                    {data.map((item) => (
+                        <option key={item.food_Index} value={item.food_Index}>
+                            {item.foodName}
+                        </option>
+                    ))}
                 </select>
             </div>
         );
     };
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/exercises/?command=read_userCode`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/food/service?command=readFoodList&userCode=${sessionUser.code}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -63,7 +65,7 @@ export default function RoutineCreate({ isOpen, onClose }) {
                 console.log(data);
             })
             .catch((error) => console.error('Error fetching data:', error));
-    }, []);
+    }, [sessionUser.code]);
 
     if (!isOpen) {
         return null;
@@ -72,34 +74,56 @@ export default function RoutineCreate({ isOpen, onClose }) {
     const onChangeCategory = (event) => {
         const { value } = event.target;
         setCategoryIndex(value);
-        setFormValues((prevValues) => ({ ...prevValues, category: value, exercise: '' }));
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            category: value,
+            food: '',
+        }));
     };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+        if (name === 'food') {
+            const selectedFoodIndex = parseInt(value);
+            const selectedFood = data.find((item) => item.food_Index === selectedFoodIndex);
+            if (selectedFood) {
+                setFormValues((prevValues) => ({
+                    ...prevValues,
+                    [name]: value,
+                    foodIndex: selectedFoodIndex,
+                    totalCalories: selectedFood.totalCalories,
+                    totalProtein: selectedFood.totalProtein,
+                }));
+            } else {
+                console.error('Selected food not found in data array');
+                // 혹은 사용자에게 오류 메시지 표시
+            }
+        } else {
+            setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+        }
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const formData = new URLSearchParams(formValues).toString();
+        const formData = JSON.stringify(formValues);
         if (!formValues.day) {
             alert('요일을 선택하세요');
             return;
         }
-        if (!formValues.exercise) {
-            alert('운동을 선택하세요');
+        if (!formValues.food) {
+            alert('음식을 선택하세요');
             return;
         }
-        fetch(`${process.env.REACT_APP_SERVER_URL}/routine`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/diet/service?command=createDiet`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            headers: { 'Content-Type': 'application/json' },
             body: formData,
         })
+            .then((response) => response.json())
             .then((data) => {
-                console.log(data);
+                console.log('data:', data);
                 onClose(); // 창 닫기
-                navigate('/routine', { replace: true }); // 새로고침
+                navigate('/diet', { replace: true }); // 새로고침
                 window.location.reload();
             })
             .catch((error) => console.error('Error submitting form:', error));
@@ -131,7 +155,7 @@ export default function RoutineCreate({ isOpen, onClose }) {
                             </select>
                         </div>
                         <RenderExercise onChangeCategory={onChangeCategory} />
-                        <RenderSelect categoryIndex={categoryIndex} />
+                        <RenderSelect foodIndex={categoryIndex} />
                         <div className="routine-create-button-box">
                             <input type="submit" value="생성하기" className="routine-create-button"></input>
                         </div>

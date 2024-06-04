@@ -37,13 +37,14 @@ const LoginForm = () => {
                 //setIsLoggedIn(true);
                 console.log(result.code);
                 //setUserCode(result.code);
-                navigate('/');
+                navigate('/user/mypage');
             } else {
                 alert('Failed to login');
             }
 
         } catch (error) {
             console.error('Error: ', error);
+            alert('Failed to login');
         }
 
         console.log(`${process.env.REACT_APP_SERVER_URL}`);
