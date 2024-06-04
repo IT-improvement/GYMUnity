@@ -12,33 +12,35 @@ export default function DiaryWrite() {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('content', content);
     if(!content){
       alert('내용을 작성하세요');
       return;
     }
-    if (selectedDate) {
-      formData.append('date', format(selectedDate, 'yyyy-MM-dd 12:mm:ss'));
-    }else{
+    if (!selectedDate) {
       alert('날짜를 선택하세요');
       return;
     }
+
+    const formattedDate = format(selectedDate, 'yyyy-MM-dd 12:mm:ss');
+
+    const formData = new URLSearchParams();
+    formData.append('content', content);
+    formData.append('date', formattedDate);
     // 게시글 데이터 처리 로직
     fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=write`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
       body: formData
-  })
-  .then(data => {
-      console.log(data);
-      navigate('/diary'); // 새로고침
-  })
-  .catch(error => console.error('Error submitting form:', error));
-    console.log({
-      content,
-      date: selectedDate ? format(selectedDate, 'yyyy-MM-dd 12:mm:ss') : null,
-    });
+    })
+    .then(data => {
+        console.log(data);
+        navigate('/diary'); // 새로고침
+    })
+    .catch(error => console.error('Error submitting form:', error));
+      console.log({
+        content,
+        date: selectedDate ? format(selectedDate, 'yyyy-MM-dd 12:mm:ss') : null,
+      });
   };
   return(
         <div className="diary-write">

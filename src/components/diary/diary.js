@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths, subDays, sub } from 'date-fns';
+import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 import { Icon } from '@iconify/react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 import DiaryDetail from './diaryDetail';
 
-
-
 const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
     const navigate = useNavigate();
 
-    //      event handler: 다이어리 쓰기 이동//
-    const onClickDiaryWrite = () =>{
+    const onClickDiaryWrite = () => {
         navigate('/diary/write');
     }
 
@@ -22,8 +19,8 @@ const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
                     <span className='text-month'>{format(currentMonth, 'M')}</span>
                     <span className='text-year'>{format(currentMonth, 'yyyy')}</span>
                     <div className='button'>
-                        <Icon className='icon' icon="bi:arrow-left-circle-fill" onClick={prevMonth} ></Icon>
-                        <Icon className='icon' icon="bi:arrow-right-circle-fill" onClick={nextMonth}></Icon>
+                        <Icon className='icon' icon="bi:arrow-left-circle-fill" onClick={prevMonth} />
+                        <Icon className='icon' icon="bi:arrow-right-circle-fill" onClick={nextMonth} />
                     </div>
                 </div>
                 <div className='diary-button'>
@@ -47,7 +44,7 @@ const RenderDate = () => {
         );
     }
 
-    return <div className='row-days'>{days}</div>
+    return <div className='row-days'>{days}</div>;
 }
 
 const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
@@ -55,32 +52,31 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
     const endMonth = endOfMonth(startMonth);
     const startDay = startOfWeek(startMonth);
     const endDay = endOfWeek(endMonth);
-    const [data, setData] = useState([])
-    
+    const [data, setData] = useState([]);
+
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=readMonth&startMonth=${(format(startMonth, 'yyyy-MM-dd hh:mm:ss'))}&endMonth=${(format(endMonth, 'yyyy-MM-dd hh:mm:ss'))}`)
-            .then(response => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=readMonth&startMonth=${format(startMonth, 'yyyy-MM-dd HH:mm:ss')}&endMonth=${format(endMonth, 'yyyy-MM-dd HH:mm:ss')}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json();
-            })
-            .then(data => {
+                const data = await response.json();
                 setData(data);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching data:', error);
-            });
+            }
+        };
+        fetchData();
     }, [currentMonth]);
-    console.log(data);
+
     const rows = [];
     let days = [];
     let day = startDay;
-    let formatDay = '';
 
     while (day <= endDay) {
         for (let i = 0; i < 7; i++) {
-            formatDay = format(day, 'd');
+            const formatDay = format(day, 'd');
             const cloneDay = day;
             const isDisabled = !isSameMonth(day, currentMonth);
             const isSelected = isSameDay(day, selectedDate);
@@ -102,12 +98,12 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
                         className={i === 0 ? 'sunday' : i === 6 ? 'saturday' : ''}
                     >
                         {formatDay}
-                        </span>
-                        <div className='day-content'>
-                        {data.filter(json => format(new Date(json.diary_date), 'yyyy-MM-dd') === format(cloneDay, 'yyyy-MM-dd')).map(filteredData => (
-                                    <div>{filteredData.content}</div>
-                                ))}
-                        </div>
+                    </span>
+                    <div className='day-content'>
+                        {data.filter(entry => format(new Date(entry.diary_date), 'yyyy-MM-dd') === format(cloneDay, 'yyyy-MM-dd')).map(filteredData => (
+                            <div key={filteredData.id}>{filteredData.content}</div>
+                        ))}
+                    </div>
                 </div>
             );
             day = addDays(day, 1);
@@ -117,17 +113,13 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
         );
         days = [];
     }
-    return (
-        <div className='body'>{rows}</div>
-    );
+    return <div className='body'>{rows}</div>;
 }
 
 export default function Diary() {
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
-    //        function: 네이케이트 함수       //
     const navigate = useNavigate();
 
     const prevMonth = () => {
@@ -139,17 +131,16 @@ export default function Diary() {
     };
 
     const openModal = () => {
-    setIsModalOpen(true);
+        setIsModalOpen(true);
     };
 
     const closeModal = () => {
-    setIsModalOpen(false);
+        setIsModalOpen(false);
     };
 
     const onDateClick = (day) => {
         setSelectedDate(day);
         openModal();
-        // navigate(`/diary/detail/${encodeURIComponent(format(day, 'yyyy-MM-dd 12:mm:ss'))}`);
     }
     
     return (
@@ -157,7 +148,7 @@ export default function Diary() {
             <RenderHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
             <RenderDate />
             <RenderDay currentMonth={currentMonth} selectedDate={selectedDate} onDateClick={onDateClick} />
-            <DiaryDetail isOpen={isModalOpen} onClose={closeModal} date={format(selectedDate, 'yyyy-MM-dd 12:mm:ss')}/>
+            <DiaryDetail isOpen={isModalOpen} onClose={closeModal} date={format(selectedDate, 'yyyy-MM-dd 12:mm:ss')} />
         </div>
     );
 }
