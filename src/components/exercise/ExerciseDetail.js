@@ -20,7 +20,7 @@ const ExerciseDetail = () => {
         .then(response => response.json())
         .then(data => setExercise(data))
         .catch(() => {
-            Toast.showFailed("운동법 불러오기 실패");
+            Toast.showFailed("운동법 로드 실패");
             navigate("/exercises")
         });
     };

@@ -26,8 +26,7 @@ const FriendButton = ({ userCodeOther }) => {
         })
         .then(response => response.json())
         .then(data => setFriendStatus(data.relationshipStatus))
-        .finally(() => {
-        });
+        .catch(() => {});
     };
 
     const fetchFriendDelete = () => {

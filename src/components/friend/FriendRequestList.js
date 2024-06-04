@@ -1,15 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Avatar, Box, Button, Card, CardBody, Grid, Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Card, CardBody, Center, Grid, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import Context from "../../Context";
+import LoadingSpinner from "../chakra/LoadingSpinner";
 import Toast from "../chakra/Toast";
 
 const FriendRequestList = ({ shouldFetch }) => {
     const [friendRequests, setFriendRequests] = useState([]);
+    const [isFetching, setIsFetching] = useState(true);
     const { sessionUser } = useContext(Context);
     const friendUrlPath = `${process.env.REACT_APP_SERVER_URL}/friends`;
 
     const fetchFriendRequests = () => {
+        setIsFetching(true);
+
         fetch(`${friendUrlPath}?command=read_all_friend_request_received`, {
             method: "GET",
             headers: {
@@ -17,8 +21,9 @@ const FriendRequestList = ({ shouldFetch }) => {
             }, 
         })
         .then(response => response.json())
-        .then(data => { console.log(data); setFriendRequests(data) })
-        .catch(() => Toast.showFailed("친구 요청 목록 불러오기 실패"));
+        .then(data => setFriendRequests(data))
+        .catch(() => Toast.showFailed("친구 요청 목록 불러오기 실패"))
+        .finally(() => setIsFetching(false));
     };
 
     const handleAcceptFriendRequest = (userCodeOther) => {
@@ -37,6 +42,7 @@ const FriendRequestList = ({ shouldFetch }) => {
                 removeFriendRequestFromList(userCodeOther);
             }
         })
+        .catch(() => Toast.showFailed("친구 수락 처리 실패"))
         .finally(() => {
             Toast.show(isAccepted, "친구 수락 성공", "친구 수락 실패");
         });
@@ -58,8 +64,9 @@ const FriendRequestList = ({ shouldFetch }) => {
                 removeFriendRequestFromList(userCodeOther);
             } 
         })
+        .catch(() => Toast.showFailed("친구 요청 처리 실패"))
         .finally(() => {
-            Toast.show(isDeclined, "친구 요청 거절 성공", "친구 요청 거절 불가");
+            Toast.show(isDeclined, "친구 요청 거절 성공", "친구 요청 거절 실패");
         });
     };
 
@@ -99,6 +106,11 @@ const FriendRequestList = ({ shouldFetch }) => {
     return (
         <VStack w="100%" p="10px" gap="30px">
             <Heading>친구 요청 목록</Heading>
+            { isFetching && 
+                <Center>
+                    <LoadingSpinner />
+                </Center>
+            }
             { friendRequests.length > 0 ? 
                 <Grid templateColumns="repeat(3, 1fr)" gap="30px" justifyContent="center" >
                     { showFriendRequests() }
