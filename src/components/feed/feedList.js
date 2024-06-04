@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Avatar, Badge, Box, Button, Card, CardBody, Flex, Grid, Heading, Image, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { Box, Button, Center, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import Context from "../../Context";
 import LoadingSpinner from "../chakra/LoadingSpinner";
 import Sort from "../../utils/sort";
@@ -30,6 +30,7 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
         })
         .then(response => response.json())
         .then(data => setFeeds(data))
+        .catch(() => Toast.showFailed("피드 목록 로드 실패"))
         .finally(() => {
             setIsFetching(false);
         });
@@ -77,15 +78,18 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
     return (
         <Flex direction="column" w="100%" p="10px" bgColor="gray.300" gap="10px" borderRadius="10px">
             <Heading>피드목록</Heading>
-            { isFetching && <LoadingSpinner /> }
-            { feeds.length > 0 ? 
+            { isFetching ?
+                <Center>
+                    <LoadingSpinner />
+                </Center>
+                :
+                feeds.length > 0 ? 
                 <Flex direction="column" gap="10px">
                     <Button colorScheme="blue" onClick={() => navigate("/feed/feedCreate")}>피드작성</Button>
                     <Grid templateColumns="repeat(4, 1fr)" gap="30px" justifyContent="center" >
                         { feeds.map(feed =>
                             <Feed key={feed.feedIndex} feed={feed} handleLikeButtonOnClick={handleLikeButtonOnClick} />
-                            )
-                        }
+                        )}
                     </Grid> 
                     { isTotalSearch && (feeds.length >= itemLimit) &&
                     <Flex justify="right">
@@ -98,7 +102,6 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                 </Flex>
                 :
                 <Heading fontSize="20px">피드가 없습니다</Heading>
-                
             }
         </Flex>
     );
