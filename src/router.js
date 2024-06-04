@@ -21,8 +21,7 @@ import LeaveForm from "./components/user/LeaveForm";
 import LogoutForm from "./components/user/LogoutForm";
 import UserProfile from "./components/user/UserProfile";
 import FeedCreate from "./components/feed/feedCreate";
-import FeedDelete from "./components/feed/feedDelete";
-import FeedUpdate from "./components/feed/feedupdate";
+import FeedUpdate from "./components/feed/feedUpdate";
 import ViewFoodListForm from "./components/diet/viewFoodListForm";
 import ViewFoodCategoryListForm from "./components/diet/ViewFoodCategoryListForm";
 import UpdateFoodCategoryForm from "./components/diet/UpdateFoodCategoryForm";
@@ -201,10 +200,7 @@ const router = createBrowserRouter(
             },{
                 path:"/feed/:feedIndex/feedUpdate",
                 element:<FeedUpdate/>
-            },{
-                path:"/feed/:feedIndex/feedDelete",
-                element:<FeedDelete/>
-            }
+            },
         ]
     },
 ],
