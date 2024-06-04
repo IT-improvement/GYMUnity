@@ -3,13 +3,13 @@ import { useLocation } from "react-router-dom";
 import { Flex, Heading } from "@chakra-ui/react";
 import SearchOptionMenu from "./SearchOptionMenu";
 import ExerciseList from "../exercise/ExerciseList";
-import UserList from "./UserList";
 import FeedList from "../feed/feedList";
+import UserList from "../user/UserList";
 
 const categoryMap = {
     all: "전체",
     user: "유저",
-    feed: "게시글",
+    feed: "피드",
     exercise: "운동법",
 };
 
