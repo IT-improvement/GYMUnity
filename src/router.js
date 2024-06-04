@@ -20,7 +20,6 @@ import UserProfile from "./components/user/UserProfile";
 import FeedCreate from "./components/feed/feedCreate";
 import FeedUpdate from "./components/feed/feedUpdate";
 import ViewFoodListForm from "./components/diet/viewFoodListForm";
-import ViewFoodCategoryListForm from "./components/diet/ViewFoodCategoryListForm";
 import UpdateFoodCategoryForm from "./components/diet/UpdateFoodCategoryForm";
 import DiaryDetail from "./components/diary/diaryDetail";
 import Diary from "./components/diary/diary";
@@ -168,10 +167,6 @@ const router = createBrowserRouter(
         {
           path: "/diet/foodList",
           element: <Body children={<ViewFoodListForm />} />,
-        },
-        {
-          path: "/diet/foodCategoryList",
-          element: <Body children={<ViewFoodCategoryListForm />} />,
         },
         {
           path: "/diet/updateFoodCategory",
