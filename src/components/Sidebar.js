@@ -6,16 +6,16 @@ import Context from "../Context";
 const Sidebar = () => {
   const { isLoggedIn } = useContext(Context);
 
-    const menuItems = [
-        {
-            name: "피드",
-            link: "/feed",
-        },
-        {
-            name: "운동법",
-            link: "/exercises",
-        },
-    ];
+  const menuItems = [
+    {
+      name: "피드",
+      link: "/feed",
+    },
+    {
+      name: "운동법",
+      link: "/exercises",
+    },
+  ];
 
   const menuItemsWhenLoggedIn = [
     ...menuItems,
@@ -37,7 +37,7 @@ const Sidebar = () => {
     },
     {
       name: "식단표",
-      link: "/diet",
+      link: "/routineDiet",
     },
     {
       name: "식단 메뉴 관리",

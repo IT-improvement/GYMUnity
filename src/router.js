@@ -26,10 +26,10 @@ import Diary from "./components/diary/diary";
 import Routine from "./components/routine/Routine";
 import FeedList from "./components/feed/feedList";
 import DiaryWrite from "./components/diary/diaryWrite";
-import DietForm from "./components/diet/DietForm";
 // import FeedDelete from './components/feed/feedDelete';
 import CreateFood from "./components/diet/CreateFood";
 import EditFood from "./components/diet/EditFood";
+import RoutineDiet from "./components/diet/RoutineDiet";
 
 const router = createBrowserRouter(
   [
@@ -153,10 +153,6 @@ const router = createBrowserRouter(
       element: <Root />,
       children: [
         {
-          path: "/diet",
-          element: <Body children={<DietForm />} />,
-        },
-        {
           path: "/diet/createFood",
           element: <Body children={<CreateFood />} />,
         },
@@ -175,6 +171,16 @@ const router = createBrowserRouter(
         {
           path: "/diet/editFood/:index",
           element: <Body children={<EditFood />} />,
+        },
+      ],
+    },
+    {
+      path: "/routineDiet",
+      element: <Root />,
+      children: [
+        {
+          path: "",
+          element: <Body children={<RoutineDiet />} />,
         },
       ],
     },

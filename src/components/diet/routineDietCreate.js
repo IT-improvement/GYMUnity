@@ -1,56 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import "./routineCreate.css";
+import "./routineDietCreate.css";
+import Context from "../../Context";
 
-const RenderExercise = ({ onChangeCategory }) => {
-  return (
-    <div className="routine-create-category-box">
-      <select name="category" onChange={onChangeCategory}>
-        <option value="" disabled selected>
-          카테고리 선택
-        </option>
-        <option value="1">상체</option>
-        <option value="2">하체</option>
-        <option value="3">유산소</option>
-      </select>
-    </div>
-  );
-};
-
-export default function RoutineCreate({ isOpen, onClose }) {
-  const [data, setData] = useState([]);
-  const [categoryIndex, setCategoryIndex] = useState("");
+export default function RoutineDietCreate({ isOpen, onClose }) {
+  const [foods, setFoods] = useState([]);
   const [formValues, setFormValues] = useState({
     day: "",
-    category: "",
-    exercise: "",
+    mealTime: "",
+    food: "",
     command: "write",
   });
 
   const navigate = useNavigate();
+  const { isLoggedIn, sessionUser } = useContext(Context);
 
-  const RenderSelect = ({ categoryIndex }) => {
-    console.log("categoryIndex:" + categoryIndex);
-    console.log("data:" + data);
+  const RenderSelect = () => {
     return (
       <div className="routine-create-category-box">
-        <select
-          name="exercise"
-          onChange={handleChange}
-          value={formValues.exercise}
-        >
+        <select name="food" onChange={handleChange} value={formValues.food}>
           <option value="" disabled>
-            운동종류 선택
+            음식 선택
           </option>
-          {data
-            .filter(
-              (json) => json.exercise_category_index === parseInt(categoryIndex)
-            )
-            .map((item) => (
-              <option key={item.exercise_index} value={item.exercise_index}>
-                {item.name}
-              </option>
-            ))}
+          {foods.map((item) => (
+            <option key={item.foodIndex} value={item.foodIndex}>
+              {item.foodName}
+            </option>
+          ))}
         </select>
       </div>
     );
@@ -58,7 +34,7 @@ export default function RoutineCreate({ isOpen, onClose }) {
 
   useEffect(() => {
     fetch(
-      `${process.env.REACT_APP_SERVER_URL}/exercises/?command=read_userCode`
+      `${process.env.REACT_APP_SERVER_URL}/food/service?command=readFoodList&userCode=${sessionUser.code}`
     )
       .then((response) => {
         if (!response.ok) {
@@ -67,7 +43,7 @@ export default function RoutineCreate({ isOpen, onClose }) {
         return response.json();
       })
       .then((data) => {
-        setData(data);
+        setFoods(data);
         console.log(data);
       })
       .catch((error) => console.error("Error fetching data:", error));
@@ -76,16 +52,6 @@ export default function RoutineCreate({ isOpen, onClose }) {
   if (!isOpen) {
     return null;
   }
-
-  const onChangeCategory = (event) => {
-    const { value } = event.target;
-    setCategoryIndex(value);
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      category: value,
-      exercise: "",
-    }));
-  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -99,11 +65,11 @@ export default function RoutineCreate({ isOpen, onClose }) {
       alert("요일을 선택하세요");
       return;
     }
-    if (!formValues.exercise) {
-      alert("운동을 선택하세요");
+    if (!formValues.food) {
+      alert("음식을 선택하세요");
       return;
     }
-    fetch(`${process.env.REACT_APP_SERVER_URL}/routine`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/routineDiet`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: formData,
@@ -111,8 +77,8 @@ export default function RoutineCreate({ isOpen, onClose }) {
       .then((data) => {
         console.log(data);
         onClose(); // 창 닫기
-        navigate("/routine", { replace: true }); // 새로고침
-        window.location.reload();
+        // navigate("/routineDiet", { replace: true }); // 새로고침
+        // window.location.reload();
       })
       .catch((error) => console.error("Error submitting form:", error));
   };
@@ -142,8 +108,22 @@ export default function RoutineCreate({ isOpen, onClose }) {
                 <option value="Su">일요일</option>
               </select>
             </div>
-            <RenderExercise onChangeCategory={onChangeCategory} />
-            <RenderSelect categoryIndex={categoryIndex} />
+            <div className="routine-create-category-box">
+              <select
+                name="mealTime"
+                onChange={handleChange}
+                value={formValues.mealTime}
+              >
+                <option value="" disabled selected>
+                  식사 시간 선택
+                </option>
+                <option value="breakfast">아침</option>
+                <option value="lunch">점심</option>
+                <option value="dinner">저녁</option>
+              </select>
+            </div>
+
+            <RenderSelect />
             <div className="routine-create-button-box">
               <input
                 type="submit"
