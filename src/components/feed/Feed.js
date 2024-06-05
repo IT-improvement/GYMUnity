@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Avatar, Badge, Box, Card, CardBody, Flex, Image, Text, Input } from "@chakra-ui/react";
+import { Avatar, Badge, Box, Card, CardBody, Flex, Image, Text, Input, Center } from "@chakra-ui/react";
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
 
@@ -10,7 +10,7 @@ const Feed = (props) => {
     const [comment, setComment] = useState("");
     const navigate = useNavigate();
     const { feedIndex, title, content, userCode, userId, 
-            favoriteCount, checkFavorite, createDate, comments } = props.feed;
+            favoriteCount, checkFavorite, createDate, comments, imageURL } = props.feed;
             console.log(props.feed)
 
     const showComments = (comments) => {
@@ -72,9 +72,9 @@ const Feed = (props) => {
         e.preventDefault();
         fetchFeedCommentCreate();
     };
-
+    console.log("ImageURL : " + imageURL)
     return (
-        <Card key={feedIndex}>
+        <Card>
             <CardBody>
                 <Flex direction="column" p="10px" gap="10px" borderRadius="10px" bgColor="gray.300">
                     <Link to={`/user/${userCode}`} >
@@ -83,10 +83,11 @@ const Feed = (props) => {
                                 <Flex gap="10px">
                                     <Avatar src="" size="md"/>
                                     <Flex direction="column">
-                                        <Text>{props.feed.userName}</Text>
                                         <Badge colorScheme="pink">
                                             {userId}
                                         </Badge>
+                                        <Text fontWeight="bold">{props.feed.userName}</Text>
+                                        <Text fontWeight="bold">작성일 : {createDate}</Text>
                                     </Flex>
                                 </Flex>
                             </CardBody>
@@ -102,13 +103,12 @@ const Feed = (props) => {
                                             <Text fontWeight="bold">제목</Text>
                                             <Text>{title}</Text>
                                         </Box>
+                                        <Center>
+                                                <Image src={`${imageURL ? imageURL : ""}`} /> 
+                                        </Center>
                                         <Box>
                                             <Text fontWeight="bold">내용</Text>
                                             <Text>{content}</Text>
-                                        </Box>
-                                        <Box>
-                                            <Text fontWeight="bold">작성일</Text>
-                                            <Text>{createDate}</Text>
                                         </Box>
                                     </Flex>
                                 </CardBody>
