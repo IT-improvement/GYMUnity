@@ -91,7 +91,8 @@ const LoginForm = () => {
         <Flex backgroundColor="none">
             <Box p={4} textAlign="center">
                 <Stack spacing={4} width="600px" padding="30px" marginBottom="50px" backgroundColor="#BED7DC">
-                    <Heading as="h2" size="lg" mb={6}>
+                <form onSubmit={sendLogin}>
+                <Heading as="h2" size="lg" mb={6}>
                         로그인
                     </Heading>
 
@@ -155,6 +156,8 @@ const LoginForm = () => {
                             회원가입
                         </Button>
                     </Flex>
+                </form>
+                    
                 </Stack>
             </Box>
         </Flex>
