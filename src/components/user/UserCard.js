@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Avatar, Badge, Card, CardBody, Box, Flex, Text, VStack } from "@chakra-ui/react";
 
 const UserCard = (props) => {
-    const { code, name, id} = props.user;
+    const { code, name, id, profileImage } = props.user;
 
     return (
         <Card key={code}>
@@ -12,7 +12,7 @@ const UserCard = (props) => {
                     _hover={{backgroundColor: "gray.500"}} >
                     <Link to={`/user/${code}`}>
                         <Flex direction="column" align="center" gap="10px">
-                            <Avatar src="" size="2xl" />
+                            <Avatar src={props.user.profileImage} size="2xl" />
                             <VStack gap="10px">
                                 <Text>{name}</Text>
                                 <Badge fontSize="15px" colorScheme="pink">
