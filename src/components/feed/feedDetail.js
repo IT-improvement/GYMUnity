@@ -57,7 +57,7 @@ const FeedDetail = () => {
 
         while (index < commentLimit - 1) {
             const comment = comments[index++];
-            commentComponents.push(<Text key={comment.feedCommentsIndex}>{comment.comment}</Text>)
+            commentComponents.push(<Text key={comment.feedCommentsIndex}>{comment.userName} : {comment.comment}</Text>)
         }
         
         return commentComponents;

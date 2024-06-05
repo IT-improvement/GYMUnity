@@ -9,7 +9,7 @@ import Feed from "./Feed";
 
 const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
     const [feeds, setFeeds] = useState([]);
-    const [itemLimit] = useState(8);
+    let [pageNumber, setPageNumber] = useState(0);
     const [isFetching, setIsFetching] = useState(true);
     const { isLoggedIn, sessionUser } = useContext(Context);
     const navigate = useNavigate();
@@ -19,8 +19,10 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
             `command=feedReadByQuery&query=${searchQuery}` :
             `command=feedRead`;
 
-        if (isTotalSearch)
-            params += `&limit=${itemLimit}`;
+        
+            params += `&pageNumber=${pageNumber}`;
+
+        console.log(params)
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/feed?${params}`, {
             method: "GET", 
@@ -29,7 +31,10 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
             },
         })
         .then(response => response.json())
-        .then(data => setFeeds(data))
+        .then(data => 
+            {setFeeds([...feeds, ...data] )
+
+        })
         .catch(() => Toast.showFailed("피드 목록 로드 실패"))
         .finally(() => {
             setIsFetching(false);
@@ -67,13 +72,15 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
             setFeeds(Sort.ObjectArrayInAsecOrder(feeds, "createDate"));
     };
 
-    useEffect(() => {
-        fetchFeeds();
-    }, [searchQuery]);
+    const addItemLimit =() => {
+        setPageNumber(pageNumber++)
+    }
+
 
     useEffect(() => {
-        sortFeeds();
-    }, [isDescOrder]);
+        fetchFeeds();
+    }, [pageNumber]);
+
 
     return (
         <Flex direction="column" w="100%" p="10px" bgColor="gray.300" gap="10px" borderRadius="10px">
@@ -91,18 +98,13 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                             <Feed key={feed.feedIndex} feed={feed} handleLikeButtonOnClick={handleLikeButtonOnClick} />
                         )}
                     </Grid> 
-                    { isTotalSearch && (feeds.length >= itemLimit) &&
-                    <Flex justify="right">
-                        <Box p="10px" textAlign="center" bgColor="gray.200" borderRadius="10px" cursor="pointer"
-                            onClick={() => navigate("/search", { state: { searchQuery: searchQuery, category: "feed" }})} >
-                                <Text color="gray.600">게시글 더보기</Text>
-                        </Box>
-                    </Flex>
-                    }
+                   
                 </Flex>
                 :
                 <Heading fontSize="20px">피드가 없습니다</Heading>
             }
+            <Button onClick={()=> addItemLimit()}>다음</Button>
+            
         </Flex>
     );
 };

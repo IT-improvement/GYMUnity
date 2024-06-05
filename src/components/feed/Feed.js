@@ -1,25 +1,77 @@
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Avatar, Badge, Box, Card, CardBody, Flex, Image, Text } from "@chakra-ui/react";
+import { Avatar, Badge, Box, Card, CardBody, Flex, Image, Text, Input } from "@chakra-ui/react";
+import Context from "../../Context";
+import Toast from "../chakra/Toast";
 
 const Feed = (props) => {
-    const { feedIndex, title, content, userCode, userId, userName, 
+    const { isLoggedIn, sessionUser } = useContext(Context);
+    const [comment, setComment] = useState("");
+    const navigate = useNavigate();
+    const { feedIndex, title, content, userCode, userId, 
             favoriteCount, checkFavorite, createDate, comments } = props.feed;
+            console.log(props.feed)
 
     const showComments = (comments) => {
+        console.log(comments)
         if (!comments || comments.length === 0)
             return;
 
-        const commentLimit = 2;
         let commentComponents = [];
         let index = 0;
 
-        while (index < commentLimit - 1) {
+        while (index <= comments.length) {
+            
             const comment = comments[index++];
-            commentComponents.push(<Text key={comment.feedCommentsIndex}>{comment.comment}</Text>)
+            try {
+                commentComponents.push(<Text key={comment.feedCommentsIndex}>{comment.userName} : {comment.comment}</Text>)
+                
+            } catch (error) {
+                console.log(error)
+            }
+            
         }
         
         return commentComponents;
-    };          
+    }; 
+    
+    const fetchFeedCommentCreate = () => {
+        let isCreate = false;
+        const params = `comment=${comment}&`
+        console.log(feedIndex)
+        console.log(comment)
+
+        fetch(`${process.env.REACT_APP_SERVER_URL}/feed/${feedIndex}?command=feedCommentCreate&comment=${comment}`, {
+            method: "GET", 
+            headers: {
+                "Authorization": sessionUser.code, 
+            }, 
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if (data.status === 200)
+                isCreate = true;
+        })
+        .catch((e) => {
+            console.log(e)
+        })
+        .finally(() => {
+            Toast.show(isCreate, "댓글 생성 성공", "댓글 생성 실패");
+            navigate(`/feed`);
+        });
+    }
+
+    const handleFeedCommentFieldOnChange = (e) => {
+        setComment(e.target.value
+        );
+    };
+
+    const handleFeedCommentCreateOnSubmit = (e) => {
+        e.preventDefault();
+        fetchFeedCommentCreate();
+    };
 
     return (
         <Card key={feedIndex}>
@@ -31,7 +83,7 @@ const Feed = (props) => {
                                 <Flex gap="10px">
                                     <Avatar src="" size="md"/>
                                     <Flex direction="column">
-                                        <Text>{userName}</Text>
+                                        <Text>{props.feed.userName}</Text>
                                         <Badge colorScheme="pink">
                                             {userId}
                                         </Badge>
@@ -78,9 +130,13 @@ const Feed = (props) => {
                         <Card>
                             <CardBody>
                                 { comments.length > 0 ?
-                                    showComments(comments) :
+                                    showComments(comments)
+                                     :
                                     <Text>댓글이 없습니다</Text>
-                                }
+                                }<form method="POST" onSubmit={handleFeedCommentCreateOnSubmit}>
+                                <Input w="100%" type="text" name="comment" placeholder="댓글 쓰기" onChange={handleFeedCommentFieldOnChange} />
+                                </form>
+                                
                             </CardBody>
                         </Card>
                     </Flex>

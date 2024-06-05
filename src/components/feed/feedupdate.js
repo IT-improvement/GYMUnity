@@ -25,7 +25,7 @@ const FeedUpdate = () => {
         .then(response => response.json())
         .then(data => setFeed(data))
         .catch(() => {
-            Toast.showFailed("피드 수정 실패");
+            Toast.showFailed("피드 불러오기 실패");
             navigate("/feeds");
         });
     };

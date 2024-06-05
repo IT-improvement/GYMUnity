@@ -29,7 +29,6 @@ import Routine from "./components/routine/Routine";
 import FeedList from "./components/feed/feedList";
 import DiaryWrite from "./components/diary/diaryWrite";
 import DietForm from './components/diet/DietForm';
-// import FeedDelete from './components/feed/feedDelete';
 import CreateFood from './components/diet/CreateFood';
 import EditFood from './components/diet/EditFood';
 
