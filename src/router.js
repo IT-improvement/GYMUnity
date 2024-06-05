@@ -32,6 +32,7 @@ import DietForm from './components/diet/DietForm';
 // import FeedDelete from './components/feed/feedDelete';
 import CreateFood from './components/diet/CreateFood';
 import EditFood from './components/diet/EditFood';
+import DiaryDelete from "./components/diary/diaryDelete";
 
 const router = createBrowserRouter(
     [
@@ -65,6 +66,10 @@ const router = createBrowserRouter(
                 {
                     path: 'write',
                     element: <Body children={<DiaryWrite />} />,
+                },
+                {
+                    path: 'delete',
+                    element: <Body children={<DiaryDelete />} />,
                 },
             ],
         },
