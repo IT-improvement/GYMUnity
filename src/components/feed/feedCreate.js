@@ -34,7 +34,7 @@ const FeedCreate = () => {
             })
             .finally(() => {
                 Toast.show(isCreate, "피드 생성 성공", "피드 생성 실패");
-                navigate(`/feed`);
+                navigate("/feed")
             });
     }
 

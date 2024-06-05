@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Avatar, Badge, Box, Card, CardBody, Flex, Image, Text, Input, Center } from "@chakra-ui/react";
+import { Avatar, Button, Badge, Box, Card, CardBody, Flex, Image, Text, Input, Center } from "@chakra-ui/react";
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
 
@@ -25,7 +25,26 @@ const Feed = (props) => {
             
             const comment = comments[index++];
             try {
-                commentComponents.push(<Text key={comment.feedCommentsIndex}>{comment.userName} : {comment.comment}</Text>)
+               
+                
+                if(isLoggedIn && (comment.userCode === Number(sessionUser.code))) {
+                    commentComponents.push(
+                        <Flex>
+                            <form method="POST" onSubmit={handleFeedCommentUpdateOnSubmit}>
+                                <Input type="text" name="comment" defaultValue={comment.comment} onChange={handleFeedFieldOnChange}/>
+                                    
+                            <Button colorScheme="blue" size='s' variant='link'
+                            onClick={() => {handleFeedCommentUpdateOnSubmit(comment.feedCommentsIndex)}}>
+                            수정
+                            </Button>
+                            <Button colorScheme="red" size='s' variant='link' onClick={() => {handleFeedCommentDeleteOnSubmit(comment.feedCommentsIndex)}}>삭제</Button>
+                        
+                            </form>
+                        </Flex>
+                    )
+                }else {
+                    commentComponents.push(<Text key={comment.feedCommentsIndex}>{comment.userName} : {comment.comment}</Text>)
+                }
                 
             } catch (error) {
                 console.log(error)
@@ -35,6 +54,58 @@ const Feed = (props) => {
         
         return commentComponents;
     }; 
+
+    const handleFeedCommentUpdateOnSubmit = (params) => {
+        let isUpdate = false;
+
+        fetch(`${process.env.REACT_APP_SERVER_URL}/feed/${params}?command=feedCommentUpdate&comment=${comment.comment}`, {
+            method: "POST", 
+            headers: {
+                "Authorization": sessionUser.code,
+            }, 
+        })
+        .then(response => response.json())
+        .then((data) => {
+            if (data.status === 200)
+                isUpdate = true;
+        })
+        .finally(() => {
+            Toast.show(isUpdate, "댓글 업데이트 성공", "댓글 업데이트 실패");
+            
+            if (isUpdate)
+                navigate("/feed");
+            window.location.reload();
+        });
+    }
+
+    const handleFeedCommentDeleteOnSubmit = (params) => {
+        let isDeleted = false;
+
+        fetch(`${process.env.REACT_APP_SERVER_URL}/feed/${params}?command=feedCommentDelete`, {
+            method: "POST", 
+            headers: {
+                "Authorization": sessionUser.code,
+            }, 
+        })
+        .then(response => response.json())
+        .then((data) => {
+            if (data.status === 200)
+                isDeleted = true;
+        })
+        .finally(() => {
+            Toast.show(isDeleted, "댓글 삭제 성공", "댓글 삭제 실패");
+            
+            if (isDeleted)
+                navigate("/feed");
+            window.location.reload();
+        });
+    }
+
+    const handleFeedFieldOnChange = (e) => {
+        setComment(oldComment => {
+            return { ...oldComment, [e.target.name]: e.target.value };
+        });
+    };
     
     const fetchFeedCommentCreate = () => {
         let isCreate = false;
@@ -59,22 +130,26 @@ const Feed = (props) => {
         })
         .finally(() => {
             Toast.show(isCreate, "댓글 생성 성공", "댓글 생성 실패");
-            navigate(`/feed`);
+            navigate("/feed");
+            window.location.reload();
         });
     }
 
     const handleFeedCommentFieldOnChange = (e) => {
         setComment(e.target.value
         );
+        
     };
 
     const handleFeedCommentCreateOnSubmit = (e) => {
         e.preventDefault();
         fetchFeedCommentCreate();
     };
+
+
     console.log("ImageURL : " + imageURL)
     return (
-        <Card>
+        <Card key={"Card - " + feedIndex}>
             <CardBody>
                 <Flex direction="column" p="10px" gap="10px" borderRadius="10px" bgColor="gray.300">
                     <Link to={`/user/${userCode}`} >
@@ -133,8 +208,12 @@ const Feed = (props) => {
                                     showComments(comments)
                                      :
                                     <Text>댓글이 없습니다</Text>
-                                }<form method="POST" onSubmit={handleFeedCommentCreateOnSubmit}>
-                                <Input w="100%" type="text" name="comment" placeholder="댓글 쓰기" onChange={handleFeedCommentFieldOnChange} />
+                                }
+                                <form method="POST" onSubmit={handleFeedCommentCreateOnSubmit}>
+                                <Flex>
+                                    <Input w="100%" type="text" name="comment" placeholder="댓글 쓰기" onChange={handleFeedCommentFieldOnChange} />
+                                    <Button onClick={handleFeedCommentCreateOnSubmit}>댓글 저장</Button>
+                                </Flex>
                                 </form>
                                 
                             </CardBody>
