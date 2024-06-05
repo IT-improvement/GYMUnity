@@ -167,7 +167,6 @@ const LeaveForm = () => {
                                     id="check-box"
                                     width="25px"
                                     height="25px"
-                                    backgroundColor="white"
                                     checked={isChecked}
                                     onChange={handleCheckboxChange}
                                 />
