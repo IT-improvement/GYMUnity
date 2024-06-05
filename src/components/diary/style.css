@@ -93,16 +93,16 @@
     justify-content: flex-end;
     gap: 10px;
     margin: 10px;
-    color: var(--gray-color);
 }
 
-.icon{
+.icon-left,
+.icon-right{
     font-size: 25px;
 }
 
-.icon:hover{
+.icon-left:hover,
+.icon-right:hover{
     color: var(--dark-gray-color);
-
 }
 
 .row-days{

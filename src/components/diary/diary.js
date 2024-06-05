@@ -23,8 +23,8 @@ const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
                     <span className='text-month'>{format(currentMonth, 'M')}</span>
                     <span className='text-year'>{format(currentMonth, 'yyyy')}</span>
                     <div className='button'>
-                        <Icon className='icon' icon="bi:arrow-left-circle-fill" onClick={prevMonth} />
-                        <Icon className='icon' icon="bi:arrow-right-circle-fill" onClick={nextMonth} />
+                        <Icon className='icon-left' icon="bi:arrow-left-circle-fill" onClick={prevMonth} />
+                        <Icon className='icon-right' icon="bi:arrow-right-circle-fill" onClick={nextMonth} />
                     </div>
                 </div>
                 <div className='diary-button'>
