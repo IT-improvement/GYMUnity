@@ -9,6 +9,7 @@ import Toast from "../chakra/Toast";
 const UserProfile = () => {
     const [user, setUser] = useState({
         code: undefined,
+        profileImage: "",
         id: "",
         name: "",
     });
@@ -77,7 +78,7 @@ const UserProfile = () => {
     return (
         <Flex direction="column" w="100%" >
             <Flex p="20px" gap="10px" justify="center" align="center">
-                <Avatar src="" size="xl" />
+                <Avatar src={user.profileImage} value={user.profileImage} size="xl" />
                 <Box>
                     <Text fontWeight="bold">아이디</Text>
                     <Text>{user.id}</Text>
