@@ -16,6 +16,5 @@
 
 ## 문서
 1. [요구사항 정의서](https://docs.google.com/spreadsheets/d/e/2PACX-1vREpEAH6FYhrB_eLoVNbCWTeSVZotV5QNozdl800DBuq8NltVcnDXx2TPL4MqSf70_EfUm1DdgV_OHr/pubhtml)
-2. <a href="" target="_blank"><h4>화면 설계서</h4></a>
-3. <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQl9rny-t9bbA0HxcvnWAKk5kJRngGr084RLzDgo22EoepcpBYW6oVj6iROd4hlEVRq_PX_ogOHbr__/pubhtml" target="_blank"><h4>테이블 정의서</h4></a>
-4. <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTxnjqW2J-feLOTOSpndOXLowShCrwl9Xv_h6oQMhxyDhnp9WkEKlDn7TwpF0R4PEchRp0ev7ucyJtJ/pubhtml" target="_blank"><h4>인터페이스 정의서</h4></a>
+2. [테이블 정의서](https://docs.google.com/spreadsheets/d/e/2PACX-1vQl9rny-t9bbA0HxcvnWAKk5kJRngGr084RLzDgo22EoepcpBYW6oVj6iROd4hlEVRq_PX_ogOHbr__/pubhtml)
+3. [인터페이스 정의서](https://docs.google.com/spreadsheets/d/e/2PACX-1vTxnjqW2J-feLOTOSpndOXLowShCrwl9Xv_h6oQMhxyDhnp9WkEKlDn7TwpF0R4PEchRp0ev7ucyJtJ/pubhtml)
