@@ -1,5 +1,6 @@
-#join-container {
+/* #join-container {
     width: 600px;
+    height: 800px;
     margin: 0 auto;
     padding: 30px;
     margin-bottom: 50px;
@@ -7,16 +8,7 @@
     border-radius: 5px;
 }
 
-#leave-container {
-    width: 600px;
-    margin: 0 auto;
-    padding: 30px;
-    margin-bottom: 50px;
-    background-color: #BED7DC;
-    border-radius: 5px;
-}
-
-h2 {
+#join-container h2 {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
@@ -24,12 +16,12 @@ h2 {
     font-weight: bold;
 }
 
-form > div {
+#join-container form > div {
     display: flex;
-    padding: 20px;
+    padding: 18px;
 }
 
-form > div label {
+#join-container form > div label:not(#gender-man-label):not(#gender-woman-label) {
     display: block;
     width: 100px;
     padding-left: 5px;
@@ -37,14 +29,14 @@ form > div label {
     color: #333;
 }
 
-form input[type="radio"] {
+#join-container form input[type="radio"] {
 	display: none;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="radio"],
-select {
+#join-container input[type="text"],
+#join-container input[type="password"],
+#join-container input[type="radio"],
+#join-container select {
     width: 400px;
     height: 35px;
     padding-left: 10px;
@@ -54,15 +46,15 @@ select {
     font-size: 16px;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="radio"]:focus,
-select:focus {
+#join-container input[type="text"]:focus,
+#join-container input[type="password"]:focus,
+#join-container input[type="radio"]:focus,
+#join-container select:focus {
     outline: 1px solid darkgray;
 }
 
-#radio-container, 
-#radio-container > div
+#join-container #radio-container, 
+#join-container #radio-container > div
 {
 	display: flex;
 }
@@ -73,7 +65,8 @@ select:focus {
     height: 35px;
 	padding: 10px;
 	text-align: center;
-	border: solid 1px lightgrey;	
+	border: solid 1px lightgrey;
+    font-weight: bold;
 	font-size: 0.8em;
     text-align: center;
 }
@@ -84,16 +77,11 @@ select:focus {
     background-color: #ccc;
 }
 
-/* label > div {
-	width: 200px;
-    height: 35px;
-	padding: 10px;
-	text-align: center;
-	border: solid 1px lightgrey;	
-	font-size: 0.8em;
-} */
+#join-container #phone-container {
+    margin-bottom: 20px;
+}
 
-#submit {
+#join-container #submit {
     display: block;
     margin: 0 auto;
     margin-bottom: 10px;
@@ -108,5 +96,4 @@ select:focus {
     font-weight: bold;
     background-color: #96B6C5;
     color: #fff;
-}
-
+} */
