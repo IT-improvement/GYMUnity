@@ -1,4 +1,4 @@
-#leave-container {
+/* #leave-container {
     width: 600px;
     height: 450px;
     margin: 0 auto;
@@ -8,7 +8,7 @@
     border-radius: 5px;
 }
 
-h2 {
+#leave-container > h2 {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
@@ -16,12 +16,12 @@ h2 {
     font-weight: bold;
 }
 
-form > div {
+#leave-container form > div {
     display: flex;
     padding: 20px;
 }
 
-form > div label {
+#leave-container form > div label:not(#check-label) {
     display: block;
     width: 100px;
     padding-left: 5px;
@@ -29,7 +29,7 @@ form > div label {
     color: #333;
 }
 
-input[type="password"] {
+#leave-container input[type="password"] {
     width: 400px;
     height: 35px;
     padding-left: 10px;
@@ -39,30 +39,30 @@ input[type="password"] {
     font-size: 16px;
 }
 
-input[type="password"]:focus {
+#leave-container input[type="password"]:focus {
     outline: 1px solid darkgray;
 }
 
-#confirm {
+#leave-container #confirm {
     margin-bottom: 15px;
 }
 
-/* label > input[type="checkbox"] {
+#leave-container label > input[type="checkbox"] {
     width: 25px;
-} */
+}
 
-#check-box {
+#leave-container #check-box {
     display: inline-block;
     width: 25px;
     height: 25px;
     margin-right: 10px;
 }
 
-#check-label {
+#leave-container #check-label {
     width: 200px;
 }
 
-#submit {
+#leave-container #submit {
     display: block;
     margin: 0 auto;
     margin-bottom: 10px;
@@ -77,4 +77,4 @@ input[type="password"]:focus {
     font-weight: bold;
     background-color: #96B6C5;
     color: #fff;
-}
+} */
