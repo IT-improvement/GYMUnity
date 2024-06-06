@@ -1,15 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Center, Flex, Grid, Heading, Text } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Button, Center, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import Context from "../../Context";
 import LoadingSpinner from "../chakra/LoadingSpinner";
 import Sort from "../../utils/sort";
 import Toast from "../chakra/Toast";
 import Feed from "./Feed";
 
+
 const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
     const [feeds, setFeeds] = useState([]);
-    const [itemLimit] = useState(8);
+    let [pageNumber, setPageNumber] = useState(0);
     const [isFetching, setIsFetching] = useState(true);
     const { isLoggedIn, sessionUser } = useContext(Context);
     const navigate = useNavigate();
@@ -17,10 +18,11 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
     const fetchFeeds = () => {
         let params = searchQuery ?
             `command=feedReadByQuery&query=${searchQuery}` :
-            `command=feedRead`;
+            `command=feedCurrentPage`;
 
-        if (isTotalSearch)
-            params += `&limit=${itemLimit}`;
+        params += `&pageNumber=${pageNumber}`;
+
+        console.log(params)
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/feed?${params}`, {
             method: "GET", 
@@ -29,7 +31,37 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
             },
         })
         .then(response => response.json())
-        .then(data => setFeeds(data))
+        .then(data => 
+            {setFeeds(data)
+
+        })
+        .catch(() => Toast.showFailed("피드 목록 로드 실패"))
+        .finally(() => {
+            setIsFetching(false);
+        });
+    };
+
+    const fetchFeedsAfterPageClick = () => {
+        let params = searchQuery ?
+            `command=feedReadByQuery&query=${searchQuery}` :
+            `command=feedRead`;
+
+        
+            params += `&pageNumber=${pageNumber}`;
+
+        console.log(params)
+
+        fetch(`${process.env.REACT_APP_SERVER_URL}/feed?${params}`, {
+            method: "GET", 
+            headers: {
+                "Authorization": sessionUser.code, 
+            },
+        })
+        .then(response => response.json())
+        .then(data => 
+            {setFeeds([...feeds, ...data] )
+
+        })
         .catch(() => Toast.showFailed("피드 목록 로드 실패"))
         .finally(() => {
             setIsFetching(false);
@@ -52,6 +84,7 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
     };
 
     const handleLikeButtonOnClick = (feedIndex, checkFavorite) => {
+        console.log(feedIndex, checkFavorite)
         if (!isLoggedIn) {
             Toast.showInfo("로그인이 필요합니다");
             return;
@@ -67,13 +100,15 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
             setFeeds(Sort.ObjectArrayInAsecOrder(feeds, "createDate"));
     };
 
-    useEffect(() => {
-        fetchFeeds();
-    }, [searchQuery]);
+    const addItemLimit =() => {
+        setPageNumber(pageNumber++)
+    }
+
 
     useEffect(() => {
-        sortFeeds();
-    }, [isDescOrder]);
+        fetchFeedsAfterPageClick();
+    }, [pageNumber]);
+
 
     return (
         <Flex direction="column" w="100%" p="10px" bgColor="gray.300" gap="10px" borderRadius="10px">
@@ -85,24 +120,24 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                 :
                 feeds.length > 0 ? 
                 <Flex direction="column" gap="10px">
-                    <Button colorScheme="blue" onClick={() => navigate("/feed/feedCreate")}>피드작성</Button>
-                    <Grid templateColumns="repeat(4, 1fr)" gap="30px" justifyContent="center" >
+                    <Flex direction="row-reverse">
+                    <Button w="fitcontent" colorScheme="blue" onClick={() => navigate("/feed/feedCreate")}>피드작성</Button>
+                    </Flex>
+
+                    <Center>
+                    <Grid  w="50%" templateColumns="repeat(1, 1fr)" gap="30px" justifyContent="center" >
                         { feeds.map(feed =>
                             <Feed key={feed.feedIndex} feed={feed} handleLikeButtonOnClick={handleLikeButtonOnClick} />
                         )}
                     </Grid> 
-                    { isTotalSearch && (feeds.length >= itemLimit) &&
-                    <Flex justify="right">
-                        <Box p="10px" textAlign="center" bgColor="gray.200" borderRadius="10px" cursor="pointer"
-                            onClick={() => navigate("/search", { state: { searchQuery: searchQuery, category: "feed" }})} >
-                                <Text color="gray.600">게시글 더보기</Text>
-                        </Box>
-                    </Flex>
-                    }
+                    </Center>
+                   
                 </Flex>
                 :
                 <Heading fontSize="20px">피드가 없습니다</Heading>
             }
+            <Button onClick={()=> addItemLimit()}>다음</Button>
+            
         </Flex>
     );
 };
