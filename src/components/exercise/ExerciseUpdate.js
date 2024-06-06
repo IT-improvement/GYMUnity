@@ -17,7 +17,7 @@ const ExerciseUpdate = () => {
     });
     const [exerciseCategories, setExerciseCategories] = useState([]);
     const { isLoggedIn, sessionUser } = useContext(Context);
-    const { index } = useParams()
+    const { index } = useParams();
     const navigate = useNavigate();
 
     const fetchExercise = () => {
@@ -28,7 +28,9 @@ const ExerciseUpdate = () => {
             }, 
         })
         .then(response => response.json())
-        .then(data => setExercise(data))
+        .then(data => {
+            setExercise(data);
+        })
         .catch(() => {
             Toast.showFailed("운동법 수정 불가 (운동법 로드 실패)");
             navigate("/exercises");
@@ -40,7 +42,9 @@ const ExerciseUpdate = () => {
             method: "GET", 
         })
         .then(response => response.json())
-        .then(data => setExerciseCategories(data))
+        .then(data => {
+            setExerciseCategories(data);
+        })
         .catch(() => {
             Toast.showFailed("운동법 수정 불가 (운동 카테고리 로드 실패)");
             navigate("/exercises");
@@ -48,7 +52,6 @@ const ExerciseUpdate = () => {
     };
 
     const fetchExerciseUpdate = () => {
-        let isUpdated = false;
         const params =  `exercise_index=${exercise.index}&` +
                         `category_index=${exercise.categoryIndex}&` +
                         `name=${exercise.name}&` +
@@ -62,19 +65,19 @@ const ExerciseUpdate = () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
-            if (data.status === 200)
-                isUpdated = true;
+            if (data.status === 200) {
+                Toast.showSuccess("운동법 수정 성공");
+                navigate(`/exercises/${exercise.index}`);
+            }
         })
-        .finally(() => {
-            Toast.show(isUpdated, "운동법 수정 성공", "운동법 수정 실패");
-            navigate(`/exercises/${exercise.index}`);
+        .catch(() => {
+            Toast.showFailed("운동법 수정 실패");
         });
     };
 
     const handleExerciseFieldOnChange = (e) => {
         setExercise(oldExercise => {
-            return {...oldExercise, [e.target.name]: e.target.value}
+            return { ...oldExercise, [e.target.name]: e.target.value }
         });
     };
 
