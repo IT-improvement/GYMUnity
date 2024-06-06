@@ -32,7 +32,7 @@ const Feed = (props) => {
                                     <Avatar src="" size="md"/>
                                     <Flex direction="column">
                                         <Text>{userName}</Text>
-                                        <Badge colorScheme="pink">
+                                        <Badge colorScheme="blue">
                                             {userId}
                                         </Badge>
                                     </Flex>
