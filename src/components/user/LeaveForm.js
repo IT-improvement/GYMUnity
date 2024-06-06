@@ -48,14 +48,6 @@ const LeaveForm = () => {
 
             console.log(response);
             const result = await response.json();
-            // let result = null;
-            // try {
-            //     result = await response.json();
-            // } catch (error) {
-            //     console.error('Error parsing JSON response:', error);
-            //     throw new Error('Failed to parse JSON response');
-            // }
-
             console.log('User leave: ', result);
 
             let isLoggedOut = false;
@@ -122,7 +114,7 @@ const LeaveForm = () => {
     }
 
     return (
-        <Flex backgroundColor="none">
+        <Flex justify="center" w="100%" backgroundColor="none">
             <Box p={4} textAlign="center">
                 <Heading as="h2" size="lg" mb={6}>
                     회원탈퇴
