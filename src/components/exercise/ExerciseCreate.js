@@ -19,12 +19,15 @@ const ExerciseCreate = () => {
             method: "GET", 
         })
         .then(response => response.json())
-        .then(data => setExerciseCategories(data))
-        .catch(() => Toast.showFailed("운동 카테고리 불러오기 실패"));
+        .then(data => {
+            setExerciseCategories(data);
+        })
+        .catch(() => {
+            Toast.showFailed("운동 카테고리 불러오기 실패");
+        });
     };
 
     const fetchExerciseCreate = () => {
-        let isCreated = false;
         const params =  `category_index=${exercise.categoryIndex}&` +
                         `name=${exercise.name}&` +
                         `content=${exercise.content}`;
@@ -37,14 +40,13 @@ const ExerciseCreate = () => {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 200)
-                isCreated = true;
-        })
-        .finally(() => {
-            Toast.show(isCreated, "운동법 작성 성공", "운동법 작성 실패");
-
-            if (isCreated)
+            if (data.status === 200) {
+                Toast.showSuccess("운동법 작성 성공");
                 navigate("/exercises");
+            }
+        })
+        .catch(() => {
+            Toast.showFailed("운동법 작성 실패");
         });
     };
 
@@ -70,14 +72,13 @@ const ExerciseCreate = () => {
         <Flex w="100%" justify="center">
             <form style={{ "minWidth": "70%"}} method="POST" onSubmit={handleExerciseCreateOnSubmit}>
                 <FormControl>
-                    <FormLabel>운동 카테고리</FormLabel>
-                    <Select required name="categoryIndex" defaultValue={-1} onChange={handleExerciseFieldOnChange}>
-                        <option value={-1} disabled>카테고리 선택</option>
-                        {exerciseCategories.map(category => {
-                            return <option key={category.index} value={category.index}>
+                    <FormLabel> 운동 카테고리</FormLabel>
+                    <Select isRequired name="categoryIndex" placeholder="카테고리 선택" onChange={handleExerciseFieldOnChange}>
+                        {exerciseCategories.map(category =>
+                            <option key={category.index} value={category.index}>
                                 {category.name}
                             </option>
-                        })}
+                        )}
                     </Select>
                 </FormControl>
                 <FormControl>
