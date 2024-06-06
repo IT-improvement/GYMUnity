@@ -66,7 +66,7 @@ const CreateFood = () => {
       .finally(() => {
         Toast.show(isCreated, "음식 작성 성공", "음식 작성 실패");
 
-        if (isCreated) navigate("/diet");
+        if (isCreated) navigate("/diet/foodList");
       });
   };
 
