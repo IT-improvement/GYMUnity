@@ -5,17 +5,15 @@ const UserCard = (props) => {
     const { code, name, id, profileImage } = props.user;
 
     return (
-        <Card key={code}>
+        <Card key={code} _hover={{backgroundColor: "gray.500"}}>
             <CardBody>
-                <Box p="10px" bgColor="gray.200" borderRadius="10px"
-                    cursor="pointer"
-                    _hover={{backgroundColor: "gray.500"}} >
+                <Box h="100%" p="10px" bgColor="gray.100" borderRadius="10px" cursor="pointer">
                     <Link to={`/user/${code}`}>
-                        <Flex direction="column" align="center" gap="10px">
-                            <Avatar src={props.user.profileImage} size="2xl" />
+                        <Flex direction="column" h="100%" justify="center" align="center" gap="10px">
+                            <Avatar src="" size="xl" />
                             <VStack gap="10px">
-                                <Text>{name}</Text>
-                                <Badge fontSize="15px" colorScheme="pink">
+                                <Text fontWeight="bold">{name}</Text>
+                                <Badge fontSize="15px" colorScheme="blue">
                                     {id}
                                 </Badge>
                             </VStack>

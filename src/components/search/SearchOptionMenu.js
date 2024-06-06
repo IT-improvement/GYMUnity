@@ -1,4 +1,4 @@
-import { Flex, Select } from "@chakra-ui/react";
+import { Select, Flex } from "@chakra-ui/react";
 
 const SearchOptionMenu = (props) => {
     const handleFilterCategoryOnChange = (e) => {
@@ -6,7 +6,7 @@ const SearchOptionMenu = (props) => {
     };
 
     const handleDataSortOnChange = (e) => {
-        // JSON.parse() to convert String Boolean to Boolean
+        // JSON.parse()을 사용하여 데이터 타입이 문자열인 불린 값을 불린 데이터 타입으로 변환하기
         props.setIsResultInDescOrder(JSON.parse(e.target.value));
     };
 

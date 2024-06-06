@@ -1,11 +1,10 @@
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Flex, Button } from "@chakra-ui/react";
+import { Link, useNavigate } from 'react-router-dom';
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
 
 const ButtonLogout = () => {
-    const { isLoggedIn, handleLogoutSuccess } = useContext(Context);
+    const { handleLogoutSuccess } = useContext(Context);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -22,6 +21,7 @@ const ButtonLogout = () => {
             if (data.status === 200) {
                 isLoggedOut = true;
                 handleLogoutSuccess();
+                navigate("/");
             }
         })
         .catch(() => {
@@ -29,18 +29,8 @@ const ButtonLogout = () => {
         })
     };
 
-    const navgiateToLoginPage = () => {
-        navigate("/user/login")
-    };
-
     return (
-        <Flex>
-            {isLoggedIn ?
-                <Button colorScheme="red" onClick={handleLogout}>로그아웃</Button>
-                :
-                navgiateToLoginPage()
-            }
-        </Flex>
+        <Link onClick={handleLogout} style={{fontSize: '25px'}}>• 로그아웃</Link>
     );
 };
 

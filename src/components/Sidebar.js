@@ -49,15 +49,15 @@ const Sidebar = () => {
     const items = isLoggedIn ? menuItemsWhenLoggedIn : menuItems;
 
     return items.map((item) => (
-      <Box
-        key={item.link}
+      <Box key={item.link}
         w="100%"
         p="10px"
         textAlign="center"
         _hover={{ bgColor: "rgb(150, 197, 210)" }}
+      /*  _hover={{ bgColor: "gray.500", color: "gray.100", borderRadius: "10px" }}*/
       >
         <Link to={item.link}>
-          <Text>{item.name}</Text>
+          <Text fontWeight="bold">{item.name}</Text>
         </Link>
       </Box>
     ));
@@ -67,6 +67,7 @@ const Sidebar = () => {
     showMenuItems();
   }, [isLoggedIn]);
 
+   	/*<VStack minW="200px" p="10px" bgColor="gray.200">*/
   return (
     <VStack minW="200px" p="10px" bgColor="rgb(175, 204, 212)">
       {showMenuItems()}

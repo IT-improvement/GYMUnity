@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AbsoluteCenter, Box, Button, Center, Flex, Grid, Heading, Text } from "@chakra-ui/react";
+import { Button, Center, Flex, Grid, Heading } from "@chakra-ui/react";
 import Context from "../../Context";
+import ListSection from "../search/ListSection";
 import LoadingSpinner from "../chakra/LoadingSpinner";
 import Sort from "../../utils/sort";
 import Toast from "../chakra/Toast";
@@ -111,7 +113,7 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
 
 
     return (
-        <Flex direction="column" w="100%" p="10px" bgColor="gray.300" gap="10px" borderRadius="10px">
+        <ListSection>
             <Heading>피드목록</Heading>
             { isFetching ?
                 <Center>
@@ -131,14 +133,19 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                         )}
                     </Grid> 
                     </Center>
-                   
+                    { isTotalSearch && (feeds.length >= itemLimit) &&
+                    <Flex justify="right">
+                        <Button onClick={() => navigate("/search", { state: { searchQuery: searchQuery, category: "feed" }})} >
+                            게시글 더보기
+                        </Button>
+                    </Flex>
+                    }
                 </Flex>
                 :
                 <Heading fontSize="20px">피드가 없습니다</Heading>
             }
             <Button onClick={()=> addItemLimit()}>다음</Button>
-            
-        </Flex>
+        </ListSection>
     );
 };
 

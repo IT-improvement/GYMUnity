@@ -21,8 +21,12 @@ const FriendRequestList = ({ shouldFetch }) => {
             }, 
         })
         .then(response => response.json())
-        .then(data => setFriendRequests(data))
-        .catch(() => Toast.showFailed("친구 요청 목록 불러오기 실패"))
+        .then(data => {
+            setFriendRequests(data);
+        })
+        .catch(() => {
+            Toast.showFailed("친구 요청 목록 불러오기 실패");
+        })
         .finally(() => setIsFetching(false));
     };
 
@@ -42,7 +46,9 @@ const FriendRequestList = ({ shouldFetch }) => {
                 removeFriendRequestFromList(userCodeOther);
             }
         })
-        .catch(() => Toast.showFailed("친구 수락 처리 실패"))
+        .catch(() => {
+            Toast.showFailed("친구 수락 처리 실패");
+        })
         .finally(() => {
             Toast.show(isAccepted, "친구 수락 성공", "친구 수락 실패");
         });
@@ -64,7 +70,9 @@ const FriendRequestList = ({ shouldFetch }) => {
                 removeFriendRequestFromList(userCodeOther);
             } 
         })
-        .catch(() => Toast.showFailed("친구 요청 처리 실패"))
+        .catch(() => {
+            Toast.showFailed("친구 요청 처리 실패");
+        })
         .finally(() => {
             Toast.show(isDeclined, "친구 요청 거절 성공", "친구 요청 거절 실패");
         });
