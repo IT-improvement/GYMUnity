@@ -25,7 +25,9 @@ const FriendButton = ({ userCodeOther }) => {
             }, 
         })
         .then(response => response.json())
-        .then(data => setFriendStatus(data.relationshipStatus))
+        .then(data => {
+            setFriendStatus(data.relationshipStatus);
+        })
         .catch(() => {});
     };
 
@@ -36,8 +38,12 @@ const FriendButton = ({ userCodeOther }) => {
                 "Authorization": sessionUser.code,
             }, 
         })
-        .then(() => fetchFriendStatus())
-        .catch(() => Toast.showFailed("친구 삭제 실패"));
+        .then(() => {
+            fetchFriendStatus();
+        })
+        .catch(() => {
+            Toast.showFailed("친구 삭제 실패");
+        });
     };
 
     const fetchFriendRequestSend = () => {
@@ -47,8 +53,12 @@ const FriendButton = ({ userCodeOther }) => {
                 "Authorization": sessionUser.code,
             }, 
         })
-        .then(() => fetchFriendStatus())
-        .catch(() => Toast.showFailed("친구 요청 보내기 실패"));
+        .then(() => {
+            fetchFriendStatus();
+        })
+        .catch(() => {
+            Toast.showFailed("친구 요청 보내기 실패");
+        });
     };
 
     const fetchFriendRequestCancel = () => {
@@ -58,8 +68,12 @@ const FriendButton = ({ userCodeOther }) => {
                 "Authorization": sessionUser.code,
             }, 
         })
-        .then(() => fetchFriendStatus())
-        .catch(() => Toast.showFailed("친구 요청 취소 실패"));
+        .then(() => {
+            fetchFriendStatus();
+        })
+        .catch(() => { 
+            Toast.showFailed("친구 요청 취소 실패");
+        });
     };
 
     const fetchFriendRequestAccept = () => {
@@ -69,8 +83,12 @@ const FriendButton = ({ userCodeOther }) => {
                 "Authorization": sessionUser.code,
             }, 
         })
-        .then(() => fetchFriendStatus())
-        .catch(() => Toast.showFailed("친구 요청 수락 실패"));
+        .then(() => {
+            fetchFriendStatus();
+        })
+        .catch(() => { 
+            Toast.showFailed("친구 요청 수락 실패")
+        });
     };
 
     const handleFriendRelationshipButtonOnClick = (e) => {
