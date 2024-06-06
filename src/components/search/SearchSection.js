@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Flex, Heading } from "@chakra-ui/react";
-import SearchOptionMenu from "./SearchOptionMenu";
+import { Flex } from "@chakra-ui/react";
 import ExerciseList from "../exercise/ExerciseList";
 import FeedList from "../feed/feedList";
+import SearchOptionMenu from "./SearchOptionMenu";
 import UserList from "../user/UserList";
 
 const categoryMap = {
@@ -57,13 +57,13 @@ const SearchSection = () => {
 
     return (
         <Flex direction="column" w="100%" p="10px" gap="10px">
-            <Heading>{categoryMap[category]} 검색</Heading>
-            <SearchOptionMenu categoryMap={categoryMap}
-                shouldShowDateSortButton={category !== "user"}
-                isResultInDescOrder={isResultInDescOrder}
+            <SearchOptionMenu 
                 category={category}
+                categoryMap={categoryMap}
+                isResultInDescOrder={isResultInDescOrder}
                 setCategory={setCategory}
                 setIsResultInDescOrder={setIsResultInDescOrder}
+                shouldShowDateSortButton={category !== "user"}
             />
             <Flex direction="column" gap="10px">
                 { showSearchResult() }
