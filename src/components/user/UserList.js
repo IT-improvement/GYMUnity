@@ -9,6 +9,7 @@ import UserCard from "./UserCard";
 const UserList = ({ searchQuery, isTotalSearch }) => {
     const [users, setUsers] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
+    const [pageNumber, setPageNumber] = useState(1);
     const [userLimit] = useState(5);
     const navigate = useNavigate();
 
@@ -17,13 +18,15 @@ const UserList = ({ searchQuery, isTotalSearch }) => {
             `command=read_all_by_query&query=${searchQuery}` :
             `command=read_all`;
 
-        if (isTotalSearch)
-            params += `&limit=${userLimit}`;
+        params += `&pageNumber=${pageNumber}`;
 
         fetch(`${process.env.REACT_APP_SERVER_URL}/user?${params}`)
         .then(response => response.json())
         .then(data => {
-            setUsers(data);
+            if (pageNumber === 1)
+                setUsers(data);
+            else
+                setUsers([...users, ...data]);
         })
         .catch(() => {
             Toast.showFailed("유저 로드 실패");
@@ -33,11 +36,10 @@ const UserList = ({ searchQuery, isTotalSearch }) => {
         });
     };
 
-    console.log(users);
+    const handleNextPageOnClick = () => {
+        setPageNumber(pageNumber + 1);
+    };
 
-    useEffect(() => {
-        fetchUsers();
-    }, [searchQuery, isTotalSearch]);
     const showAvatar = () => {
         const avatars = [];
 
@@ -46,6 +48,7 @@ const UserList = ({ searchQuery, isTotalSearch }) => {
 
         return avatars;
     };
+
 
     const showUserMoreSection = () => {
         return (
@@ -64,8 +67,13 @@ const UserList = ({ searchQuery, isTotalSearch }) => {
     };
 
     useEffect(() => {
+        setPageNumber(1);
         fetchUsers();
     }, [searchQuery, isTotalSearch]);
+
+    useEffect(() => {
+        fetchUsers();
+    }, [pageNumber]);
 
     return (
         <ListSection>
@@ -80,7 +88,13 @@ const UserList = ({ searchQuery, isTotalSearch }) => {
                             <UserCard key={user.code} user={user} />
                         )}
                     </Grid>
-                    { isTotalSearch && (users.length >= userLimit) && showUserMoreSection() }
+                    { isTotalSearch ? 
+                        (users.length >= userLimit) && showUserMoreSection()
+                        :
+                        <Button onClick={handleNextPageOnClick} >
+                            더보기
+                        </Button>
+                    }
                 </Flex>
                 :
                 <Heading textAlign="center" fontSize="20px">유저가 없습니다</Heading>
