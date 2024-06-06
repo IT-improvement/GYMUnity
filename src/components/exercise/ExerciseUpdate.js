@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Button, Card, CardBody, Flex, Grid, Heading, Select, Text, Textarea, Input } from "@chakra-ui/react";
+import { Button, Card, CardBody, Flex, FormControl, FormLabel, Heading, Select, Text, Textarea, Input } from "@chakra-ui/react";
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
 
@@ -92,63 +92,41 @@ const ExerciseUpdate = () => {
     }, [index, isLoggedIn]);
 
     return (
-        <Flex w="100%" p="10px">
+        <Flex direction="column" w="50%" p="10px" m="0 auto" gap="10px">
+            <Heading textAlign="center">운동법 수정 페이지</Heading>
             {exercise ? 
-            <Flex direction="column" w="100%" p="10px" bgColor="gray.50">
+            <Card>
+                <CardBody>
                 <form method="POST" onSubmit={handleExerciseUpdateOnSubmit}>
-                    <Heading>운동법</Heading>
                     <Flex direction="column" gap="10px">
-                        <Grid templateColumns="repeat(2, 1fr)" p="0px" gap="10px">
-                            <Card>
-                                <CardBody>
-                                    <Flex align="center" gap="10px">
-                                        <Text minW="fit-content">카테고리</Text>
-                                        <Select name="categoryIndex"
-                                            value={exercise.categoryIndex}
-                                            onChange={handleExerciseFieldOnChange}>
-                                            { exerciseCategories.map(category =>
-                                                <option key={category.index} value={category.index}>
-                                                    {category.name}
-                                                </option>
-                                            )}
-                                        </Select>
-                                    </Flex>
-                                </CardBody>
-                            </Card>
-                            <Card>
-                                <CardBody alignContent="center">
-                                    <Flex gap="10px">
-                                        <Text>게시일 {exercise.createDate}</Text>
-                                        <Text>이전 수정일 {exercise.modDate}</Text>
-                                    </Flex>
-                                </CardBody>
-                            </Card>
-                        </Grid>
-                        <Card>
-                            <CardBody>
-                                <Flex align="center" gap="10px">
-                                    <Text>이름</Text>
-                                    <Input type="text" name="name" value={exercise.name} onChange={handleExerciseFieldOnChange} />
-                                </Flex>
-                            </CardBody>
-                        </Card>
-                        <Card>
-                            <CardBody>
-                                <Flex direction="column" gap="10px">
-                                    <Text>내용</Text>
-                                    <Textarea name="content" value={exercise.content} onChange={handleExerciseFieldOnChange} />
-                                </Flex>
-                            </CardBody>
-                        </Card>
-                        <Box>
-                        </Box>
+                        <FormControl>
+                            <FormLabel> 운동 카테고리</FormLabel>
+                            <Select name="categoryIndex"
+                                value={exercise.categoryIndex}
+                                onChange={handleExerciseFieldOnChange}>
+                                { exerciseCategories.map(category =>
+                                    <option key={category.index} value={category.index}>
+                                        {category.name}
+                                    </option>
+                                )}
+                            </Select>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>운동 이름</FormLabel>
+                            <Input isRequired type="text" name="name" value={exercise.name} onChange={handleExerciseFieldOnChange} />
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>내용</FormLabel>
+                            <Textarea isRequired name="content" value={exercise.content} onChange={handleExerciseFieldOnChange} />
+                        </FormControl>
                         <Flex justify="space-between">
                             <Button colorScheme="blue" onClick={() => navigate(-1)}>뒤로가기</Button>
                             <Button type="submit" colorScheme="green">수정</Button>
                         </Flex>
                     </Flex>
                 </form>
-            </Flex>
+                </CardBody>
+            </Card>
             :
             <Text>운동법이 존재하지 않습니다</Text>
             }
