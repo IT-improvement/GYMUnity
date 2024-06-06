@@ -26,7 +26,7 @@ const LoginForm = () => {
 
         if (response.status === 200) {
             const result = await response.json();
-            handleLoginSuccess(result.code, id);
+            handleLoginSuccess(result.code, id, result.profileImage);
             navigate('/');
         } else {
             Toast.showFailed("로그인 실패");

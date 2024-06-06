@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Avatar, Box, Flex, Grid, Text } from "@chakra-ui/react";
+import { Avatar, Box, Card, CardBody, Center, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import Feed from "../feed/Feed";
 import FriendButton from "../friend/FriendButton";
+import LoadingSpinner from "../chakra/LoadingSpinner";
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
 
@@ -14,6 +15,8 @@ const UserProfile = () => {
         name: "",
     });
     const [feeds, setFeeds] = useState([]);
+    const [isUserFetching, setIsUserFetching] = useState(true);
+    const [isFeedFetching, setIsFeedFetching] = useState(true);
     const { isLoggedIn, sessionUser } = useContext(Context);
     const { code } = useParams();
 
@@ -27,7 +30,10 @@ const UserProfile = () => {
         })
         .catch(() => {
             Toast.showFailed("유저 페이지 로드 실패");
-        });
+        })
+        .finally(() => {
+            setIsUserFetching(false);
+        })
     };
 
     const fetchFeeds = () => {
@@ -46,6 +52,9 @@ const UserProfile = () => {
         .catch(() => {
             Toast.showFailed("유저 피드 로드 실패");
         })
+        .finally(() => {
+            setIsFeedFetching(false);
+        });
     };
 
     const fetchLikeButtonOnClick = (feedIndex, checkFavorite) => { 
@@ -84,27 +93,39 @@ const UserProfile = () => {
     }, [user]);
 
     return (
-        <Flex direction="column" w="100%" >
-            <Flex p="20px" gap="10px" justify="center" align="center">
-                <Avatar src={user.profileImage} value={user.profileImage} size="xl" />
-                <Box>
-                    <Text fontWeight="bold">아이디</Text>
-                    <Text>{user.id}</Text>
-                </Box>
-                <Box>
-                    <Text fontWeight="bold">이름</Text>
-                    <Text>{user.name}</Text>
-                </Box>
-                { sessionUser.code != user.code &&
-                    <FriendButton userCodeOther={user.code} />
-                }
-            </Flex>
-            <Grid templateColumns="repeat(4, 1fr)" gap="30px" justifyContent="center" >
-                { feeds.map(feed =>
-                    <Feed key={feed.feedIndex} feed={feed} handleLikeButtonOnClick={handleLikeButtonOnClick} />
-                )
-                }
-            </Grid> 
+        <Flex direction="column" w="100%" p="10px" gap="20px" align="center" >
+            <Card w="300px">
+                <CardBody>
+                    { isUserFetching ?
+                        <Center><LoadingSpinner/></Center>
+                        :
+                        <Flex direction="column" p="20px" gap="10px" justify="center" align="center">
+                            <Avatar src={user.profileImage} value={user.profileImage} size="xl" />
+                            <Box textAlign="center">
+                                <Text fontWeight="bold">아이디</Text>
+                                <Text>{user.id}</Text>
+                                <Text fontWeight="bold">이름</Text>
+                                <Text>{user.name}</Text>
+                            </Box>
+                            { sessionUser.code != user.code &&
+                                <FriendButton userCodeOther={user.code} />
+                            }
+                        </Flex>
+                    }
+                </CardBody>
+            </Card>
+            { isFeedFetching ?
+                <Center><LoadingSpinner/></Center>
+                :
+                feeds && feeds.length > 0 ?
+                    <Grid templateColumns="repeat(4, 1fr)" gap="30px" justifyContent="center" >
+                        {feeds.map(feed =>
+                            <Feed key={feed.feedIndex} feed={feed} handleLikeButtonOnClick={handleLikeButtonOnClick} />
+                        )}
+                    </Grid> 
+                    :
+                    <Heading textAlign="center" fontSize="20px">피드가 존재하지 않습니다</Heading>
+            }
         </Flex>
     );
 };

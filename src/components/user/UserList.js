@@ -69,7 +69,7 @@ const UserList = ({ searchQuery, isTotalSearch }) => {
 
     return (
         <ListSection>
-            <Heading>유저목록</Heading>
+            <Heading textAlign="center">유저목록</Heading>
             { isFetching ?
                 <Center><LoadingSpinner /></Center>
                 :
@@ -83,7 +83,7 @@ const UserList = ({ searchQuery, isTotalSearch }) => {
                     { isTotalSearch && (users.length >= userLimit) && showUserMoreSection() }
                 </Flex>
                 :
-                <Heading fontSize="20px">유저가 없습니다</Heading>
+                <Heading textAlign="center" fontSize="20px">유저가 없습니다</Heading>
             }
         </ListSection>
     );
