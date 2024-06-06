@@ -7,9 +7,9 @@
 <br>
 
 ## 활용 기술
-### 프론트엔드: HTML/CSS, Javascript, React.js
+### 프론트엔드: HTML/CSS, Javascript, React.js ([프론트엔드 깃허브](https://github.com/IT-improvement/gymunity))
 ### 백엔드: Java Servlet, EC2
-### DB: MySQL
+### DB: AWS RDS, MySQL
 
 <br>
 <br>
