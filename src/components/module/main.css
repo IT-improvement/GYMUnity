@@ -1,0 +1,30 @@
+
+.main-content {
+    width: 100%;
+    display: grid;
+}
+
+.main-image {
+    width: 100%;
+    height: 100%;
+    padding: 50px 20px;
+    margin-bottom: 20px;
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+    background-image: url(../../assets/welcom.png);
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+}
+
+.feature1,
+.feature2,
+.feature3 {
+    background-color: rgb(150, 197, 210);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    width: 30%;
+}

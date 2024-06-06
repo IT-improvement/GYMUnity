@@ -54,7 +54,7 @@ const Sidebar = () => {
         w="100%"
         p="10px"
         textAlign="center"
-        _hover={{ bgColor: "gray.500" }}
+        _hover={{ bgColor: "rgb(150, 197, 210)" }}
       >
         <Link to={item.link}>
           <Text>{item.name}</Text>
@@ -68,7 +68,7 @@ const Sidebar = () => {
   }, [isLoggedIn]);
 
   return (
-    <VStack minW="200px" p="10px" bgColor="gray.300">
+    <VStack minW="200px" p="10px" bgColor="rgb(175, 204, 212)">
       {showMenuItems()}
     </VStack>
   );

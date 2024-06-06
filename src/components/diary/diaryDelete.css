@@ -1,0 +1,83 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 10px;
+}
+
+.diary-delete{
+    width: 800px;
+    display: flex;
+    justify-content: end;
+}
+
+.diary-content-box {
+    width: 80%;
+    max-width: 800px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.diary-content-guide {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+    font-weight: bold;
+    color: #333;
+}
+
+.diary-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+
+.checkbox {
+    flex: 0 0 50px;
+    text-align: center;
+}
+
+.content {
+    flex: 1;
+    padding: 0 10px;
+}
+
+.date {
+    flex: 0 0 100px;
+    text-align: center;
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.button-box{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+.button{
+    cursor: pointer;
+    width: auto;
+
+}
+.button:hover{
+    color: rgba(0, 0, 0, 1);
+}

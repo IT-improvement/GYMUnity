@@ -12,6 +12,10 @@ const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
         navigate('/diary/write');
     }
 
+    const onClickDiaryDelete = () =>{
+        navigate('/diary/delete');
+    }
+
     return (
         <div className='header'>
             <div className='header-text-box'>
@@ -19,13 +23,13 @@ const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
                     <span className='text-month'>{format(currentMonth, 'M')}</span>
                     <span className='text-year'>{format(currentMonth, 'yyyy')}</span>
                     <div className='button'>
-                        <Icon className='icon' icon="bi:arrow-left-circle-fill" onClick={prevMonth} />
-                        <Icon className='icon' icon="bi:arrow-right-circle-fill" onClick={nextMonth} />
+                        <Icon className='icon-left' icon="bi:arrow-left-circle-fill" onClick={prevMonth} />
+                        <Icon className='icon-right' icon="bi:arrow-right-circle-fill" onClick={nextMonth} />
                     </div>
                 </div>
                 <div className='diary-button'>
                     <div className='diary-write-button' onClick={onClickDiaryWrite}>생성하기</div>
-                    <div className='diary-delete-button'>삭제하기</div>
+                    <div className='diary-delete-button' onClick={onClickDiaryDelete}>삭제하기</div>
                 </div>
             </div>
         </div>
