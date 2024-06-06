@@ -113,7 +113,7 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
 
     return (
         <ListSection>
-            <Heading>피드목록</Heading>
+            <Heading textAlign="center">피드목록</Heading>
             { isFetching ?
                 <Center>
                     <LoadingSpinner />
