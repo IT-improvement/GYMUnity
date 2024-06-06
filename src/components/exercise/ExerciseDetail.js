@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Box, Button, Card, CardBody, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
+import Timestamp from "../../utils/timestamp";
 
 const ExerciseDetail = () => {
     const [exercise, setExercise] = useState({});
@@ -15,19 +16,19 @@ const ExerciseDetail = () => {
             method: "GET", 
             headers: {
                 "Authorization": sessionUser.code,
-            }, 
+            },
         })
         .then(response => response.json())
-        .then(data => setExercise(data))
+        .then(data => {
+            setExercise(data);
+        })
         .catch(() => {
             Toast.showFailed("운동법 로드 실패");
-            navigate("/exercises")
+            navigate("/exercises");
         });
     };
 
     const handlePostDeleteOnClick = () => {
-        let isDeleted = false;
-
         fetch(`${process.env.REACT_APP_SERVER_URL}/exercises?command=delete&exercise_index=${index}`, {
             method: "POST", 
             headers: {
@@ -36,14 +37,13 @@ const ExerciseDetail = () => {
         })
         .then(response => response.json())
         .then((data) => {
-            if (data.status === 200)
-                isDeleted = true;
-        })
-        .finally(() => {
-            Toast.show(isDeleted, "운동법 삭제 성공", "운동법 삭제 실패");
-            
-            if (isDeleted)
+            if (data.status === 200) {
+                Toast.showSuccess("운동법 삭제 성공");
                 navigate("/exercises");
+            }
+        })
+        .catch(() => {
+            Toast.showFailed("운동법 삭제 실패");
         });
     };
 
@@ -56,19 +56,19 @@ const ExerciseDetail = () => {
     }, []);
 
     return (
-        <Flex direction="column" w="100%" p="10px">
+        <Flex direction="column" w="50%" p="10px" m="0 auto" gap="10px">
             {exercise ? 
-            <Flex direction="column" w="100%" p="10px" gap="30px" bgColor="gray.50">
+            <Flex direction="column" w="100%" gap="30px" bgColor="gray.50">
                 <Heading>운동법</Heading>
-                <Flex w="100%" gap="10px">
+                <Flex gap="10px">
                     <Card w="100%">
                         <CardBody>
                             <Flex align="center" justify="space-between">
                                 <Text>작성자: {exercise.userName}</Text>
                                 <Text>작성자 아이디: {exercise.userId}</Text>
                                 <Text>카테고리: {exercise.categoryName}</Text>
-                                <Text>작성일: {exercise.createDate}</Text>
-                                { exercise.modDate && <Text>수정일: {exercise.modDate}</Text> }
+                                <Text>작성일: {Timestamp.convertToDate(exercise.createDate)}</Text>
+                                { exercise.modDate && <Text>수정일: {Timestamp.convertToDate(exercise.modDate)}</Text> }
                                 { isLoggedIn && (exercise.userCode === Number(sessionUser.code)) &&
                                 <Flex gap="10px">
                                     <Button colorScheme="blue"
