@@ -20,8 +20,12 @@ const FriendList = ({ shouldFetch }) => {
             }, 
         })
         .then(response => response.json())
-        .then(data => setFriends(data))
-        .catch(() => Toast.showFailed("친구 목록 로드 실패"))
+        .then(data => {
+            setFriends(data);
+        })
+        .catch(() => {
+            Toast.showFailed("친구 목록 로드 실패");
+        })
         .finally(() => {
             setIsFetching(false);
         });
