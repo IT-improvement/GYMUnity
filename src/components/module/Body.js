@@ -3,7 +3,7 @@ import Sidebar from '../Sidebar';
 
 const Body = (props) => {
     return (
-        <Flex alignItems="cen" minH="1000px" gap="10px" bgColor="gray.100" borderRadius="10px">
+        <Flex alignItems="cen" minH="1000px" bgColor="gray.50" borderRadius="10px">
             <Sidebar/>
             {props.children}
         </Flex>
