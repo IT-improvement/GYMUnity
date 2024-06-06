@@ -89,6 +89,7 @@ export default function RoutineDietCreate({ isOpen, onClose }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new URLSearchParams(formValues).toString();
+    console.log("meal_time" + formValues.meal_time);
     if (!formValues.day) {
       alert("요일을 선택하세요");
       return;
@@ -101,18 +102,19 @@ export default function RoutineDietCreate({ isOpen, onClose }) {
       alert("음식을 선택하세요");
       return;
     }
-    console.log("meal_time" + formValues.meal_time);
     console.log(formData);
     fetch(`${process.env.REACT_APP_SERVER_URL}/routineDiet`, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      },
       body: formData,
     })
       .then((data) => {
         console.log(data);
         onClose(); // 창 닫기
-        // navigate("/routineDiet", { replace: true }); // 새로고침
-        // window.location.reload();
+        navigate("/routineDiet", { replace: true }); // 새로고침
+        window.location.reload();
       })
       .catch((error) => console.error("Error submitting form:", error));
   };

@@ -26,13 +26,12 @@ export default function RoutineDiet() {
         setBreakfast(data.filter((item) => item.mealTime === "아침"));
         setLunch(data.filter((item) => item.mealTime === "점심"));
         setDinner(data.filter((item) => item.mealTime === "저녁"));
-        console.log(data);
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
       });
   }, []);
-
+  console.log(breakfast);
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -64,7 +63,7 @@ export default function RoutineDiet() {
                   <input
                     type="checkbox"
                     name="index"
-                    value={item.routineDietIndex + "/" + item.foodIndex}
+                    value={item.routineIndex + "/" + item.foodIndex}
                     onChange={handleCheckboxChange}
                   ></input>
                 )}
