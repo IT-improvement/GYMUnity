@@ -41,14 +41,21 @@ const LoginForm = () => {
     return (
         <Flex w="100%" p="10px">
             <Stack w="100%">
-                <Heading as="h2" size="lg">로그인</Heading>
                 <form onSubmit={sendLogin}>
                     <Flex direction="column" gap="50px" justify="center" align="center">
+                    <Heading as="h2" size="lg">로그인</Heading>
                     <FormControl>
                         <Flex justify="center">
                             <FormLabel width="100px" fontWeight="bold">아이디</FormLabel>
                             <Input type="text" value={id}
                                 onChange={(e) => setId(e.target.value)}
+                                width="500px"
+                                borderColor="gray.400"
+                                _hover={{ borderColor: "gray.400" }}
+                                _focus={{
+                                    // boxShadow: 'none',
+                                    borderColor: "darkgray"
+                                }}
                             />
                         </Flex>
                     </FormControl>
@@ -56,16 +63,24 @@ const LoginForm = () => {
                         <Flex justify="center">
                             <FormLabel width="100px" fontWeight="bold">비밀번호</FormLabel>
                             <Input
-                                type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                                type="password" value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                width="500px"
+                                borderColor="gray.400"
+                                _hover={{ borderColor: "gray.400" }}
+                                _focus={{
+                                    // boxShadow: 'none',
+                                    borderColor: "darkgray"
+                                }}
                             />
                         </Flex>
                     </FormControl>
 
-                    <Flex justify="center" gap="10px">
-                        <Button colorScheme="green" onClick={sendLogin}>
+                    <Flex justify="center" gap="30px">
+                        <Button width="120px" colorScheme="green" onClick={sendLogin}>
                             로그인
                         </Button>
-                        <Button colorScheme="blue" href="./join">
+                        <Button as="a" width="120px" colorScheme="blue" href="./join">
                             회원가입
                         </Button>
                     </Flex>
