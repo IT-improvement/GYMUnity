@@ -21,8 +21,12 @@ const UserProfile = () => {
             method: "GET", 
         })
         .then(response => response.json())
-        .then(data => setUser(data))
-        .catch(() => Toast.showFailed("유저 페이지 로드 실패"));
+        .then(data => {
+            setUser(data);
+        })
+        .catch(() => {
+            Toast.showFailed("유저 페이지 로드 실패");
+        });
     };
 
     const fetchFeeds = () => {
@@ -35,10 +39,12 @@ const UserProfile = () => {
             },
         })
         .then(response => response.json())
-        .then(data => setFeeds(data))
-        .catch(() => Toast.showFailed("유저 피드 로드 실패"))
-        .finally(() => {
-        });
+        .then(data => {
+            setFeeds(data);
+        })
+        .catch(() => {
+            Toast.showFailed("유저 피드 로드 실패");
+        })
     };
 
     const fetchLikeButtonOnClick = (feedIndex, checkFavorite) => { 
@@ -50,7 +56,9 @@ const UserProfile = () => {
                 "Authorization": sessionUser.code, 
             },
         })
-        .catch(() => Toast.showFailed("좋아요 처리 실패"))
+        .catch(() => {
+            Toast.showFailed("좋아요 처리 실패");
+        })
         .finally(() => {
             fetchFeeds();
         });
@@ -93,7 +101,7 @@ const UserProfile = () => {
             <Grid templateColumns="repeat(4, 1fr)" gap="30px" justifyContent="center" >
                 { feeds.map(feed =>
                     <Feed key={feed.feedIndex} feed={feed} handleLikeButtonOnClick={handleLikeButtonOnClick} />
-                    )
+                )
                 }
             </Grid> 
         </Flex>
