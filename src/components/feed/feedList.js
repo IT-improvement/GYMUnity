@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AbsoluteCenter, Box, Button, Center, Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import { Button, Center, Flex, Grid, Heading } from "@chakra-ui/react";
 import Context from "../../Context";
 import ListSection from "../search/ListSection";
 import LoadingSpinner from "../chakra/LoadingSpinner";
@@ -133,7 +132,7 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                         )}
                     </Grid> 
                     </Center>
-                    { isTotalSearch && (feeds.length >= itemLimit) &&
+                    { isTotalSearch && (feeds.length >= pageNumber) &&
                     <Flex justify="right">
                         <Button onClick={() => navigate("/search", { state: { searchQuery: searchQuery, category: "feed" }})} >
                             게시글 더보기

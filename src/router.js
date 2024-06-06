@@ -26,19 +26,15 @@ import Diary from "./components/diary/diary";
 import Routine from "./components/routine/Routine";
 import FeedList from "./components/feed/feedList";
 import DiaryWrite from "./components/diary/diaryWrite";
-import DietForm from './components/diet/DietForm';
 import CreateFood from './components/diet/CreateFood';
 import EditFood from './components/diet/EditFood';
 import DiaryDelete from "./components/diary/diaryDelete";
 // import FeedDelete from './components/feed/feedDelete';
-import CreateFood from "./components/diet/CreateFood";
-import EditFood from "./components/diet/EditFood";
 import RoutineDiet from "./components/diet/RoutineDiet";
 import ViewFoodDetailForm from "./components/diet/ViewFoodDetailForm";
 import EditFoodCategory from "./components/diet/EditFoodCategory";
 
 const router = createBrowserRouter(
-<<<<<<< HEAD
     [
         {
             path: '/',

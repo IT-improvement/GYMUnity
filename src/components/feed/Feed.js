@@ -159,7 +159,8 @@ const Feed = (props) => {
                                     <Avatar src="" size="md"/>
                                     <Flex direction="column">
                                         <Badge colorScheme="pink">
-                                        <Text>{userName}</Text>
+                                        <Text>{props.feed.userName}</Text>
+                                        </Badge>
                                         <Badge colorScheme="blue">
                                             {userId}
                                         </Badge>
