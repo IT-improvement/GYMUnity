@@ -35,7 +35,7 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className='footer-bottom'>
-                    <div className='footer-copyright'>{'Copyright ⓒ5 Megastudy'}</div>
+                    <div className='footer-copyright'>{'Copyright ⓒ Megastudy'}</div>
                 </div>
             </div>
         </div>
