@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, FormControl, FormLabel, Flex, Input, Stack, Heading, Radio, RadioGroup, Select, Center, Avatar } from '@chakra-ui/react';
 import Context from "../../Context";
+import Toast from "../chakra/Toast";
+import FileUpload from './FileUpload';
+// import ProFileImageUpload from './ProfileImageUpload';
 
 const UpdateUserForm = () => {
     const { code } = useParams();
@@ -25,21 +28,12 @@ const UpdateUserForm = () => {
     // const [gender, setGender] = useState("");
     // const [telecom, setTelecom] = useState("");
     // const [phone, setPhone] = useState("");
-    // const [profileImage, setProfileImage] = useState("");
+    const [profileImage, setProfileImage] = useState("");
     const { isLoggedIn, sessionUser } = useContext(Context);
     const navigate = useNavigate();
     
     const sendUpdate = async (e) => {
         e.preventDefault();
-
-        // console.log(user.id);
-        // console.log(user.password);
-        // console.log(user.email);
-        // console.log(user.name);
-        // console.log(user.birth);
-        // console.log(user.gender);
-        // console.log(user.telecom);
-        // console.log(user.phone);
 
         // if (id === null || id === '')
         //     setId(user.id);
@@ -85,7 +79,7 @@ const UpdateUserForm = () => {
             console.log('User data updated: ', result);
 
             if (result.status === 200) {
-                alert('회원정보 수정 완료');
+                Toast.showSuccess('회원정보 수정 완료');
                 navigate('/');
             } else {
                 alert('Failed to update');
@@ -94,46 +88,34 @@ const UpdateUserForm = () => {
             console.error('Error: ', error);
         }
 
-        // console.log(`${process.env.REACT_APP_SERVER_URL}`);
-        // console.log(id);
-        // console.log(password);
-        // console.log(email);
-        // console.log(name);
-        // console.log(birth);
-        // console.log(gender);
-        // console.log(telecom);
-        // console.log(phone);
-        // console.log(profileImage);
-        console.log(user.id);
-        console.log(user.password);
-        console.log(user.email);
-        console.log(user.name);
-        console.log(user.birth);
-        console.log(user.gender);
-        console.log(user.telecom);
-        console.log(user.phone);
     };
 
     const handleImageClick = () => {
-        // const input = document.createElement('input');
-        // input.type = 'file';
-        // input.accept = 'image/*';
-        // input.onchange = (e) => {
-        //     const file = e.target.files[0];
-        //     const reader = new FileReader();
-        //     reader.onload = (f) => {
-        //         console.log(f.target);
-        //         const dataUrl = reader.result;
-        //         setProfileImage(dataUrl);
-        //     };
-        //     reader.readAsDataURL(file);
-        // };
-        // input.click();
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (f) => {
+                console.log(f.target);
+                const dataUrl = reader.result;
+                setProfileImage(dataUrl);
+            };
+            reader.readAsDataURL(file);
+        };
+        input.click();
     };
 
     const handleUserDataOnChange = (e) => {
         setUser(oldUser => {
             return {...oldUser, [e.target.name]: e.target.value}
+        });
+    };
+
+    const handleFileOnChange = (fileBase64) => {
+        setUser(oldUser => {
+            return { ...oldUser, profileImage: fileBase64}
         });
     };
 
@@ -160,6 +142,7 @@ const UpdateUserForm = () => {
                 console.log(error);
             });
     }, [code]);
+
     //     fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=read_one&code=${sessionUser.code}`, {
     //         method: "POST",
     //         headers: {
@@ -195,7 +178,9 @@ const UpdateUserForm = () => {
                 <form onSubmit={sendUpdate}>
                     <Stack spacing={4} width="600px" padding="30px" marginBottom="50px" backgroundColor="#BED7DC">
                         <Flex justify="center">
+                            {/* <ProFileImageUpload handleFileOnChange={handleFileOnChange} src={user.profileImage} value={user.profileImage} /> */}
                             <Avatar id="image-container" type="file" size="xl" width="150px" height="150px" showName={false} bg="gray.300" src={user.profileImage} onClick={handleImageClick} />
+                            <FileUpload handleFileOnChange={handleFileOnChange} src={user.profileImage} value={user.profileImage} />
                         </Flex>
                         <FormControl id="id" marginTop="20px" marginBottom="10px">
                             <Flex align="center" margin="auto">
@@ -423,7 +408,7 @@ const UpdateUserForm = () => {
                             </Flex>
                         </FormControl>
 
-                        <Flex justify="center" marginBottom="10px">
+                        <Flex justify="center" marginBottom="10px" mb="10px">
                             <Button id="submit" type="submit" value="수정" width="150px" height="50px" colorScheme="custom" backgroundColor="#96B6C5">
                                 완료
                             </Button>

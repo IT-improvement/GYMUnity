@@ -28,6 +28,8 @@ const UserList = ({ searchQuery, isTotalSearch }) => {
         });
     };
 
+    console.log(users);
+
     useEffect(() => {
         fetchUsers();
     }, [searchQuery, isTotalSearch]);
