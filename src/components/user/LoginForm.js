@@ -39,47 +39,33 @@ const LoginForm = () => {
     }, []);
 
     return (
-        <Flex w="100%">
+        <Flex w="100%" p="10px">
             <Stack w="100%">
                 <Heading as="h2" size="lg">로그인</Heading>
                 <form onSubmit={sendLogin}>
                     <Flex direction="column" gap="50px" justify="center" align="center">
                     <FormControl>
-                        <Flex>
+                        <Flex justify="center">
                             <FormLabel width="100px" fontWeight="bold">아이디</FormLabel>
-                            <Input
-                                type="text"
-                                value={id}
+                            <Input type="text" value={id}
                                 onChange={(e) => setId(e.target.value)}
-                                _hover={{ borderColor: "darkgray" }}
-                                _focus={{
-                                    boxShadow: 'none',
-                                    borderColor: "darkgray"
-                                }}
                             />
                         </Flex>
                     </FormControl>
                     <FormControl>
-                        <Flex>
+                        <Flex justify="center">
                             <FormLabel width="100px" fontWeight="bold">비밀번호</FormLabel>
                             <Input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                _hover={{ borderColor: "darkgray" }}
-                                _focus={{
-                                    boxShadow: 'none',
-                                    borderColor: "darkgray"
-                                }}
+                                type="password" value={password} onChange={(e) => setPassword(e.target.value)}
                             />
                         </Flex>
                     </FormControl>
 
-                    <Flex justify="center" marginBottom="10px">
-                        <Button width="150px" color="black" onClick={sendLogin}>
+                    <Flex justify="center" gap="10px">
+                        <Button colorScheme="green" onClick={sendLogin}>
                             로그인
                         </Button>
-                        <Button href="./join">
+                        <Button colorScheme="blue" href="./join">
                             회원가입
                         </Button>
                     </Flex>
