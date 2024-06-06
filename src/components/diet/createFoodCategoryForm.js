@@ -1,104 +1,108 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Box, Button, Input, Stack, Image } from '@chakra-ui/react';
-import { useNavigate, useParams } from 'react-router-dom';
-import Context from '../../Context';
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Image,
+  Stack,
+} from "@chakra-ui/react";
+import Context from "../../Context";
+import Toast from "../chakra/Toast";
 
 const CreateFoodCategoryForm = () => {
-    const [categoryName, setCategoryName] = useState('');
-    const [imageFile, setImageFile] = useState(null);
-    const [foodCategory, setFoodCategory] = useState(null);
-    const navigate = useNavigate();
-    const { index } = useParams();
-    const { isLoggedIn, sessionUser } = useContext(Context);
+  const [categoryName, setCategoryName] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const { isLoggedIn, sessionUser } = useContext(Context);
+  const navigate = useNavigate();
 
-    const handleCategoryNameChange = (event) => {
-        setCategoryName(event.target.value);
-    };
+  const handleCategoryNameChange = (e) => {
+    setCategoryName(e.target.value);
+  };
 
-    const handleImageChange = (event) => {
-        setImageFile(event.target.files[0]);
-    };
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
 
-    console.log(`${process.env.REACT_APP_SERVER_URL}`);
+  const handleCreateCategory = async (e) => {
+    e.preventDefault();
 
-    // Function to fetch a food category by index
-    const fetchFoodCategory = (categoryIndex) => {
-        fetch(
-            `${process.env.REACT_APP_SERVER_URL}/foodCategory/service?command=readAllFoodCategory&userCode=${sessionUser.code}`,
-            {
-                method: 'GET',
-                headers: {
-                    Authorization: sessionUser.code,
-                },
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                setFoodCategory(data);
-            })
-            .catch((err) => {
-                console.error('Error fetching food category:', err);
-            });
-    };
+    try {
+      const formData = new FormData();
+      formData.append("userCode", sessionUser.code);
+      formData.append("categoryName", categoryName);
+      formData.append("categoryImage", imageFile);
 
-    const handleCreateCategory = async () => {
-        try {
-            const formData = new FormData();
-            formData.append('userCode', sessionUser.code);
-            formData.append('categoryName', categoryName);
-            formData.append('categoryImage', imageFile);
-
-            const response = await fetch(
-                `${process.env.REACT_APP_SERVER_URL}/foodCategory/service?command=createFoodCategory`,
-                {
-                    method: 'POST',
-                    headers: {
-                        Authorization: window.sessionStorage.getItem('userCode'),
-                    },
-                    body: formData,
-                }
-            );
-
-            const responseData = await response.json();
-            console.log(responseData.status);
-            if (responseData.status === 200) {
-                alert('음식 카테고리 생성 완료');
-                navigate('/diet/createFood');
-            } else {
-                alert('음식 카테고리 생성 실패');
-                console.log(responseData);
-            }
-        } catch (error) {
-            console.error('Error creating Food Category:', error);
-            alert('Error creating Food Category');
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/foodCategory/service?command=createFoodCategory`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: sessionUser.code,
+          },
+          body: formData,
         }
-    };
+      );
 
-    useEffect(() => {
-        const categoryIndex = 1;
-        fetchFoodCategory(categoryIndex);
-    }, []);
+      const responseData = await response.json();
+      if (responseData.status === 200) {
+        Toast.show(true, "음식 카테고리 생성 완료", "음식 카테고리 생성 실패");
+        navigate("/diet/foodList");
+      } else {
+        Toast.showFailed("음식 카테고리 생성 실패");
+      }
+    } catch (error) {
+      console.error("Error creating Food Category:", error);
+      Toast.showFailed("Error creating Food Category");
+    }
+  };
 
-    return (
-        <Box p={4}>
-            <Stack spacing={4}>
-                <Input placeholder="Category Name" value={categoryName} onChange={handleCategoryNameChange} />
-                <Input type="file" accept="image/*" onChange={handleImageChange} />
-                {imageFile && (
-                    <Image
-                        src={URL.createObjectURL(imageFile)}
-                        alt="Selected Image"
-                        boxSize="150px"
-                        objectFit="cover"
-                    />
-                )}
+  useEffect(() => {
+    if (!isLoggedIn) navigate("/diet");
+  }, [isLoggedIn, navigate]);
 
-                <Button onClick={handleCreateCategory} colorScheme="teal">
-                    카테고리 생성
-                </Button>
-            </Stack>
-        </Box>
-    );
+  return (
+    <Flex w="100%" justify="center">
+      <form
+        style={{ minWidth: "70%" }}
+        method="POST"
+        onSubmit={handleCreateCategory}
+      >
+        <FormControl>
+          <FormLabel>카테고리 이름</FormLabel>
+          <Input
+            required
+            type="text"
+            value={categoryName}
+            onChange={handleCategoryNameChange}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel>카테고리 이미지</FormLabel>
+          <Input type="file" accept="image/*" onChange={handleImageChange} />
+          {imageFile && (
+            <Image
+              src={URL.createObjectURL(imageFile)}
+              alt="Selected Image"
+              boxSize="150px"
+              objectFit="cover"
+            />
+          )}
+        </FormControl>
+        <Flex justify="space-between" mt={4}>
+          <Button colorScheme="blue" onClick={() => navigate(-1)}>
+            뒤로가기
+          </Button>
+          <Button type="submit" colorScheme="green">
+            카테고리 생성
+          </Button>
+        </Flex>
+      </form>
+    </Flex>
+  );
 };
 
 export default CreateFoodCategoryForm;

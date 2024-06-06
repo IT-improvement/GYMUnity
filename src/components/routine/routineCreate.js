@@ -72,7 +72,11 @@ export default function RoutineCreate({ isOpen, onClose }) {
     const onChangeCategory = (event) => {
         const { value } = event.target;
         setCategoryIndex(value);
-        setFormValues((prevValues) => ({ ...prevValues, category: value, exercise: '' }));
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            category: value,
+            exercise: '',
+        }));
     };
 
     const handleChange = (event) => {

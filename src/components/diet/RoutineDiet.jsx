@@ -1,15 +1,13 @@
-import React, { useEffect, useState, useContext } from "react";
-import "./dietForm.css";
-import Context from "../../Context";
-import CreateFoodForm from "./createDietForm";
+import React, { useEffect, useState } from "react";
+import "./routineDiet.css";
+import RoutineDietCreate from "./routineDietCreate";
 
-export default function Routine() {
+export default function RoutineDiet() {
   const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-  const [top, setTop] = useState([]);
-  const [bottom, setBottom] = useState([]);
-  const [aerobic, setAerobic] = useState([]);
+  const [breakfast, setBreakfast] = useState([]);
+  const [lunch, setLunch] = useState([]);
+  const [dinner, setDinner] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isLoggedIn, sessionUser } = useContext(Context);
 
   //      state: 삭제 버튼 활성화 상태     //
   const [status, setStatus] = useState(false);
@@ -17,26 +15,23 @@ export default function Routine() {
   const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
-    if (sessionUser) {
-      fetch(
-        `${process.env.REACT_APP_SERVER_URL}/diet/service?command=readAllDiet&userCode=${sessionUser.code}`
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setTop(data.filter((item) => item.category === "아침"));
-          setBottom(data.filter((item) => item.category === "점심"));
-          setAerobic(data.filter((item) => item.category === "저녁"));
-        })
-        .catch((error) => {
-          console.error("There was a problem with the fetch operation:", error);
-        });
-    }
-  }, [sessionUser]);
+    fetch(`${process.env.REACT_APP_SERVER_URL}/routineDiet?command=read`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setBreakfast(data.filter((item) => item.mealTime === "아침"));
+        setLunch(data.filter((item) => item.mealTime === "점심"));
+        setDinner(data.filter((item) => item.mealTime === "저녁"));
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -55,23 +50,23 @@ export default function Routine() {
     }
   };
 
-  // render: 요일별 식단 랜더링
+  //       render: 요일별 식단 랜더링        //
   const renderRows = (categoryData, categoryName) => (
-    <tr key={categoryName}>
+    <tr>
       <td>{categoryName}</td>
       {days.map((day, index) => (
         <td key={index}>
           {categoryData
             .filter((item) => item.day === day)
             .map((item) => (
-              <div key={item.routineIndex + "-" + item.exerciseIndex}>
+              <div>
                 {status && (
                   <input
                     type="checkbox"
                     name="index"
-                    value={item.routineIndex + "/" + item.exerciseIndex}
+                    value={item.routineDietIndex + "/" + item.foodIndex}
                     onChange={handleCheckboxChange}
-                  />
+                  ></input>
                 )}
                 {item.name}
               </div>
@@ -91,9 +86,9 @@ export default function Routine() {
     if (status) {
       if (selectedItems.length > 0) {
         fetch(
-          `${process.env.REACT_APP_SERVER_URL}/diet/service?command=deleteDiet&dietIndex=${sessionUser.code}`,
+          `${process.env.REACT_APP_SERVER_URL}/routineDiet?command=delete`,
           {
-            method: "GET",
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
@@ -119,9 +114,10 @@ export default function Routine() {
     }
     setStatus(!status);
   };
+
   return (
     <div className="routine-box">
-      <CreateFoodForm isOpen={isModalOpen} onClose={closeModal} />
+      <RoutineDietCreate isOpen={isModalOpen} onClose={closeModal} />
       <div className="routine-top">
         <div className="routine-title">식단</div>
         <div className="routine-button">
@@ -143,9 +139,9 @@ export default function Routine() {
                   <td key={index}>{day}</td>
                 ))}
               </tr>
-              {renderRows(top, "아침")}
-              {renderRows(bottom, "점심")}
-              {renderRows(aerobic, "저녁")}
+              {renderRows(breakfast, "아침")}
+              {renderRows(lunch, "점심")}
+              {renderRows(dinner, "저녁")}
             </tbody>
           </table>
         </div>
