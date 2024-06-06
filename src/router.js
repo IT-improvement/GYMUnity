@@ -30,6 +30,8 @@ import DiaryWrite from "./components/diary/diaryWrite";
 import CreateFood from "./components/diet/CreateFood";
 import EditFood from "./components/diet/EditFood";
 import RoutineDiet from "./components/diet/RoutineDiet";
+import ViewFoodDetailForm from "./components/diet/ViewFoodDetailForm";
+import EditFoodCategory from "./components/diet/EditFoodCategory";
 
 const router = createBrowserRouter(
   [
@@ -169,8 +171,16 @@ const router = createBrowserRouter(
           element: <Body children={<UpdateFoodCategoryForm />} />,
         },
         {
-          path: "/diet/editFood/:index",
+          path: "/diet/editFood/:foodIndex",
           element: <Body children={<EditFood />} />,
+        },
+        {
+          path: "/diet/viewFoodDetail/:foodIndex",
+          element: <Body children={<ViewFoodDetailForm />} />,
+        },
+        {
+          path: "/diet/editFoodCategory/:foodCategoryIndex",
+          element: <Body children={<EditFoodCategory />} />,
         },
       ],
     },
