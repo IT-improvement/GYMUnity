@@ -48,6 +48,10 @@ const ExerciseList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
         fetchExercisesNextPage();
     }, [searchQuery, isDescOrder]);
 
+    useEffect(() => {
+        fetchExercisesNextPage();
+    }, [pageNumber]);
+
     return (
         <ListSection>
             <Heading textAlign="center">운동법</Heading>
