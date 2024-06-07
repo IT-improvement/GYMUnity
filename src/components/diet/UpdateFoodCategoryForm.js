@@ -88,10 +88,7 @@ const ViewFoodDetailForm = () => {
       isDeleted = false;
     } finally {
       Toast.show(isDeleted, "음식 삭제 성공", "음식 삭제 실패");
-
-      if (isDeleted) {
-        navigate("/diet/foodList");
-      }
+      navigate("/diet/foodList");
     }
   };
 

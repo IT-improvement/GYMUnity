@@ -124,7 +124,6 @@ const ViewFoodListForm = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                 setFoodList(foodList.filter((food) => food.foodIndex !== foodIndex));
                 alert('카테고리 삭제 성공');
                 navigate('/diet/foodList', { replace: true }); // 새로고침
-                window.location.reload();
             } else {
                 alert('삭제 실패');
             }
