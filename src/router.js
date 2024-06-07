@@ -42,7 +42,10 @@ const router = createBrowserRouter(
                 {
                     path: '',
                     element: <Body children={<Main />}/>,
-                },
+                },{
+                    path:"*",
+                    element:<Body children={<Main />}/>,
+                }
             ],
             errorElement: (
                 <>
