@@ -10,7 +10,7 @@ const UserCard = (props) => {
                 <Box h="100%" p="10px" bgColor="gray.100" borderRadius="10px" cursor="pointer">
                     <Link to={`/user/${code}`}>
                         <Flex direction="column" h="100%" justify="center" align="center" gap="10px">
-                            <Avatar src={profileImage} size="xl" />
+                            <Avatar src={props.user.profileImage} size="xl" />
                             <VStack gap="10px">
                                 <Text fontWeight="bold">{name}</Text>
                                 <Badge fontSize="15px" colorScheme="blue">

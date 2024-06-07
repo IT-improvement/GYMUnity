@@ -19,38 +19,13 @@ const UpdateUserForm = () => {
         phone: "",
         profileImage: ""
     })
-    // const [user, setUser] = useState(true);
-    // const [id, setId] = useState("");
-    // const [password, setPassword] = useState("");
-    // const [email, setEmail] = useState("");
-    // const [name, setName] = useState("");
-    // const [birth, setBirth] = useState("");
-    // const [gender, setGender] = useState("");
-    // const [telecom, setTelecom] = useState("");
-    // const [phone, setPhone] = useState("");
+    
     const [profileImage, setProfileImage] = useState("");
     const { isLoggedIn, sessionUser } = useContext(Context);
     const navigate = useNavigate();
     
     const sendUpdate = async (e) => {
         e.preventDefault();
-
-        // if (id === null || id === '')
-        //     setId(user.id);
-        // if (password === null || password === '')
-        //     setPassword(user.password);
-        // if (name === null || name === '')
-        //     setName(user.name);
-        // if (email === null || email === '')
-        //     setEmail(user.email);
-        // if (telecom === null || telecom === '')
-        //     setTelecom(user.telecom);
-        // if (phone === null || phone === '')
-        //     setPhone(user.phone);
-        // if (profileImage === null || profileImage === '')
-        //     setProfileImage(user.profileImage);
-        // setBirth(user.birth);
-        // setGender(user.gender);
 
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=update`, {
@@ -143,42 +118,20 @@ const UpdateUserForm = () => {
             });
     }, [code]);
 
-    //     fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=read_one&code=${sessionUser.code}`, {
-    //         method: "POST",
-    //         headers: {
-    //         'Content-Type': 'application/json'
-    //         },
-    //     })
-    //         .then(response => {
-    //             console.log(response);
-    //             if (!response.ok) {
-    //                 throw new Error('Failed to fetch user');
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             setUser(data)
-    //             console.log(data);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // }, [code]);
-
     if (!user) {
         return <div>로딩 중...</div>;
     }
     
     return (
-        <Center backgroundColor="none">
+        <Center justify="center" w="100%" backgroundColor="none">
             <Box p={4} textAlign="center">
                 <Heading as="h2" size="lg" mb={6}>
                     회원정보 수정
                 </Heading>
                 <form onSubmit={sendUpdate}>
                     <Stack spacing={4} width="600px" padding="30px" marginBottom="50px" backgroundColor="#BED7DC">
+                    
                         <Flex justify="center">
-                            {/* <ProFileImageUpload handleFileOnChange={handleFileOnChange} src={user.profileImage} value={user.profileImage} /> */}
                             <Avatar id="image-container" type="file" size="xl" width="150px" height="150px" showName={false} bg="gray.300" src={user.profileImage} onClick={handleImageClick} />
                             <FileUpload handleFileOnChange={handleFileOnChange} src={user.profileImage} value={user.profileImage} />
                         </Flex>
@@ -316,7 +269,6 @@ const UpdateUserForm = () => {
                                     borderWidth="1px">
                                     <Flex height="100%">
                                         <Box value="M"
-                                            // onClick={() => setGender('M')}
                                             justifyContent="center"
                                             width="200px"
                                             bg={user.gender === "M" ? "#D3D3D3" : "inherit"}
@@ -331,7 +283,6 @@ const UpdateUserForm = () => {
                                             </Radio>
                                         </Box>
                                         <Box value="F"
-                                            // onClick={() => setGender('F')}
                                             justifyContent="center"
                                             width="200px"
                                             bg={user.gender === "F" ? "#D3D3D3" : "inherit"}

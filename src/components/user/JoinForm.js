@@ -21,19 +21,19 @@ const JoinForm = () => {
         e.preventDefault();
 
         if (email !== null && email !== '' && (!email.includes('@') || !email.includes('.'))) {
-            alert('유효한 이메일 주소를 입력하세요.');
+            Toast.showFailed('유효한 이메일 주소를 입력하세요.');
             return;
         }
 
         const birthRegex = /^(\d{8})$/;
         if(!birthRegex.test(birth)) {
             console.log(birth);
-            alert('생년월일은 숫자 8자리를 입력하세요.');
+            Toast.showFailed('생년월일은 숫자 8자리를 입력하세요.');
             return;
         }
 
         if (gender === null || gender === '') {
-            alert('성별을 선택하세요.');
+            Toast.showFailed('성별을 선택하세요.');
             return;
         }
 
@@ -41,43 +41,9 @@ const JoinForm = () => {
 
         if(!phoneRegex.test(phone)) {
             console.log(phone);
-            alert('유효한 휴대폰 번호를 입력하세요.');
+            Toast.showFailed('유효한 휴대폰 번호를 입력하세요.');
             return;
         }
-
-        // if (phone !== null && phone !== '' && !phoneRegex.test(phone)) {
-        //     const phoneReg = /^(\d{11})$/;
-
-        //     if(phoneReg.test(phone)) {
-        //         const cleaned = ('' + phone).replace(/\D/g, '');
-
-        //         const match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
-        //         if (match) {
-        //             // phone = match[1] + '-' + match[2] + '-' + match[3];
-        //             const formattedPhone = match[1] + '-' + match[2] + '-' + match[3];
-
-        //             if(!phoneRegex.test(formattedPhone)) {
-        //                 // phone = formattedPhone;
-        //                 setPhone(formattedPhone);
-        //                 console.log(formattedPhone);
-        //                 alert('유효한 휴대폰 번호를 입력하세요.1');
-        //                 return;
-        //             }
-
-        //         } else {
-        //             alert('유효한 휴대폰 번호를 입력하세요.2');
-        //             return;
-        //         }
-        //     } else {
-        //         alert('유효한 휴대폰 번호를 입력하세요.3');
-        //         return;
-        //     }
-        // } else {
-        //     alert('유효한 휴대폰 번호를 입력하세요.4');
-        //     return;
-        // }
-
-        
 
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=create`, {
@@ -107,6 +73,8 @@ const JoinForm = () => {
             if (result.status === 200) {
                 Toast.showSuccess('회원가입 완료');
                 navigate('/');
+            } else if (result.status === 401) {
+                Toast.showFailed('이미 존재하는 회원 정보입니다.');
             } else {
                 Toast.showFailed('Failed to join');
             }
@@ -115,23 +83,10 @@ const JoinForm = () => {
             console.error('Error: ', error);
         }
 
-        console.log(`${process.env.REACT_APP_SERVER_URL}`);
-        console.log(id);
-        console.log(password);
-        console.log(email);
-        console.log(name);
-        console.log(birth);
-        console.log(gender);
-        console.log(telecom);
-        console.log(phone);
     };
 
-    useEffect(() => {
-
-    }, []);
-
     return (
-        <Flex backgroundColor="none">
+        <Flex justify="center" w="100%" backgroundColor="none">
             <Box p={4} textAlign="center">
                 <form onSubmit={submitJoin}>
                 
