@@ -53,7 +53,7 @@ const RenderDate = () => {
 
 const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
     const startMonth = startOfMonth(currentMonth);
-    const endMonth = endOfMonth(startMonth);
+    const endMonth = endOfMonth(currentMonth);
     const startDay = startOfWeek(startMonth);
     const endDay = endOfWeek(endMonth);
     const [data, setData] = useState([]);
@@ -73,7 +73,7 @@ const RenderDay = ({ currentMonth, selectedDate, onDateClick }) => {
         };
         fetchData();
     }, [currentMonth]);
-
+    console.log(data);
     const rows = [];
     let days = [];
     let day = startDay;

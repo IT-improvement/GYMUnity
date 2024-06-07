@@ -95,7 +95,7 @@ export default function RoutineCreate({ isOpen, onClose }) {
             alert('운동을 선택하세요');
             return;
         }
-        fetch(`${process.env.REACT_APP_SERVER_URL}/routine`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/routine?command=write`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: formData,

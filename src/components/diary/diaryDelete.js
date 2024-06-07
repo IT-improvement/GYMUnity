@@ -19,6 +19,8 @@ const Renderdata = () => {
         .then(responseData => {
             setData(responseData.diaries);
             setEnd(responseData.end);
+            console.log(data);
+            console.log(end);
         })
         .catch(error => {
             console.error('Error fetching data:', error);
