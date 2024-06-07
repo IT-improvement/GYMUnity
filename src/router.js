@@ -32,7 +32,7 @@ import RoutineDiet from "./components/diet/RoutineDiet";
 import ViewFoodDetailForm from "./components/diet/ViewFoodDetailForm";
 import EditFoodCategory from "./components/diet/EditFoodCategory";
 import DiaryDelete from "./components/diary/diaryDelete";
-import NotFound from "./components/NotFound"; // Import the NotFound component
+import NotFound from "./components/NotFound";
 
 const router = createBrowserRouter(
     [
