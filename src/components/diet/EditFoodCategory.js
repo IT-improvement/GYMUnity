@@ -37,11 +37,13 @@ const EditFoodCategory = () => {
     console.log("userCode:" + sessionUser.code);
     console.log("categoryIndex:" + foodCategoryIndex);
     console.log("categoryName:" + category.name);
+    console.log("categoryImageUrl:" + category.imageUrl);
 
     const requestBody = {
       userCode: sessionUser.code,
       foodCategoryIndex: foodCategoryIndex,
       categoryName: category.name,
+      categoryImageUrl: category.imageUrl,
     };
 
     fetch(
@@ -66,7 +68,7 @@ const EditFoodCategory = () => {
           "음식 카테고리 수정 실패"
         );
 
-        if (isUpdated) navigate(`/diet/viewFoodCategory/${foodCategoryIndex}`);
+        if (isUpdated) navigate(`/diet/foodList`);
       });
   };
 
