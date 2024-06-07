@@ -105,6 +105,14 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
         setPageNumber(pageNumber++)
     }
 
+    const feedCreateButton = () => {
+        if(!isLoggedIn) {
+            Toast.showFailed("로그인 후 이용가능")
+            return
+        }
+        navigate("/feed/feedCreate")
+    }
+
 
     useEffect(() => {
         fetchFeedsAfterPageClick();
@@ -119,10 +127,10 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                     <LoadingSpinner />
                 </Center>
                 :
-                feeds.length > 0 ? 
                 <Flex direction="column" gap="10px">
                     <Flex direction="row-reverse">
-                    <Button w="fitcontent" colorScheme="blue" onClick={() => navigate("/feed/feedCreate")}>피드작성</Button>
+                    <Button w="fitcontent" colorScheme="blue" onClick={feedCreateButton}>피드작성</Button>
+                    
                     </Flex>
 
                     <Center>
@@ -140,8 +148,6 @@ const FeedList = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                     </Flex>
                     }
                 </Flex>
-                :
-                <Heading fontSize="20px">피드가 없습니다</Heading>
             }
             <Button onClick={()=> addItemLimit()}>다음</Button>
         </ListSection>
