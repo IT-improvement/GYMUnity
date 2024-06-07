@@ -7,6 +7,12 @@ import { Badge, Flex, VStack, Grid, Avatar, Image, Box, Heading, Text, Button, u
 import Toast from "../chakra/Toast";
 
 const FeedDetail = () => {
+    const [user, setUser] = useState({
+        code: undefined,
+        profileImage: "",
+        id: "",
+        name: "",
+    });
     const [feed, setFeed] = useState();
     const [isFetching, setIsFetching] = useState(true);
     const { isLoggedIn, sessionUser } = useContext(Context);
@@ -43,6 +49,21 @@ const FeedDetail = () => {
         });
 
     }
+
+    const fetchUser = () => {
+        const code = sessionUser;
+        console.log(code.code);
+        fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=read_one&code=${code.code}`, {
+            method: "GET", 
+        })
+        .then(response => response.json())
+        .then(data => {
+            setUser(data);
+        })
+        .catch(() => {
+            Toast.showFailed("유저 페이지 로드 실패");
+        });
+    };
     console.log(feed);
 
 
@@ -114,6 +135,10 @@ const FeedDetail = () => {
         fetchFeed();
     }, []);
 
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
     return (
             <div>
                 {
@@ -125,7 +150,10 @@ const FeedDetail = () => {
                         <Card _hover={{backgroundColor: "gray.400"}}>
                             <CardBody>
                                 <Flex gap="10px">
-                                    <Avatar src="" size="md"/>
+                                <Image borderRadius='full'
+                                        boxSize='100px'
+                                        alt='Dan Abramov' 
+                                        src={user.profileImage}/>
                                     <Flex direction="column">
                                         <Text>{feed.userName}</Text>
                                         <Badge fontSize="15px" colorScheme="pink">

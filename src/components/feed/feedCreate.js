@@ -99,7 +99,10 @@ const FeedCreate = () => {
                         <Card _hover={{ backgroundColor: "gray.400" }}>
                             <CardBody>
                                 <Flex gap="10px">
-                                    <Image src={user.profileImage}/>
+                                    <Image borderRadius='full'
+                                        boxSize='100px'
+                                        alt='Dan Abramov' 
+                                        src={user.profileImage}/>
                                     <Flex direction="column">
                                         <Text>{user.name}</Text>
                                         <Badge fontSize="15px" colorScheme="pink">
