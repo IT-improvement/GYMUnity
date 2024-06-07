@@ -105,7 +105,7 @@ const ViewFoodListForm = ({ searchQuery, isDescOrder, isTotalSearch }) => {
 
     const handleDeleteCategory = async (foodIndex) => {
         try {
-            const response = await fetch(
+            const response = fetch(
                 `${process.env.REACT_APP_SERVER_URL}/foodCategory/service?command=deleteFoodCategory&foodCategoryIndex=${foodIndex}`,
                 {
                     method: 'GET',
@@ -119,7 +119,7 @@ const ViewFoodListForm = ({ searchQuery, isDescOrder, isTotalSearch }) => {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
 
-            const result = await response.json();
+            const result = response.json();
             if (result.status === 200) {
                 setFoodList(foodList.filter((food) => food.foodIndex !== foodIndex));
                 alert('카테고리 삭제 성공');

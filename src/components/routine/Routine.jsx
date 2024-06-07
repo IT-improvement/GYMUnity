@@ -99,14 +99,14 @@ export default function Routine() {
                         }
                     })
                     .then((data) => {
-                        navigate("/routine");
                     })
                     .catch((error) => {
                         console.error('There was a problem with the delete operation:', error);
-                    });
-            }
-            setSelectedItems([]);
-        }
+                        });
+                        }
+                        setSelectedItems([]);
+                        }
+        navigate("/routine");
         setStatus(!status);
     };
     return (
