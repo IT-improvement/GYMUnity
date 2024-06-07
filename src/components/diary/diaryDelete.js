@@ -58,7 +58,7 @@ export default function DiaryDelete() {
             fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=delete`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 },
                 body: JSON.stringify({ items: selectedItems }),
                 })
