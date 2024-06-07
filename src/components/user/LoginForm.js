@@ -32,7 +32,9 @@ const LoginForm = () => {
             Toast.showFailed("로그인 실패");
         }
     };
-
+    const onClickSignUp = () =>{
+        navigate("/user/join");
+    }
     useEffect(() => {
         if (isLoggedIn)
             navigate("/");
@@ -80,7 +82,7 @@ const LoginForm = () => {
                         <Button width="120px" colorScheme="green" onClick={sendLogin}>
                             로그인
                         </Button>
-                        <Button as="a" width="120px" colorScheme="blue" href="./join">
+                        <Button as="a" width="120px" colorScheme="blue" onClick={onClickSignUp}>
                             회원가입
                         </Button>
                     </Flex>
