@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/gymunity/static/css/main.9f6dfc04.css",
-    "main.js": "/gymunity/static/js/main.4d18e89d.js",
+    "main.js": "/gymunity/static/js/main.87f0e4da.js",
     "static/media/welcom.png": "/gymunity/static/media/welcom.32f7d8458acd7319bf8c.png",
     "index.html": "/gymunity/index.html",
     "main.9f6dfc04.css.map": "/gymunity/static/css/main.9f6dfc04.css.map",
-    "main.4d18e89d.js.map": "/gymunity/static/js/main.4d18e89d.js.map"
+    "main.87f0e4da.js.map": "/gymunity/static/js/main.87f0e4da.js.map"
   },
   "entrypoints": [
     "static/css/main.9f6dfc04.css",
-    "static/js/main.4d18e89d.js"
+    "static/js/main.87f0e4da.js"
   ]
 }
