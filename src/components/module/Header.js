@@ -28,7 +28,7 @@ export default function Header() {
             <Button h="fit-content" p="5px" width="100px" height="50px">
                 {isLoggedIn ?
                     <Link to="/user/mypage">
-                        <Avatar src="" size="sm" />
+                        <Avatar src={sessionUser.profileImage} size="sm" />
                     </Link>
                     :
                     <Link to="/user/login">로그인</Link>

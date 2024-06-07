@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Flex, FormControl, FormLabel, Input, Select, Textarea } from "@chakra-ui/react";
+import { Button, Card, CardBody, Flex, FormControl, FormLabel, Heading, Input, Select, Textarea } from "@chakra-ui/react";
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
 
@@ -69,38 +69,45 @@ const ExerciseCreate = () => {
     }, [isLoggedIn, navigate]);
 
     return (
-        <Flex w="100%" justify="center">
-            <form style={{ "minWidth": "70%"}} method="POST" onSubmit={handleExerciseCreateOnSubmit}>
-                <FormControl>
-                    <FormLabel> 운동 카테고리</FormLabel>
-                    <Select isRequired name="categoryIndex" placeholder="카테고리 선택" onChange={handleExerciseFieldOnChange}>
-                        {exerciseCategories.map(category =>
-                            <option key={category.index} value={category.index}>
-                                {category.name}
-                            </option>
-                        )}
-                    </Select>
-                </FormControl>
-                <FormControl>
-                    <FormLabel>제목</FormLabel>
-                    <Input isRequired type="text" name="name" 
-                        value={exercise.name}
-                        onChange={handleExerciseFieldOnChange}
-                    />
-                </FormControl>
-                <FormControl>
-                    <FormLabel>내용</FormLabel>
-                    <Textarea isRequired name="content"
-                        bgColor="white"
-                        value={exercise.content}
-                        onChange={handleExerciseFieldOnChange}
-                    />
-                </FormControl>
-                <Flex justify="space-between">
-                    <Button colorScheme="blue" onClick={() => navigate(-1)}>뒤로가기</Button>
-                    <Button type="submit" colorScheme="green">작성</Button>
-                </Flex>
-            </form>
+        <Flex direction="column" w="50%" p="10px" m="0 auto" gap="10px">
+            <Heading textAlign="center">운동법 작성 페이지</Heading>
+            <Card>
+                <CardBody>
+                <form method="POST" onSubmit={handleExerciseCreateOnSubmit}>
+                    <Flex direction="column" gap="10px">
+                        <FormControl>
+                            <FormLabel> 운동 카테고리</FormLabel>
+                            <Select isRequired name="categoryIndex" placeholder="카테고리 선택" onChange={handleExerciseFieldOnChange}>
+                                {exerciseCategories.map(category =>
+                                    <option key={category.index} value={category.index}>
+                                        {category.name}
+                                    </option>
+                                )}
+                            </Select>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>운동 이름</FormLabel>
+                            <Input isRequired type="text" name="name" 
+                                value={exercise.name}
+                                onChange={handleExerciseFieldOnChange}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel>내용</FormLabel>
+                            <Textarea isRequired name="content"
+                                bgColor="white"
+                                value={exercise.content}
+                                onChange={handleExerciseFieldOnChange}
+                            />
+                        </FormControl>
+                        <Flex justify="space-between">
+                            <Button colorScheme="blue" onClick={() => navigate(-1)}>뒤로가기</Button>
+                            <Button type="submit" colorScheme="green">작성</Button>
+                        </Flex>
+                    </Flex>
+                </form>
+                </CardBody>
+            </Card>
         </Flex>
     );
 };

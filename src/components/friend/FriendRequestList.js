@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Avatar, Box, Button, Card, CardBody, Center, Grid, Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Card, CardBody, Center, Flex, Grid, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import Context from "../../Context";
 import LoadingSpinner from "../chakra/LoadingSpinner";
 import Toast from "../chakra/Toast";
+import UserCard from "../user/UserCard";
 
 const FriendRequestList = ({ shouldFetch }) => {
     const [friendRequests, setFriendRequests] = useState([]);
@@ -89,12 +90,12 @@ const FriendRequestList = ({ shouldFetch }) => {
 
     const showFriendRequests = () => {
         return (
-            friendRequests.map(({ userCode, userId, userName }) =>
+            friendRequests.map(({ userCode, userId, userName, userProfileImage }) =>
             <Card key={userCode}>
                 <CardBody>
                     <Box p="10px" borderRadius="10px" bgColor="gray.300" _hover={{backgroundColor: "gray.400"}}>
                         <Link to={`/user/${userCode}`}>
-                            <Avatar src="" size="2xl"/>
+                            <Avatar src={userProfileImage} size="2xl"/>
                             <VStack gap="10px">
                                 <Text>{userId}</Text>
                                 <Text>{userName}</Text>
@@ -120,8 +121,17 @@ const FriendRequestList = ({ shouldFetch }) => {
                 </Center>
             }
             { friendRequests.length > 0 ? 
-                <Grid templateColumns="repeat(3, 1fr)" gap="30px" justifyContent="center" >
-                    { showFriendRequests() }
+                <Grid templateColumns="repeat(4, 1fr)" gap="10px" >
+                    { friendRequests.map(friend => {
+                        return <Box p="10px" bgColor="gray.200" borderRadius="10px">
+                            <Flex direction="column" gap="10px">
+                                <UserCard key={friend.userCode} user={{ code: friend.userCode, id: friend.userId, name: friend.userName, profileImage: friend.userProfileImage }} />
+                                <Button colorScheme="blue" onClick={() => handleAcceptFriendRequest(friend.userCode)}>수락</Button>
+                                <Button colorScheme="red" onClick={() => handleDeclineFriendRequest(friend.userCode)}>거절</Button>
+                            </Flex>
+                        </Box>
+                    }
+                    )}
                 </Grid> 
                 :
                 <Heading mt="50px" fontSize="20px" textAlign="center">친구 요청 목록이 비어있습니다</Heading>

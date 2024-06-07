@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Button, Card, CardBody, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, Divider, Flex, Heading, Text, Table, TableContainer, Tbody, Tr, Td, Textarea } from "@chakra-ui/react";
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
 import Timestamp from "../../utils/timestamp";
@@ -58,43 +58,72 @@ const ExerciseDetail = () => {
     return (
         <Flex direction="column" w="50%" p="10px" m="0 auto" gap="10px">
             {exercise ? 
-            <Flex direction="column" w="100%" gap="30px" bgColor="gray.50">
-                <Heading>운동법</Heading>
+            <Flex direction="column" w="100%" gap="10px" bgColor="gray.50">
+                <Heading textAlign="center">운동법 상세페이지</Heading>
                 <Flex gap="10px">
                     <Card w="100%">
                         <CardBody>
-                            <Flex align="center" justify="space-between">
-                                <Text>작성자: {exercise.userName}</Text>
-                                <Text>작성자 아이디: {exercise.userId}</Text>
-                                <Text>카테고리: {exercise.categoryName}</Text>
-                                <Text>작성일: {Timestamp.convertToDate(exercise.createDate)}</Text>
-                                { exercise.modDate && <Text>수정일: {Timestamp.convertToDate(exercise.modDate)}</Text> }
-                                { isLoggedIn && (exercise.userCode === Number(sessionUser.code)) &&
-                                <Flex gap="10px">
-                                    <Button colorScheme="blue"
-                                        onClick={() => navigate(`/exercises/update/${exercise.index}`)}>
-                                        수정
-                                    </Button>
-                                    <Button colorScheme="red" onClick={handlePostDeleteOnClick}>삭제</Button>
-                                </Flex>
-                                }
+                            <TableContainer maxW="1000px">
+                                <Table>
+                                    <Tbody>
+                                    <Tr>
+                                        <Td>작성자</Td>
+                                        <Td>{exercise.userName}</Td>
+                                    </Tr>
+                                    <Tr>
+                                        <Td>작성자 아아디</Td>
+                                        <Td>{exercise.userId}</Td>
+                                    </Tr>
+                                    <Tr>
+                                        <Td>카테고리</Td>
+                                        <Td>{exercise.categoryName}</Td>
+                                    </Tr>
+                                    <Tr>
+                                        <Td>작성일</Td>
+                                        <Td>{Timestamp.convertToDate(exercise.createDate)}</Td>
+                                    </Tr>
+                                    { exercise.modDate &&
+                                    <Tr>
+                                        <Td>수정일</Td>
+                                        <Td>{Timestamp.convertToDate(exercise.modDate)}</Td>
+                                    </Tr>
+                                    }
+                                    </Tbody>
+                                </Table>
+                            </TableContainer>
+                            { isLoggedIn && (exercise.userCode === Number(sessionUser.code)) &&
+                            <Flex justify="right" gap="10px">
+                                <Button colorScheme="blue"
+                                    onClick={() => navigate(`/exercises/update/${exercise.index}`)}>
+                                    수정
+                                </Button>
+                                <Button colorScheme="red" onClick={handlePostDeleteOnClick}>삭제</Button>
                             </Flex>
+                            }
                         </CardBody>
                     </Card>
                 </Flex>
-
                 <Flex direction="column" gap="10px">
                     <Card>
                         <CardBody>
-                            <Text>제목: {exercise.name}</Text>
-                        </CardBody>
-                    </Card>
-
-                    <Card>
-                        <CardBody>
-                            <Text>내용</Text>
-                            <Divider borderWidth="2px" m="5px 0px" />
-                            <Text>{exercise.content}</Text>
+                            <TableContainer maxW="1000px" overflowY="auto">
+                                <Table>
+                                    <Tbody>
+                                    <Tr>
+                                        <Td>제목</Td>
+                                        <Td>{exercise.name}</Td>
+                                    </Tr>
+                                    <Tr>
+                                        <Td>내용</Td>
+                                    </Tr>
+                                    <Tr>
+                                        <Td colSpan="2">
+                                            {exercise.content}
+                                        </Td>
+                                    </Tr>
+                                    </Tbody>
+                                </Table>
+                            </TableContainer>
                         </CardBody>
                     </Card>
                 </Flex>
@@ -103,7 +132,7 @@ const ExerciseDetail = () => {
             <Text>운동법이 존재하지 않습니다</Text>
             }
             <Box>
-                <Button colorScheme="blue" onClick={() => navigate("/search")}>뒤로가기</Button>
+                <Button colorScheme="blue" onClick={() => navigate(-1)}>뒤로가기</Button>
             </Box>
         </Flex>
     );

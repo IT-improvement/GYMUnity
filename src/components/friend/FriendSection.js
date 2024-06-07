@@ -16,10 +16,10 @@ const FriendSection = () => {
     }, [isLoggedIn]);
 
     return (
-        <Tabs w="100%" variant="enclosed" onChange={index => setTabIndex(index)}>
+        <Tabs w="100%" onChange={index => setTabIndex(index)}>
             <TabList> 
-                <Tab _selected={{ color: "white", bg: "blue.200"}}>친구</Tab>
-                <Tab _selected={{ color: "white", bg: "blue.200"}}>받은 친구 요청</Tab>
+                <Tab _selected={{ color: "white", bg: "gray.400"}}>친구</Tab>
+                <Tab _selected={{ color: "white", bg: "gray.400"}}>받은 친구 요청</Tab>
             </TabList>
             <TabPanels>
                 <TabPanel>

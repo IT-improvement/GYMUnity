@@ -15,18 +15,20 @@ function App() {
 	const [sessionUser, setSessionUser] = useState({
 		code: window.sessionStorage.getItem("userCode") ? window.sessionStorage.getItem("userCode") : "",
 		id: window.sessionStorage.getItem("userId") ? window.sessionStorage.getItem("userId") : "",
+		profileImage: window.sessionStorage.getItem("userProfileImage") ? window.sessionStorage.getItem("userProfileImage") : "",
 	});
 	const [prevLoginStatus, setPrevLoginStatus] = useState(prevLoginStatusMap.none);
 
-	const handleSessionUserChange = (userCode = "", userId = "") => {
+	const handleSessionUserChange = (userCode = "", userId = "", userProfileImage = "") => {
 		setSessionUser({
 			code: userCode,
 			id: userId,
+			profileImage: userProfileImage,
 		});
 	};
 
-	const handleLoginSuccess = (userCode, userId) => {
-		handleSessionUserChange(userCode, userId);
+	const handleLoginSuccess = (userCode, userId, userProfileImage) => {
+		handleSessionUserChange(userCode, userId, userProfileImage);
 
 		setIsLoggedIn(true);
 		setPrevLoginStatus(prevLoginStatusMap.login);
@@ -42,6 +44,7 @@ function App() {
 	useEffect(() => {
 		window.sessionStorage.setItem("userCode", sessionUser.code);
 		window.sessionStorage.setItem("userId", sessionUser.id);
+		window.sessionStorage.setItem("userProfileImage", sessionUser.profileImage);
 	}, [sessionUser]);
 
 	useEffect(() => {
