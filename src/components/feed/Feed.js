@@ -146,6 +146,10 @@ const Feed = (props) => {
         fetchFeedCommentCreate();
     };
 
+    // useEffect(() => {
+    //     fetchUser();
+    // }, []);
+
 
     console.log("ImageURL : " + imageURL)
     return (
