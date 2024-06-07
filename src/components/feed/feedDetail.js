@@ -146,6 +146,9 @@ const FeedDetail = () => {
                                             <Text>{feed.title}</Text>
                                         </Box>
                                         <Box>
+                                        <Image src={feed.imageURL}/>
+                                        </Box>
+                                        <Box>
                                             <Text fontWeight="bold">내용</Text>
                                             <Text>{feed.content}</Text>
                                         </Box>

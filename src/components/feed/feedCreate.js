@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Center, Avatar, Badge, Card, CardBody, useToast, Flex, Box, Select, Heading, FormControl, FormLabel, Button, Text, Input } from "@chakra-ui/react";
+import { Image, Center, Avatar, Badge, Card, CardBody, useToast, Flex, Box, Select, Heading, FormControl, FormLabel, Button, Text, Input } from "@chakra-ui/react";
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
 import FileUpload from "./FileUpload";
@@ -11,6 +11,14 @@ const FeedCreate = () => {
         content: "",
         image: "",
     });
+
+    const [user, setUser] = useState({
+        code: undefined,
+        profileImage: "",
+        id: "",
+        name: "",
+    });
+
     const { isLoggedIn, sessionUser } = useContext(Context);
     const navigate = useNavigate();
     console.log(feed.title)
@@ -38,6 +46,21 @@ const FeedCreate = () => {
             });
     }
 
+    const fetchUser = () => {
+        const code = sessionUser;
+        console.log(code.code);
+        fetch(`${process.env.REACT_APP_SERVER_URL}/user?command=read_one&code=${code.code}`, {
+            method: "GET", 
+        })
+        .then(response => response.json())
+        .then(data => {
+            setUser(data);
+        })
+        .catch(() => {
+            Toast.showFailed("유저 페이지 로드 실패");
+        });
+    };
+
 
 
 
@@ -60,8 +83,11 @@ const FeedCreate = () => {
         })
     }
 
+    useEffect(() => {
+        fetchUser();
+    }, []);
 
-    console.log(feed)
+    console.log(user)
 
     return (
         <Card>
@@ -73,11 +99,11 @@ const FeedCreate = () => {
                         <Card _hover={{ backgroundColor: "gray.400" }}>
                             <CardBody>
                                 <Flex gap="10px">
-                                    <Avatar src="" size="md" />
+                                    <Image src={user.profileImage}/>
                                     <Flex direction="column">
-                                        <Text>{feed.userName}</Text>
+                                        <Text>{user.name}</Text>
                                         <Badge fontSize="15px" colorScheme="pink">
-                                            {feed.userId}
+                                            {user.id}
                                         </Badge>
                                     </Flex>
                                 </Flex>
