@@ -103,7 +103,7 @@ export default function RoutineCreate({ isOpen, onClose }) {
             .then((data) => {
                 console.log(data);
                 onClose(); // 창 닫기
-                navigate('/routine', { replace: true }); // 새로고침
+                navigate('/routine'); // 새로고침
             })
             .catch((error) => console.error('Error submitting form:', error));
     };

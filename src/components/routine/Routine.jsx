@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './routine.css';
 import RoutineCreate from './routineCreate';
+import { useNavigate } from 'react-router-dom';
 
 export default function Routine() {
     const days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
@@ -8,7 +9,7 @@ export default function Routine() {
     const [bottom, setBottom] = useState([]);
     const [aerobic, setAerobic] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const navigate = useNavigate();
     //      state: 삭제 버튼 활성화 상태     //
     const [status, setStatus] = useState(false);
     //      state: 체크박스 선택 상태     //
@@ -98,7 +99,7 @@ export default function Routine() {
                         }
                     })
                     .then((data) => {
-                        window.location.reload();
+                        navigate("/routine");
                     })
                     .catch((error) => {
                         console.error('There was a problem with the delete operation:', error);

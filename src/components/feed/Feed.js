@@ -98,8 +98,6 @@ const Feed = (props) => {
                 isDeleted = true;
         })
         .finally(() => {
-            Toast.show(isDeleted, "댓글 삭제 성공", "댓글 삭제 실패");
-            if (isDeleted)
                 navigate("/feed");
         });
     }
