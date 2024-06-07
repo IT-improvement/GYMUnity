@@ -9,7 +9,9 @@ export default function DiaryDelete() {
     const [selectedItems, setSelectedItems] = useState([]);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=readGroup&number=${number}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/diary?command=readGroup&number=${number}`,{
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
