@@ -14,6 +14,7 @@ export default function Routine() {
     const [status, setStatus] = useState(false);
     //      state: 체크박스 선택 상태     //
     const [selectedItems, setSelectedItems] = useState([]);
+    const [createStatus, setCreateStatus] = useState(false);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_SERVER_URL}/routine?command=read`)
@@ -32,7 +33,11 @@ export default function Routine() {
             .catch((error) => {
                 console.error('There was a problem with the fetch operation:', error);
             });
-    }, []);
+    }, [createStatus]);
+
+    const changeStatus = () =>{
+        setCreateStatus(!createStatus);
+    }
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -111,7 +116,7 @@ export default function Routine() {
     };
     return (
         <div className="routine-box">
-            <RoutineCreate isOpen={isModalOpen} onClose={closeModal} />
+            <RoutineCreate handleStatus={changeStatus} isOpen={isModalOpen} onClose={closeModal} />
             <div className="routine-top">
                 <div className="routine-title">루틴</div>
                 <div className="routine-button">

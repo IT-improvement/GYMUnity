@@ -17,7 +17,7 @@ const RenderExercise = ({ onChangeCategory }) => {
     );
 };
 
-export default function RoutineCreate({ isOpen, onClose }) {
+export default function RoutineCreate({handleStatus, isOpen, onClose }) {
     const [data, setData] = useState([]);
     const [categoryIndex, setCategoryIndex] = useState('');
     const [formValues, setFormValues] = useState({
@@ -100,11 +100,11 @@ export default function RoutineCreate({ isOpen, onClose }) {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: formData,
         })
-            .then((data) => {
-                console.log(data);
-                })
-                .catch((error) => console.error('Error submitting form:', error));
-                navigate('/routine');
+        .then((data) => {
+            console.log(data);
+            handleStatus();
+        })
+        .catch((error) => console.error('Error submitting form:', error));
     };
 
     return (
