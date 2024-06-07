@@ -230,7 +230,10 @@ const router = createBrowserRouter(
                 //     element: <FeedDelete />,
                 // },
             ],
-        },
+        },{
+            path:'*',
+            element:<Body children={<Main />}/>,
+        }
     ],
   {
     basename: "/gymunity",
