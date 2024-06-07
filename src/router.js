@@ -69,7 +69,7 @@ const router = createBrowserRouter(
                     element: <Body children={<DiaryWrite />} />,
                 },
                 {
-                    path: '/delete',
+                    path: 'delete',
                     element: <Body children={<DiaryDelete />} />,
                 },
             ],
