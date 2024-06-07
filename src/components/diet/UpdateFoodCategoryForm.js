@@ -109,10 +109,6 @@ const ViewFoodDetailForm = () => {
     }
   }, [foodIndex, sessionUser]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   if (isLoading) {
     return (
       <Box

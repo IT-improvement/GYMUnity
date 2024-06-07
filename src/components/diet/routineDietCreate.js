@@ -112,9 +112,8 @@ export default function RoutineDietCreate({ isOpen, onClose }) {
     })
       .then((data) => {
         console.log(data);
+        navigate("/routineDiet"); // 새로고침
         onClose(); // 창 닫기
-        navigate("/routineDiet", { replace: true }); // 새로고침
-        window.location.reload();
       })
       .catch((error) => console.error("Error submitting form:", error));
   };
