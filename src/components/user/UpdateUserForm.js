@@ -4,7 +4,6 @@ import { Box, Button, FormControl, FormLabel, Flex, Input, Stack, Heading, Radio
 import Context from "../../Context";
 import Toast from "../chakra/Toast";
 import FileUpload from './FileUpload';
-// import ProFileImageUpload from './ProfileImageUpload';
 
 const UpdateUserForm = () => {
     const { code } = useParams();
@@ -132,7 +131,7 @@ const UpdateUserForm = () => {
                     <Stack spacing={4} width="600px" padding="30px" marginBottom="50px" backgroundColor="#BED7DC">
                     
                         <Flex justify="center">
-                            <Avatar id="image-container" type="file" size="xl" width="150px" height="150px" showName={false} bg="gray.300" src={user.profileImage} onClick={handleImageClick} />
+                            <Avatar id="image-container" type="file" size="xl" width="150px" height="150px" showName={false} bg="gray.300" src={user.profileImage} />
                             <FileUpload handleFileOnChange={handleFileOnChange} src={user.profileImage} value={user.profileImage} />
                         </Flex>
                         <FormControl id="id" marginTop="20px" marginBottom="10px">
