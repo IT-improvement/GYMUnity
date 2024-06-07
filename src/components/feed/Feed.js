@@ -16,7 +16,7 @@ const Feed = (props) => {
     const [comment, setComment] = useState("");
     const navigate = useNavigate();
     const { feedIndex, title, content, userCode, userId, 
-            favoriteCount, checkFavorite, createDate, comments, imageURL } = props.feed;
+            favoriteCount, checkFavorite, createDate, comments, imageURL, profileImage } = props.feed;
             console.log(props.feed)
 
     const showComments = (comments) => {
@@ -181,12 +181,17 @@ const Feed = (props) => {
                         <Card _hover={{backgroundColor: "gray.400"}}>
                             <CardBody>
                                 <Flex gap="10px">
-                                <Image borderRadius='full'
-                                        boxSize='50px'
-                                        alt='Dan Abramov' 
-                                        src={user.profileImage}/>
+                                    {
+                                        profileImage ?
+                                            <Image borderRadius='full'
+                                            boxSize='50px'
+                                            alt='Dan Abramov' 
+                                            src={profileImage}/> :
+                                            <Avatar src=""/>
+                                    }
+                                
                                     <Flex direction="column">
-                                        <Badge colorScheme="pink">
+                                        <Badge>
                                         <Text>{props.feed.userName}</Text>
                                         </Badge>
                                         <Badge colorScheme="blue">
