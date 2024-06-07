@@ -31,7 +31,6 @@ const Feed = (props) => {
             
             const comment = comments[index++];
             try {
-               
                 
                 if(isLoggedIn && (comment.userCode === Number(sessionUser.code))) {
                     commentComponents.push(
@@ -100,10 +99,8 @@ const Feed = (props) => {
         })
         .finally(() => {
             Toast.show(isDeleted, "댓글 삭제 성공", "댓글 삭제 실패");
-            
             if (isDeleted)
                 navigate("/feed");
-            window.location.reload();
         });
     }
 
@@ -137,7 +134,6 @@ const Feed = (props) => {
         .finally(() => {
             Toast.show(isCreate, "댓글 생성 성공", "댓글 생성 실패");
             navigate("/feed");
-            window.location.reload();
         });
     }
 
