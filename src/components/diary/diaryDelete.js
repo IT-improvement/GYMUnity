@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './diaryDelete.css';
 import { format } from 'date-fns';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-const Renderdata = () => {
+export default function DiaryDelete() {
     const [number, setNumber] = useState('1');
     const [data, setData] = useState([]);
     const [end, setEnd] = useState(false);
@@ -19,14 +19,14 @@ const Renderdata = () => {
         .then(responseData => {
             setData(responseData.diaries);
             setEnd(responseData.end);
-            console.log(data);
-            console.log(end);
-        })
-        .catch(error => {
+            })
+            .catch(error => {
+            
             console.error('Error fetching data:', error);
         });
     }, [number]);
-
+    console.log(data);
+    console.log(end);
     const onPrevNumber = () => {
         if(number ==='1'){
             alert('첫번째 페이지입니다.')
@@ -106,4 +106,3 @@ const Renderdata = () => {
     );
 };
 
-export default Renderdata;

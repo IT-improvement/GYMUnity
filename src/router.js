@@ -28,11 +28,10 @@ import FeedList from "./components/feed/feedList";
 import DiaryWrite from "./components/diary/diaryWrite";
 import CreateFood from './components/diet/CreateFood';
 import EditFood from './components/diet/EditFood';
-import DiaryDelete from "./components/diary/diaryDelete";
-// import FeedDelete from './components/feed/feedDelete';
 import RoutineDiet from "./components/diet/RoutineDiet";
 import ViewFoodDetailForm from "./components/diet/ViewFoodDetailForm";
 import EditFoodCategory from "./components/diet/EditFoodCategory";
+import DiaryDelete from "./components/diary/diaryDelete";
 
 const router = createBrowserRouter(
     [
