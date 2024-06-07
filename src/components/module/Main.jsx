@@ -6,9 +6,6 @@ const Main = () => {
             <section className="main-image">
                 <div className='image'></div>
             </section>
-            <section className="features">
-                
-            </section>
     </div>
     )
 

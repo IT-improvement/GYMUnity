@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './routine.css';
 import RoutineCreate from './routineCreate';
+import { Table, Tbody, Td, Tr } from '@chakra-ui/react';
 
 export default function Routine() {
     const days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
@@ -52,10 +53,10 @@ export default function Routine() {
 
     //       render: 요일별 운동 랜더링        //
     const renderRows = (categoryData, categoryName) => (
-        <tr>
-            <td>{categoryName}</td>
+        <Tr>
+            <Td>{categoryName}</Td>
             {days.map((day, index) => (
-                <td key={index}>
+                <Td key={index}>
                     {categoryData
                         .filter((item) => item.day === day)
                         .map((item) => (
@@ -71,9 +72,9 @@ export default function Routine() {
                                 {item.name}
                             </div>
                         ))}
-                </td>
+                </Td>
             ))}
-        </tr>
+        </Tr>
     );
 
     //        event handler: 생성 버튼 클릭 이벤트 처리 함수        //
@@ -124,19 +125,19 @@ export default function Routine() {
             </div>
             <div className="routine-content">
                 <div className="routine">
-                    <table className="routine-schedule">
-                        <tbody>
-                            <tr>
-                                <td>구분</td>
+                    <Table>
+                        <Tbody>
+                            <Tr>
+                                <Td>구분</Td>
                                 {days.map((day, index) => (
-                                    <td key={index}>{day}</td>
-                                ))}
-                            </tr>
+                                    <Td key={index}>{day}</Td>
+                                    ))}
+                                </Tr>
                             {renderRows(top, '상체')}
                             {renderRows(bottom, '하체')}
                             {renderRows(aerobic, '유산소')}
-                        </tbody>
-                    </table>
+                                </Tbody>
+                    </Table>
                 </div>
             </div>
         </div>

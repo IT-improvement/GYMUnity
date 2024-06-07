@@ -13,7 +13,7 @@ export default function Header() {
     };
 
     return (
-        <Flex gap="10px" align="center">
+        <Flex gap="10px" align="center" height="100px">
             <Box minW="200px" maxW="300px">
                 <Link to="/">
                     <Heading as="h1" fontSize="4xl" p="10px" color="var(--blue)">
@@ -22,10 +22,10 @@ export default function Header() {
                 </Link>
             </Box>
         <Input
-            borderWidth="2px"
+            borderWidth="2px" width="84%"
             onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery} />
-        <Button onClick={handleSearchButtonOnClick}>&#x1F50D;</Button>
-            <Button h="fit-content" p="5px" >
+        <Button width="50px" height="50px" onClick={handleSearchButtonOnClick}>&#x1F50D;</Button>
+            <Button h="fit-content" p="5px" width="100px" height="50px">
                 {isLoggedIn ?
                     <Link to="/user/mypage">
                         <Avatar src="" size="sm" />
